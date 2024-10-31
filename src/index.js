@@ -1,45 +1,29 @@
-#!/usr/bin/env node
+// foo.js
+const { stdin, stdout } = require('process');
 
-import cac from "cac";
-import { promises as fs } from 'fs';
-import path from 'path';
+// 监听标准输入
+stdin.on('data', (data) => {
+    const request = data.toString().trim(); // 转换为字符串并去掉首尾空白
+    console.log(`接收到请求: ${request}`); // 打印接收到的请求
 
-// 设置文件路径
-const filePath = path.join(process.cwd(), 'temp.txt');
+    // 处理请求并生成响应
+    const response = handleRequest(request);
 
+    // 将响应发送到标准输出
+    stdout.write(`${response}\n`);
+});
 
-const cli = cac('ovs-lsp');
+// 模拟请求处理函数
+function handleRequest(request) {
+    // 根据请求内容生成响应
+    if (request === 'hello') {
+        return 'Hello from foo!';
+    } else {
+        return `处理完毕: ${request}`;
+    }
+}
 
-// 定义一个处理默认情况下的命令，防止未匹配的文件名问题
-cli
-    .command('*', 'Catch-all command to handle unmatched commands')
-    .action((command) => {
-        console.log(`Unrecognized command: ${command}`);
-        cli.help(); // 显示帮助信息
-    });
-
-cli
-    .command('echo <message>', 'Output the message provided')
-    .action(async (message) => {
-        try {
-            // 检查文件是否存在
-            await fs.access(filePath).then(() => {
-                // 存在则删除
-                return fs.unlink(filePath);
-            }).catch(() => {
-                // 文件不存在，无需删除
-                console.log('文件不存在，无需删除');
-            });
-
-            // 创建并写入内容
-            const content = '这是写入 temp.txt 的内容';
-            await fs.writeFile(filePath, message, 'utf8');
-            console.log('已创建并写入内容到 temp.txt');
-
-        } catch (error) {
-            console.error('处理文件时出错:', error);
-        }
-    });
-
-cli.help();
-cli.parse();
+// 处理错误
+stdin.on('error', (err) => {
+    console.error(`标准输入错误: ${err.message}`);
+});
