@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "ovs-lsp": "src/index.ts"
+    "ovs-lsp": "tsx src/index.ts"
   },
   "keywords": [],
   "author": "",

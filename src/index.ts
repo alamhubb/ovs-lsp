@@ -17,13 +17,12 @@ import {
 
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
-
 // 获取 __dirname 等价物
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // 定义文件路径
-const filePath = path.join(__dirname, 'temp666.txt');
+const filePath = path.join(__dirname, 'temp111.txt');
 
 // 启动时清空文件
 try {

@@ -1,9 +1,0 @@
-执行了Content-Length: 1681
-
-{"jsonrpc":"2.0","id":"1","method":"initialize","params":{"processId":null,"rootPath":"C:/Users/qinkaiyuan/IdeaProjects/testovsplg1","rootUri":"file:///c%3A/Users/qinkaiyuan/IdeaProjects/testovsplg1","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"resourceOperations":["create"],"failureHandling":"abort"},"didChangeWatchedFiles":{"relativePatternSupport":true,"dynamicRegistration":true},"executeCommand":{"dynamicRegistration":false},"workspaceFolders":true,"semanticTokens":{"refreshSupport":true}},"textDocument":{"completion":{"completionItem":{"snippetSupport":true,"documentationFormat":["markdown","plaintext"],"deprecatedSupport":true,"tagSupport":{"valueSet":[1]},"insertReplaceSupport":true,"resolveSupport":{"properties":["documentation"]},"labelDetailsSupport":true},"completionList":{"itemDefaults":["commitCharacters","editRange","insertTextFormat","insertTextMode","data"]}},"hover":{"contentFormat":["markdown","plaintext"]},"references":{"dynamicRegistration":true},"formatting":{"dynamicRegistration":true},"definition":{"linkSupport":true},"codeAction":{"codeActionLiteralSupport":{"codeActionKind":{"valueSet":["quickfix","","source","refactor"]}},"disabledSupport":true,"dataSupport":true,"resolveSupport":{"properties":["edit"]}},"publishDiagnostics":{"tagSupport":{"valueSet":[1,2]},"versionSupport":true}},"window":{"showMessage":{},"showDocument":{"support":true}},"general":{"staleRequestSupport":{"cancel":true,"retryOnContentModified":[]}}},"clientInfo":{"name":"IntelliJ IDEA Ultimate Edition","version":"242.23726.103"},"workspaceFolders":[{"uri":"file:///c%3A/Users/qinkaiyuan/IdeaProjects/testovsplg1","name":"testovsplg1"}]}}
-Content-Length: 60
-
-{"jsonrpc":"2.0","id":"2","method":"shutdown","params":null}
-Content-Length: 47
-
-{"jsonrpc":"2.0","method":"exit","params":null}
