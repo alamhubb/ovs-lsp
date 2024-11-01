@@ -5,10 +5,8 @@ import java.io.InputStreamReader
 fun main() {
     // 创建子进程
     val commandLine = GeneralCommandLine("npx.cmd", "ovs-lsp", "--stdio").apply {
-        // Windows 环境下使用 cmd /c
         withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)  // 使用控制台环境
         withCharset(Charsets.UTF_8)
-        withRedirectErrorStream(true)
     }
 
     val process = commandLine.createProcess()
