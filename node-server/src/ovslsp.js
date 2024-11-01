@@ -1,8 +1,8 @@
-const { spawn } = require('child_process');
+const {spawn} = require('child_process');
 const readline = require('readline');
 
 // 创建子进程
-const fooProcess = spawn('npx', ['ovs-lsp'], {
+const fooProcess = spawn('npm', ['exec', 'ovs-lsp'], {
     stdio: 'pipe',
     shell: true
 });
