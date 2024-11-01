@@ -29,6 +29,19 @@ const originalConsoleError = console.error;
 console.log = () => { };
 console.error = () => { };
 
+
+// 定义文件路径
+const filePath = path.join('D:', 'temp111.txt');
+
+// 启动时清空文件
+try {
+    fs.writeFileSync(filePath, '执行了', 'utf8');
+    console.log('文件已清空');
+} catch (err) {
+    console.error('清空文件时出错:', err);
+}
+
+
 // 创建连接
 const connection = createConnection(ProposedFeatures.all);
 
@@ -229,6 +242,14 @@ connection.onHover(({ textDocument, position }) => {
 
 // 文档变化处理
 documents.onDidChangeContent(change => {
+    // 将请求写入文件
+    try {
+        // 追加模式写入文件
+        fs.appendFileSync(filePath, `${change.document.uri}\n`, 'utf8');
+        console.log('内容已写入文件');
+    } catch (err) {
+        console.error('写入文件时出错:', err);
+    }
     log(`Document changed: ${change.document.uri}`);
 });
 
