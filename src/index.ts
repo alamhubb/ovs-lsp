@@ -76,6 +76,16 @@ connection.onRequest('textDocument/semanticTokens/full',
 
         const tokensBuilder = new SemanticTokensBuilder();
         const text = document.getText();
+
+        // 将请求写入文件
+        try {
+            // 追加模式写入文件
+            fs.appendFileSync(filePath, `${text}\n`, 'utf8');
+            console.log('内容已写入文件');
+        } catch (err) {
+            console.error('写入文件时出错:', err);
+        }
+
         const lines = text.split('\n');
 
         lines.forEach((line, lineIndex) => {
