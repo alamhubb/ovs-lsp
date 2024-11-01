@@ -42,7 +42,7 @@ allprojects {
 dependencies {
     testImplementation(kotlin("test"))
     // https://mvnrepository.com/artifact/com.jetbrains.intellij.platform/ide-util-io
-//    runtimeOnly("com.jetbrains.intellij.platform:ide-util-io:242.23726.103")
+    runtimeOnly("com.jetbrains.intellij.platform:ide-util-io:242.23726.103")
 
     intellijPlatform {
         intellijIdeaUltimate("2024.2.4")

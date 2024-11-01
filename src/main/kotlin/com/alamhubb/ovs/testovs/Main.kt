@@ -1,26 +1,84 @@
 import com.intellij.execution.configurations.GeneralCommandLine
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.system.exitProcess
 
 fun main() {
-    println("hello world")
-    try {
-        val commandLine = GeneralCommandLine("npm.cmd", "exec", "ovs-lsp", "--stdio")
-        val process = commandLine.createProcess()
+    val isRunning = AtomicBoolean(true)
 
-// 获取标准输入和输出流
-        val outputStream = process.outputStream
-        val inputStream = process.inputStream
+    // 创建进程，模仿 Node.js 的配置
+    val commandLine = GeneralCommandLine().apply {
+        // 在 Windows 上使用 cmd /c，在 Unix 上使用 sh -c
+        if (System.getProperty("os.name").lowercase().contains("windows")) {
+            exePath = "cmd"
+            addParameters("/c", "npx ovs-lsp")
+        } else {
+            exePath = "sh"
+            addParameters("-c", "npx ovs-lsp")
+        }
+        withCharset(Charsets.UTF_8)
+        withRedirectErrorStream(true)
+    }
 
-// 向服务器发送请求
-        outputStream.write("请求数据\n".toByteArray())
-        outputStream.flush()
+    println("Starting server...")
 
-// 读取服务器的响应
-        val response = inputStream.bufferedReader().readLine()
-        println("服务器响应: $response")
-
-// 处理完毕后，关闭进程
-        process.waitFor()
+    val process = try {
+        commandLine.createProcess()
     } catch (e: Exception) {
-        println(e.message)
+        System.err.println("Failed to start subprocess: ${e.message}")
+        exitProcess(1)
+    }
+
+    // 监听进程输出
+    Thread {
+        val reader = BufferedReader(InputStreamReader(process.inputStream))
+        try {
+            var line: String?
+            while (isRunning.get() && reader.readLine().also { line = it } != null) {
+                println(line)
+            }
+        } catch (e: Exception) {
+            if (isRunning.get()) {
+                System.err.println("Error reading output: ${e.message}")
+            }
+        }
+    }.start()
+
+    println("Ready. Enter commands (type 'exit' to quit):")
+
+    // 读取用户输入
+    val reader = BufferedReader(InputStreamReader(System.`in`))
+    try {
+        while (isRunning.get() && process.isAlive) {
+            print("> ")
+            System.out.flush()
+
+            val input = reader.readLine()
+            when {
+                input == null -> break
+                input.equals("exit", ignoreCase = true) -> {
+                    isRunning.set(false)
+                    break
+                }
+                input.isNotEmpty() -> {
+                    try {
+                        process.outputStream.write("$input\n".toByteArray(Charsets.UTF_8))
+                        process.outputStream.flush()
+                    } catch (e: Exception) {
+                        System.err.println("Failed to send input: ${e.message}")
+                        break
+                    }
+                }
+            }
+        }
+    } catch (e: Exception) {
+        System.err.println("Error reading input: ${e.message}")
+    } finally {
+        isRunning.set(false)
+        if (process.isAlive) {
+            process.destroyForcibly()
+        }
+        exitProcess(0)
     }
 }
