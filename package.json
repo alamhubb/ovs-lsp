@@ -7,11 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "ovs-lsp": "./src/index.js"
+    "ovs-lsp": "src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "tsx": "^4.19.2"
+  },
   "dependencies": {
     "cac": "^6.7.14",
     "vscode-languageserver": "^9.0.1",

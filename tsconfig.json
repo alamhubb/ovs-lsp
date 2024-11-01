@@ -5,11 +5,12 @@
     "moduleResolution": "Node",
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "target": "ES2015",
+    "target": "ES2020",
     "strict": false,
     "esModuleInterop": true,
     "lib": [
-      "ES2015"
+      "ES2020",
+      "DOM"
     ],
     "types": [
       "node"
