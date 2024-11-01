@@ -21,7 +21,7 @@ private class FooLspServerDescriptor(project: Project) : ProjectWideLspServerDes
     override fun createCommandLine(): GeneralCommandLine {
         val path = System.getenv("PATH")
         println("Current PATH: $path")
-        return GeneralCommandLine("npm.cmd", "exec", "ovs-lsp", "--stdio")
+        return GeneralCommandLine("npx.cmd", "ovs-lsp", "--stdio")
 //        return GeneralCommandLine("node", "console.log(123)", "ovs-lsp", "echo", "--stdio")
     }
 }
