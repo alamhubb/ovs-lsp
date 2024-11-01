@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+import * as fs from 'fs';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+
 import {
     createConnection,
     TextDocuments,
@@ -12,6 +16,22 @@ import {
 } from 'vscode-languageserver/node';
 
 import { TextDocument } from 'vscode-languageserver-textdocument';
+
+
+// 获取 __dirname 等价物
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 定义文件路径
+const filePath = path.join(__dirname, 'temp666.txt');
+
+// 启动时清空文件
+try {
+    fs.writeFileSync(filePath, '执行了', 'utf8');
+    console.log('文件已清空');
+} catch (err) {
+    console.error('清空文件时出错:', err);
+}
 
 // 创建连接
 const connection = createConnection(ProposedFeatures.all);
