@@ -9,7 +9,7 @@ const filePath = path.join(__dirname, 'temp666.txt');
 
 // 启动时清空文件
 try {
-    fs.writeFileSync(filePath, '', 'utf8');
+    fs.writeFileSync(filePath, '执行了', 'utf8');
     console.log('文件已清空');
 } catch (err) {
     console.error('清空文件时出错:', err);
