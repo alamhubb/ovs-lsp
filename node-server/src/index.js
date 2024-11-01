@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // foo.js
 const { stdin, stdout } = require('process');
 
