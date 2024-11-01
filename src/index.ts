@@ -12,20 +12,28 @@ import {
     TextDocumentSyncKind,
     InitializeResult,
     SemanticTokensParams,
-    SemanticTokensBuilder
+    SemanticTokensBuilder,
+    DidChangeConfigurationNotification,
+    TextDocumentPositionParams,
+    CompletionItem,
+    CompletionItemKind,
+    MarkupKind
 } from 'vscode-languageserver/node';
 
 import { TextDocument } from 'vscode-languageserver-textdocument';
 
-// 获取 __dirname 等价物
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// 在创建连接之前禁用所有控制台输出
+const originalConsoleLog = console.log;
+const originalConsoleError = console.error;
 
-// 定义文件路径
-const logFile = path.join(__dirname, 'lsp-server.log');
+console.log = () => { };
+console.error = () => { };
 
 // 创建连接
-const connection = createConnection(ProposedFeatures.all, process.stdin, process.stdout);
+const connection = createConnection(ProposedFeatures.all);
+
+// 创建日志文件
+const logFile = path.join(process.cwd(), 'lsp-server.log');
 
 // 重定向日志到文件
 const log = (message: string) => {
@@ -34,18 +42,19 @@ const log = (message: string) => {
     fs.appendFileSync(logFile, logMessage, 'utf8');
 };
 
-// 替换 console 方法
+// 恢复并重定向控制台输出
 console.log = (message: string) => {
     log(`INFO: ${message}`);
     connection.console.log(message);
 };
+
 console.error = (message: string) => {
     log(`ERROR: ${message}`);
     connection.console.error(message);
 };
 
 // 创建文档管理器
-const documents = new TextDocuments(TextDocument);
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 // 定义要高亮的关键词
 const keywords = [
@@ -54,9 +63,14 @@ const keywords = [
 ];
 
 // 定义语义标记类型
-const tokenTypes = ['keyword'];
+const tokenTypes = ['keyword', 'variable', 'string', 'number', 'comment', 'function', 'class'];
+const tokenModifiers = ['declaration', 'definition', 'readonly', 'static'];
+
 const tokenTypesLegend = new Map<string, number>();
 tokenTypes.forEach((tokenType, index) => tokenTypesLegend.set(tokenType, index));
+
+const tokenModifiersLegend = new Map<string, number>();
+tokenModifiers.forEach((tokenModifier, index) => tokenModifiersLegend.set(tokenModifier, index));
 
 // 初始化处理
 connection.onInitialize((params: InitializeParams): InitializeResult => {
@@ -66,13 +80,21 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
     return {
         capabilities: {
             textDocumentSync: TextDocumentSyncKind.Full,
+            // 语义标记支持
             semanticTokensProvider: {
                 full: true,
                 legend: {
                     tokenTypes,
-                    tokenModifiers: []
+                    tokenModifiers
                 }
-            }
+            },
+            // 代码补全支持
+            completionProvider: {
+                resolveProvider: true,
+                triggerCharacters: ['.']
+            },
+            // 悬停提示支持
+            hoverProvider: true
         }
     };
 });
@@ -80,6 +102,7 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
 // 初始化完成
 connection.onInitialized(() => {
     log('Server initialized');
+    connection.client.register(DidChangeConfigurationNotification.type);
 });
 
 // 处理语义标记请求
@@ -99,6 +122,7 @@ connection.onRequest('textDocument/semanticTokens/full',
             const lines = text.split('\n');
 
             lines.forEach((line, lineIndex) => {
+                // 处理关键词
                 keywords.forEach(keyword => {
                     const regex = new RegExp(`\\b${keyword}\\b`, 'g');
                     let match;
@@ -113,6 +137,32 @@ connection.onRequest('textDocument/semanticTokens/full',
                         log(`Found keyword '${keyword}' at line ${lineIndex}, column ${match.index}`);
                     }
                 });
+
+                // 处理字符串
+                const stringRegex = /'[^']*'|"[^"]*"/g;
+                let stringMatch;
+                while ((stringMatch = stringRegex.exec(line)) !== null) {
+                    tokensBuilder.push(
+                        lineIndex,
+                        stringMatch.index,
+                        stringMatch[0].length,
+                        tokenTypesLegend.get('string')!,
+                        0
+                    );
+                }
+
+                // 处理数字
+                const numberRegex = /\b\d+(\.\d+)?\b/g;
+                let numberMatch;
+                while ((numberMatch = numberRegex.exec(line)) !== null) {
+                    tokensBuilder.push(
+                        lineIndex,
+                        numberMatch.index,
+                        numberMatch[0].length,
+                        tokenTypesLegend.get('number')!,
+                        0
+                    );
+                }
             });
 
             const tokens = tokensBuilder.build();
@@ -124,6 +174,58 @@ connection.onRequest('textDocument/semanticTokens/full',
         }
     }
 );
+
+// 代码补全
+connection.onCompletion(
+    (textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
+        log(`Completion requested at: ${JSON.stringify(textDocumentPosition)}`);
+        return keywords.map(keyword => ({
+            label: keyword,
+            kind: CompletionItemKind.Keyword,
+            detail: `Keyword: ${keyword}`,
+            documentation: {
+                kind: MarkupKind.Markdown,
+                value: `Built-in keyword \`${keyword}\``
+            }
+        }));
+    }
+);
+
+// 补全项解析
+connection.onCompletionResolve(
+    (item: CompletionItem): CompletionItem => {
+        log(`Resolving completion item: ${item.label}`);
+        return item;
+    }
+);
+
+// 悬停提示
+connection.onHover(({ textDocument, position }) => {
+    log(`Hover requested at: ${textDocument.uri} ${JSON.stringify(position)}`);
+    const document = documents.get(textDocument.uri);
+    if (!document) {
+        return null;
+    }
+
+    const text = document.getText();
+    const lines = text.split('\n');
+    const line = lines[position.line];
+    const word = line.slice(
+        line.slice(0, position.character).search(/\w+$/),
+        line.slice(position.character).search(/\W|$/) + position.character
+    );
+
+    if (keywords.includes(word)) {
+        return {
+            contents: {
+                kind: MarkupKind.Markdown,
+                value: `**${word}** - Built-in keyword`
+            }
+        };
+    }
+
+    return null;
+});
 
 // 文档变化处理
 documents.onDidChangeContent(change => {
@@ -153,5 +255,10 @@ connection.onShutdown(() => {
 documents.listen(connection);
 
 // 启动服务器
-log('Starting LSP server...');
-connection.listen();
+if (process.argv.includes('--stdio')) {
+    log('Starting LSP server in stdio mode...');
+    connection.listen();
+} else {
+    log('Error: --stdio argument is required');
+    process.exit(1);
+}
