@@ -1,5 +1,3 @@
-#!/usr/bin/env tsx
-
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -264,6 +262,16 @@ connection.onExit(() => {
 connection.onShutdown(() => {
     log('LSP Server shutdown requested');
     return undefined;
+});
+
+// 添加消息处理的日志
+connection.onNotification((method, params) => {
+    console.log(`Received notification: ${method}`, params);
+});
+
+connection.onRequest((method, params) => {
+    console.log(`Received request: ${method}`, params);
+    return null;
 });
 
 // 监听文档
