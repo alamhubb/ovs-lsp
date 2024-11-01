@@ -1,21 +1,15 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { fileURLToPath } from 'url';
 
 import {
     createConnection,
     TextDocuments,
     ProposedFeatures,
-    InitializeParams,
     TextDocumentSyncKind,
-    InitializeResult,
-    SemanticTokensParams,
     SemanticTokensBuilder,
     DidChangeConfigurationNotification,
-    TextDocumentPositionParams,
-    CompletionItem,
     CompletionItemKind,
     MarkupKind
 } from 'vscode-languageserver/node';
