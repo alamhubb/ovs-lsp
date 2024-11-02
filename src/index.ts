@@ -11,10 +11,11 @@ import {
     SemanticTokensLegend
 } from 'vscode-languageserver/node';
 
-import { TextDocument } from 'vscode-languageserver-textdocument';
+import { fileURLToPath } from 'url';
+import {TextDocument} from 'vscode-languageserver-textdocument';
 import * as fs from 'fs';
 import * as path from 'path';
-import { TextDocumentIdentifier } from 'vscode-languageserver'
+import {Hover, HoverParams, TextDocumentIdentifier} from 'vscode-languageserver'
 
 // 创建连接
 const connection = createConnection(ProposedFeatures.all);
@@ -22,11 +23,15 @@ const connection = createConnection(ProposedFeatures.all);
 // 创建文档管理器
 const documents = new TextDocuments(TextDocument);
 
-// 定义日志文件路径
-const __filename = new URL(import.meta.url).pathname;
+
+// 将 import.meta.url 转换为本地文件路径
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// 定义日志文件路径
 const logFilePath = path.join(__dirname, 'temp2222.txt');
 
+console.log(logFilePath); // 输出日志文件的绝对路径
 // 日志函数
 function log(message: string, data?: any) {
     const timestamp = new Date().toISOString();
@@ -50,54 +55,54 @@ const legend: SemanticTokensLegend = {
 
 // 处理语义标记请求
 connection.onRequest(
-  'textDocument/semanticTokens/full',
-  (params: { textDocument: TextDocumentIdentifier }) => {
-      log('Received textDocument/semanticTokens/full request', {
-          uri: params.textDocument.uri
-      });
+    'textDocument/semanticTokens/full',
+    (params: { textDocument: TextDocumentIdentifier }) => {
+        log('Received textDocument/semanticTokens/full request', {
+            uri: params.textDocument.uri
+        });
 
-      const document = documents.get(params.textDocument.uri);
-      if (!document) {
-          log('Document not found', { uri: params.textDocument.uri });
-          return { data: [] };
-      }
+        const document = documents.get(params.textDocument.uri);
+        if (!document) {
+            log('Document not found', {uri: params.textDocument.uri});
+            return {data: []};
+        }
 
-      const builder = new SemanticTokensBuilder();
-      const text = document.getText();
-      const lines = text.split('\n');
+        const builder = new SemanticTokensBuilder();
+        const text = document.getText();
+        const lines = text.split('\n');
 
-      log('Processing document', {
-          uri: params.textDocument.uri,
-          lineCount: lines.length
-      });
+        log('Processing document', {
+            uri: params.textDocument.uri,
+            lineCount: lines.length
+        });
 
-      lines.forEach((line, lineIndex) => {
-          const classMatch = line.match(/\bclass\b/g);
-          if (classMatch) {
-              const startChar = line.indexOf('class');
-              builder.push(
-                lineIndex,           // line
-                startChar,           // character
-                'class'.length,      // length
-                0,                   // tokenType (index of 'class' in tokenTypes)
-                0                    // tokenModifiers
-              );
-              log('Found class keyword', {
-                  line: lineIndex,
-                  character: startChar,
-                  lineContent: line
-              });
-          }
-      });
+        lines.forEach((line, lineIndex) => {
+            const classMatch = line.match(/\bclass\b/g);
+            if (classMatch) {
+                const startChar = line.indexOf('class');
+                builder.push(
+                    lineIndex,           // line
+                    startChar,           // character
+                    'class'.length,      // length
+                    0,                   // tokenType (index of 'class' in tokenTypes)
+                    0                    // tokenModifiers
+                );
+                log('Found class keyword', {
+                    line: lineIndex,
+                    character: startChar,
+                    lineContent: line
+                });
+            }
+        });
 
-      const tokens = builder.build();
-      log('Sending semantic tokens response', {
-          tokenCount: tokens.data.length / 5,
-          tokens: tokens.data
-      });
+        const tokens = builder.build();
+        log('Sending semantic tokens response', {
+            tokenCount: tokens.data.length / 5,
+            tokens: tokens.data
+        });
 
-      return tokens;
-  }
+        return tokens;
+    }
 );
 
 // 初始化处理
@@ -113,9 +118,19 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
                 legend,
                 full: true,
                 range: false
-            }
+            },
+            hoverProvider: true
         }
     };
+});
+
+connection.onHover((params: HoverParams): Promise<Hover> => {
+    log('Document onHover', {
+        uri: params.textDocument.uri
+    });
+    return Promise.resolve({
+        contents: ["Hover Demo qqqq"],
+    });
 });
 
 // 监听文档变化
