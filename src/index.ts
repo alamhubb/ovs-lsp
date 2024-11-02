@@ -12,12 +12,18 @@ import {
     CompletionItemKind,
     MarkupKind,
     InitializeParams,
-    TextDocumentChangeEvent
+    TextDocumentChangeEvent, SemanticTokensParams
 } from 'vscode-languageserver/node';
 
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { fileURLToPath } from 'url'
-import { DiagnosticSeverity, Position } from 'vscode-languageserver'
+import {
+    DiagnosticSeverity,
+    Position,
+    SemanticTokens,
+    SemanticTokensRequest,
+    TextDocumentIdentifier
+} from 'vscode-languageserver'
 
 // 定义日志级别
 enum LogLevel {
@@ -276,6 +282,29 @@ connection.onRequest((method, params) => {
     });
     return null;
 });
+
+connection.onRequest(SemanticTokensRequest.type, (params: SemanticTokensParams): SemanticTokens => {
+    // 实现 Token 的提取和编码逻辑
+    const tokens = extractSemanticTokens(params.textDocument);
+    return tokens;
+});
+
+function extractSemanticTokens(textDocument: TextDocumentIdentifier): SemanticTokens {
+    const tokensBuilder = new SemanticTokensBuilder();
+    const document = documents.get(textDocument.uri);
+    if (!document) return tokensBuilder.build();
+
+    const ast = parseDocument(document.getText());
+
+    traverseAST(ast, node => {
+        if (node.type === 'ClassDeclaration') {
+            tokensBuilder.push(node.startLine, node.startChar, node.name.length, tokenTypesIndex['class'], 0);
+        }
+        // 处理其他类型的节点...
+    });
+
+    return tokensBuilder.build();
+}
 
 // 监听文档
 documents.listen(connection);
