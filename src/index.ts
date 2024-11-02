@@ -1,7 +1,4 @@
 // src/server.ts
-import * as fs from 'fs';
-import * as path from 'path';
-
 import {
     createConnection,
     TextDocuments,
@@ -9,11 +6,15 @@ import {
     TextDocumentSyncKind,
     InitializeParams,
     InitializeResult,
+    SemanticTokensRequest,
     SemanticTokensBuilder,
     SemanticTokensLegend
 } from 'vscode-languageserver/node';
 
 import { TextDocument } from 'vscode-languageserver-textdocument';
+import * as fs from 'fs';
+import * as path from 'path';
+import { TextDocumentIdentifier } from 'vscode-languageserver'
 
 // 创建连接
 const connection = createConnection(ProposedFeatures.all);
@@ -24,22 +25,18 @@ const documents = new TextDocuments(TextDocument);
 // 定义日志文件路径
 const __filename = new URL(import.meta.url).pathname;
 const __dirname = path.dirname(__filename);
-const logFilePath = path.join(__dirname, 'temp111.txt');
+const logFilePath = path.join(__dirname, 'temp2222.txt');
 
-// 初始化日志文件
-try {
-    fs.writeFileSync(logFilePath, '=== LSP Server Log Started ===\n', 'utf8');
-} catch (err) {
-    console.error(`Failed to create log file: ${err}`);
-}
-
-// 日志记录函数
-function log(message: string) {
+// 日志函数
+function log(message: string, data?: any) {
     const timestamp = new Date().toISOString();
-    const logMessage = `${timestamp} - ${message}\n`;
-    fs.appendFileSync(logFilePath, logMessage, 'utf8');
+    const logMessage = `${timestamp} - ${message}${data ? ' - ' + JSON.stringify(data, null, 2) : ''}\n`;
+    fs.appendFileSync(logFilePath, logMessage);
     connection.console.log(message);
 }
+
+// 初始化日志文件
+fs.writeFileSync(logFilePath, '=== LSP Server Started ===\n');
 
 // 定义语义标记类型和修饰符
 const tokenTypes = ['class'];
@@ -51,69 +48,107 @@ const legend: SemanticTokensLegend = {
     tokenModifiers: tokenModifiers
 };
 
-// 注册语义标记处理器
-connection.languages.semanticTokens.on((params) => {
-    const document = documents.get(params.textDocument.uri);
-    if (!document) {
-        log(`No document found for URI: ${params.textDocument.uri}`);
-        return {
-            data: []
-        };
-    }
+// 处理语义标记请求
+connection.onRequest(
+  'textDocument/semanticTokens/full',
+  (params: { textDocument: TextDocumentIdentifier }) => {
+      log('Received textDocument/semanticTokens/full request', {
+          uri: params.textDocument.uri
+      });
 
-    const builder = new SemanticTokensBuilder();
-    const text = document.getText();
-    const lines = text.split('\n');
+      const document = documents.get(params.textDocument.uri);
+      if (!document) {
+          log('Document not found', { uri: params.textDocument.uri });
+          return { data: [] };
+      }
 
-    log(`Processing document: ${params.textDocument.uri}`);
+      const builder = new SemanticTokensBuilder();
+      const text = document.getText();
+      const lines = text.split('\n');
 
-    // 定义要高亮的关键词
-    const keywords = ['class'];
+      log('Processing document', {
+          uri: params.textDocument.uri,
+          lineCount: lines.length
+      });
 
-    lines.forEach((line, lineIndex) => {
-        keywords.forEach(keyword => {
-            const regex = new RegExp(`\\b${keyword}\\b`, 'g');
-            let match;
-            while ((match = regex.exec(line)) !== null) {
-                builder.push(
-                  lineIndex,                           // 行号
-                  match.index,                         // 列号
-                  keyword.length,                      // 长度
-                  tokenTypes.indexOf('class'),         // token 类型
-                  0                                     // 修饰符
-                );
-                log(`Found keyword '${keyword}' at line ${lineIndex}, column ${match.index}`);
-            }
-        });
-    });
+      lines.forEach((line, lineIndex) => {
+          const classMatch = line.match(/\bclass\b/g);
+          if (classMatch) {
+              const startChar = line.indexOf('class');
+              builder.push(
+                lineIndex,           // line
+                startChar,           // character
+                'class'.length,      // length
+                0,                   // tokenType (index of 'class' in tokenTypes)
+                0                    // tokenModifiers
+              );
+              log('Found class keyword', {
+                  line: lineIndex,
+                  character: startChar,
+                  lineContent: line
+              });
+          }
+      });
 
-    const tokens = builder.build();
-    log(`Sending ${tokens.data.length / 5} semantic tokens for ${params.textDocument.uri}`);
-    return tokens;
-});
+      const tokens = builder.build();
+      log('Sending semantic tokens response', {
+          tokenCount: tokens.data.length / 5,
+          tokens: tokens.data
+      });
+
+      return tokens;
+  }
+);
 
 // 初始化处理
 connection.onInitialize((params: InitializeParams): InitializeResult => {
-    log('Initializing LSP server...');
-    const result: InitializeResult = {
+    log('Server initializing with capabilities', {
+        capabilities: params.capabilities
+    });
+
+    return {
         capabilities: {
             textDocumentSync: TextDocumentSyncKind.Incremental,
             semanticTokensProvider: {
-                legend: legend,
+                legend,
                 full: true,
                 range: false
             }
         }
     };
-    return result;
 });
 
-// 文档变化处理
+// 监听文档变化
 documents.onDidChangeContent(change => {
-    log(`Document changed: ${change.document.uri}`);
-    connection.languages.semanticTokens.refresh();
+    log('Document changed', {
+        uri: change.document.uri,
+        version: change.document.version
+    });
 });
 
-// 监听文档和连接
+// 监听文档打开
+documents.onDidOpen(event => {
+    log('Document opened', {
+        uri: event.document.uri,
+        languageId: event.document.languageId
+    });
+});
+
+// 启动服务器
 documents.listen(connection);
 connection.listen();
+
+// 记录未捕获的错误
+process.on('uncaughtException', (error) => {
+    log('Uncaught Exception', {
+        error: error.message,
+        stack: error.stack
+    });
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    log('Unhandled Rejection', {
+        reason: reason,
+        promise: promise
+    });
+});
