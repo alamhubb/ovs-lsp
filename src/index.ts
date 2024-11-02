@@ -11,11 +11,17 @@ import {
     SemanticTokensLegend
 } from 'vscode-languageserver/node';
 
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 import {TextDocument} from 'vscode-languageserver-textdocument';
 import * as fs from 'fs';
 import * as path from 'path';
-import {Hover, HoverParams, TextDocumentIdentifier} from 'vscode-languageserver'
+import {
+    Hover,
+    HoverParams,
+    SemanticTokenModifiers,
+    SemanticTokenTypes,
+    TextDocumentIdentifier
+} from 'vscode-languageserver'
 
 // 创建连接
 const connection = createConnection(ProposedFeatures.all);
@@ -53,57 +59,45 @@ const legend: SemanticTokensLegend = {
     tokenModifiers: tokenModifiers
 };
 
-// 处理语义标记请求
-connection.onRequest(
-    'textDocument/semanticTokens/full',
-    (params: { textDocument: TextDocumentIdentifier }) => {
-        log('Received textDocument/semanticTokens/full request', {
-            uri: params.textDocument.uri
-        });
 
-        const document = documents.get(params.textDocument.uri);
-        if (!document) {
-            log('Document not found', {uri: params.textDocument.uri});
-            return {data: []};
-        }
+connection.languages.semanticTokens.on(params => {
+    const document = documents.get(params.textDocument.uri);
+    if (!document) return {data: []};
 
-        const builder = new SemanticTokensBuilder();
-        const text = document.getText();
-        const lines = text.split('\n');
+    const builder = new SemanticTokensBuilder();
+    const text = document.getText();
+    const lines = text.split('\n');
 
-        log('Processing document', {
-            uri: params.textDocument.uri,
-            lineCount: lines.length
-        });
-
-        lines.forEach((line, lineIndex) => {
-            const classMatch = line.match(/\bclass\b/g);
-            if (classMatch) {
-                const startChar = line.indexOf('class');
-                builder.push(
-                    lineIndex,           // line
-                    startChar,           // character
-                    'class'.length,      // length
-                    0,                   // tokenType (index of 'class' in tokenTypes)
-                    0                    // tokenModifiers
-                );
-                log('Found class keyword', {
-                    line: lineIndex,
-                    character: startChar,
-                    lineContent: line
-                });
+    lines.forEach((line, lineIndex) => {
+        // 查找 class 关键字
+        const classMatch = line.match(/\bclass\b/g);
+        if (classMatch) {
+            const res = {
+                line: lineIndex,
+                char: line.indexOf('class'),
+                length: 'class'.length,
+                tokenType: tokenTypes.indexOf(SemanticTokenTypes.class),  // 使用标准类型
+                tokenModifiers: tokenModifiers.indexOf(SemanticTokenModifiers.declaration)  // 使用标准修饰符
             }
-        });
+            builder.push(
+                res.line,
+                res.char,
+                res.length,
+                res.tokenType,
+                res.tokenModifiers,
+            );
+            log('Sending semantic tokens response', res);
+        }
+    });
 
-        const tokens = builder.build();
-        log('Sending semantic tokens response', {
-            tokenCount: tokens.data.length / 5,
-            tokens: tokens.data
-        });
 
-        return tokens;
-    }
-);
+    return builder.build();
+});
+
+// 处理语义标记请求
+/*connection.onRequest(
+    'textDocument/semanticTokens/full',
+);*/
 
 // 初始化处理
 connection.onInitialize((params: InitializeParams): InitializeResult => {
@@ -117,7 +111,7 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
             semanticTokensProvider: {
                 legend,
                 full: true,
-                range: false
+                range: true
             },
             hoverProvider: true
         }
