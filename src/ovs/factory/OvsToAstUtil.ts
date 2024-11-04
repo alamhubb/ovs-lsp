@@ -11,7 +11,7 @@ import type {
     Statement,
     VariableDeclaration, VariableDeclarator
 } from "estree";
-import OvsParser from "./ovs/parser/OvsParser.ts";
+import OvsParser from "../parser/OvsParser.ts";
 import {checkCstName} from "subhuti/src/parser/SubhutiToAstUtil.ts";
 
 

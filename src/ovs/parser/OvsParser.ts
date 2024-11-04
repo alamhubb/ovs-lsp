@@ -21,27 +21,28 @@ export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
 
     @SubhutiRule
     OvsChildList() {
-        this.OvsRenderDomViewDeclarator()
+        this.AssignmentExpression()
         this.Many(() => {
             this.tokenConsumer.Comma()
-            this.OvsRenderDomViewDeclarator()
+            this.AssignmentExpression()
         })
         this.Option(() => {
             this.tokenConsumer.Comma()
         })
     }
 
-    @SubhutiRule
+    /*@SubhutiRule
     OvsLexicalBinding() {
         this.BindingIdentifier()
         this.Initializer()
-    }
+    }*/
 
-    @SubhutiRule
+    /*@SubhutiRule
     OvsRenderDomViewDeclarator() {
         this.Or([
             {
                 alt: () => {
+                    this.printTokens()
                     this.OvsLexicalBinding()
                 }
             }, {
@@ -50,7 +51,7 @@ export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
                 }
             }
         ])
-    }
+    }*/
 
 
     @SubhutiRule
@@ -73,14 +74,9 @@ export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
     }
 
     @SubhutiRule
-    OvsRenderDom() {
-        this.Option(() => {
-            this.ovsRenderDomClassDeclaration()
-        }).match((curCst) => {
-            this.OvsRenderDomViewDeclaration()
-        }).noMatch(() => {
-            this.OvsRenderDomViewDeclaration()
-        })
+    OvsRenderDomStatement() {
+        this.ovsRenderDomClassDeclaration()
+        this.OvsRenderDomViewDeclaration()
     }
 
     @SubhutiRule
@@ -142,7 +138,7 @@ export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
         //将ovs view转为自执行函数
         if (curCst.name === this.OvsLexicalBinding.name) {
             curCst = OvsVueRenderFactory.createInitializerVueRenderCst(curCst)
-        }else  if (curCst.name === this.OvsRenderDomViewDeclaration.name) {
+        } else if (curCst.name === this.OvsRenderDomViewDeclaration.name) {
             curCst = OvsVueRenderFactory.createOvsVueRenderCst(curCst)
         }
         return curCst
