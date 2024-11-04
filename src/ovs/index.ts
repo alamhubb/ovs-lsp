@@ -20,11 +20,6 @@ function traverseClearTokens(currentNode: SubhutiCst) {
     return currentNode
 }
 
-function transToAst(cst: SubhutiCst) {
-    const ast = SubhutiToAstUtil.createProgramAst(cst)
-    JsonUtil.log(ast)
-}
-
 export function vitePluginOvsTransform(code) {
     const lexer = new SubhutiLexer(es6Tokens)
     const tokens = lexer.lexer(code)

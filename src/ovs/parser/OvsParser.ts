@@ -21,28 +21,27 @@ export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
 
     @SubhutiRule
     OvsChildList() {
-        this.AssignmentExpression()
+        this.OvsRenderDomViewDeclarator()
         this.Many(() => {
             this.tokenConsumer.Comma()
-            this.AssignmentExpression()
+            this.OvsRenderDomViewDeclarator()
         })
         this.Option(() => {
             this.tokenConsumer.Comma()
         })
     }
 
-    /*@SubhutiRule
+    @SubhutiRule
     OvsLexicalBinding() {
         this.BindingIdentifier()
         this.Initializer()
-    }*/
+    }
 
-    /*@SubhutiRule
+    @SubhutiRule
     OvsRenderDomViewDeclarator() {
         this.Or([
             {
                 alt: () => {
-                    this.printTokens()
                     this.OvsLexicalBinding()
                 }
             }, {
@@ -51,7 +50,7 @@ export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
                 }
             }
         ])
-    }*/
+    }
 
 
     @SubhutiRule
