@@ -1,6 +1,3 @@
-import type SubhutiCst from "../struct/SubhutiCst.ts";
-import {Es6TokenName} from "../syntax/es6/Es6Tokens.ts";
-import Es6Parser from "../syntax/es6/Es6Parser.ts";
 import type {
     Comment,
     Directive, Expression, ExpressionMap,
@@ -12,40 +9,54 @@ import type {
     VariableDeclaration, VariableDeclarator
 } from "estree";
 import OvsParser from "../parser/OvsParser.ts";
-import {checkCstName} from "subhuti/src/parser/SubhutiToAstUtil.ts";
+import {checkCstName, SubhutiToAstUtil} from "subhuti/src/parser/SubhutiToAstUtil.ts";
+import {OvsRenderDomViewDeclaration} from "../interface/OvsInterface";
+import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
+import SubhutiToAstHandler from "subhuti/src/parser/SubhutiToAstUtil.ts";
 
 
-export default class OvsToAstUtil {
+export default class OvsToAstHandler extends SubhutiToAstHandler {
 
-    static createOvsRenderDomViewDeclarationAst(cst: SubhutiCst): Identifier {
+    createExpressionAst(cst: SubhutiCst): Expression {
+        const astName = cst.name
+        console.trace('jinrule xreadfs0' + cst)
+        console.log(cst)
+        let left
+        if (astName === OvsParser.prototype.OvsRenderDomViewDeclaration.name) {
+            left = OvsToAstUtil.createOvsRenderDomViewDeclarationAst(cst)
+        } else {
+            return super.createExpressionAst(cst)
+        }
+        return left
+    }
+
+    createOvsRenderDomViewDeclarationAst(cst: SubhutiCst): OvsRenderDomViewDeclaration {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclaration.name);
         const IdentifierName = cst.children[0]
-        const ast: Identifier = {
+        const ast: OvsRenderDomViewDeclaration = {
             type: astName as any,
-            name: IdentifierName.value
-        }
+            id: cst.children[0] as any,
+            children: cst.children[2].children.map(item => OvsToAstUtil.createOvsRenderDomViewDeclaratorAst(item)) as any[],
+        } as any
         return ast
     }
 
 
-    static createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): Identifier {
+    createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): Expression {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclarator.name);
-        const IdentifierName = cst.children[0]
-        const ast: Identifier = {
-            type: astName as any,
-            name: IdentifierName.value
-        }
-        return ast
-    }
 
-    static createOvsLexicalBindingAst(cst: SubhutiCst): Identifier {
-        const astName = checkCstName(cst, OvsParser.prototype.OvsLexicalBinding.name);
-        const IdentifierName = cst.children[0]
-        const ast: Identifier = {
-            type: astName as any,
-            name: IdentifierName.value
+        const firstChild = cst.children[0]
+        if (firstChild.name === OvsParser.prototype.OvsLexicalBinding.name) {
+            const ast: VariableDeclarator = {
+                type: astName as any,
+                id: SubhutiToAstUtil.createIdentifierAst(cst.children[0].children[0]) as any,
+                init: SubhutiToAstUtil.createAssignmentExpressionAst(cst.children[1].children[1]) as any,
+            }
+            return ast as any
+        } else {
+            return OvsToAstUtil.createExpressionAst(firstChild)
         }
-        return ast
     }
-
 }
+
+export const OvsToAstUtil = new OvsToAstHandler()
