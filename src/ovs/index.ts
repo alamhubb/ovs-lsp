@@ -27,7 +27,8 @@ export function vitePluginOvsTransform(code) {
     const parser = new OvsParser(tokens)
 
     let code1 = null
-    const curCst = parser.Program()
+    let curCst = parser.Program()
+    curCst = traverseClearTokens(curCst)
     JsonUtil.log(curCst)
     console.log(2313123)
     const ast = OvsToAstUtil.createProgramAst(curCst)
