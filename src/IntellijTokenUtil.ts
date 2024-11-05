@@ -104,8 +104,6 @@ export class TokenProvider {
     }
 
     private static visitVariableDeclarator(node: VariableDeclarator) {
-        console.log(node)
-        console.log(node.id)
         this.visitNode(node.id)
         this.visitNode(node.init)
     }
