@@ -2,7 +2,6 @@ import OvsTokenConsumer, {ovsTokenName} from "./OvsConsumer.ts"
 import Es6Parser from "../../../../subhuti/src/syntax/es6/Es6Parser.ts"
 import {Subhuti, SubhutiRule} from '../../../../subhuti/src/parser/SubhutiParser.ts'
 import {es6TokensObj} from '../../../../subhuti/src/syntax/es6/Es6Tokens.ts'
-import SubhutiLChaining from "../../../../subhuti/src/struct/SubhutiLChaining.ts";
 import QqqqUtil from "../../../../subhuti/src/utils/qqqqUtil.ts";
 import OvsVueRenderFactory from "../factory/OvsVueRenderFactory.ts";
 import SubhutiCst from "../../../../subhuti/src/struct/SubhutiCst.ts";
@@ -68,7 +67,7 @@ export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
         })
         this.tokenConsumer.RBrace()
         const curCst = this.getCurCst()
-        return this.getCurSubhutiChaine(curCst)
+        return curCst
     }
 
     @SubhutiRule

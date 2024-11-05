@@ -27,19 +27,17 @@ export function vitePluginOvsTransform(code) {
     const parser = new OvsParser(tokens)
 
     let code1 = null
-    parser.Program().match((curCst: SubhutiCst): SubhutiLChaining => {
-        JsonUtil.log(curCst)
-        console.log(2313123)
-        const ast = OvsToAstUtil.createProgramAst(curCst)
-        JsonUtil.log(ast)
-        // code1 = parser.exec()
-        // console.log(code1)
-        // const mapping = new OvsMappingParser()
-        // mapping.openMappingMode(curCst)
-        // code1 = mapping.exec(curCst)
-        // console.log(code1)
-        return null
-    })
+    const curCst = parser.Program()
+    JsonUtil.log(curCst)
+    console.log(2313123)
+    const ast = OvsToAstUtil.createProgramAst(curCst)
+    JsonUtil.log(ast)
+    // code1 = parser.exec()
+    // console.log(code1)
+    // const mapping = new OvsMappingParser()
+    // mapping.openMappingMode(curCst)
+    // code1 = mapping.exec(curCst)
+    // console.log(code1)
     return `
     import OvsAPI from "@/ovs/OvsAPI.ts";\n
     ${code1}
