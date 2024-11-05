@@ -66,6 +66,8 @@ const legend: SemanticTokensLegend = {
 }
 
 
+
+
 connection.languages.semanticTokens.on(params => {
   const document = documents.get(params.textDocument.uri)
   if (!document) return { data: [] }

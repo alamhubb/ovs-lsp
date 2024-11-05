@@ -6,7 +6,6 @@ export interface OvsRenderDomViewDeclaration {
     id: Identifier
     children: OvsRenderDomViewDeclaration[];
     arguments: Expression [  ];
-    init?: Expression | null | undefined;
 }
 
 export interface OvsLexicalBinding {

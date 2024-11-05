@@ -28,7 +28,7 @@ export function vitePluginOvsTransform(code) {
 
     let code1 = null
     parser.Program().match((curCst: SubhutiCst): SubhutiLChaining => {
-        JsonUtil.log(traverseClearTokens(curCst))
+        JsonUtil.log(curCst)
         console.log(2313123)
         const ast = OvsToAstUtil.createProgramAst(curCst)
         JsonUtil.log(ast)

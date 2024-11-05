@@ -34,14 +34,14 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclaration.name);
         const ast: OvsRenderDomViewDeclaration = {
             type: astName as any,
-            id: cst.children[0] as any,
+            id: this.createIdentifierAst(cst.children[0]) as any,
             children: cst.children[2].children.filter(item => item.name === OvsParser.prototype.OvsRenderDomViewDeclarator.name).map(item => this.createOvsRenderDomViewDeclaratorAst(item)) as any[],
             // children: this.createAssignmentExpressionAst(cst.children[2])
         } as any
         return ast
     }
 
-    createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): Expression {
+    createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): OvsLexicalBinding | Expression {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclarator.name);
         const firstChild = cst.children[0]
         console.log('chufale 2222')
@@ -49,7 +49,7 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
         if (firstChild.name === OvsParser.prototype.OvsLexicalBinding.name) {
             console.log(firstChild.children[1].children[1])
             const ast: OvsLexicalBinding = {
-                type: astName as any,
+                type: OvsParser.prototype.OvsLexicalBinding as any,
                 id: this.createIdentifierAst(firstChild.children[0].children[0]) as any,
                 init: this.createAssignmentExpressionAst(firstChild.children[1].children[1]) as any,
             }

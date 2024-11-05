@@ -11,8 +11,8 @@ import JsonUtil from "../../../../subhuti/src/utils/JsonUtil.ts";
 @Subhuti
 export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
     @SubhutiRule
-    ovsRenderDomClassDeclaration(): SubhutiLChaining {
-        this.consume(es6TokensObj.IdentifierName)
+    ovsRenderDomClassDeclaration() {
+        this.tokenConsumer.IdentifierName()
         this.Option(() => {
             this.FunctionFormalParameters()
         })
@@ -61,13 +61,12 @@ export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
         this.Option(() => {
             this.Arguments()
         })
-        this.consume(es6TokensObj.LBrace)
+        this.tokenConsumer.LBrace()
         //这里要改一下，支持三种，一种是嵌套的，一种是元素，一种是命名=的
         this.Option(() => {
             this.OvsChildList()
         })
-        this.consume(es6TokensObj.RBrace)
-
+        this.tokenConsumer.RBrace()
         const curCst = this.getCurCst()
         return this.getCurSubhutiChaine(curCst)
     }
