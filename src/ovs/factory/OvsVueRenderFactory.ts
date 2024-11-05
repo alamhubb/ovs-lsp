@@ -24,7 +24,7 @@ export default class OvsVueRenderFactory {
     if (!Identifier) {
       throw Error('Identifier syntax error')
     }
-    const IdentifierName = Identifier.children?.find(item => item.name === ovsTokenName.IdentifierName)
+    const IdentifierName = Identifier.children?.find(item => item.name === ovsTokenName.Identifier)
     if (!IdentifierName) {
       throw Error('IdentifierName syntax error')
     }
@@ -78,7 +78,7 @@ export default class OvsVueRenderFactory {
 
 
     const componentIdentifier = OvsRenderDomViewDeclaration.children?.find(item => item.name === OvsParser.prototype.Identifier.name)
-    const componentIdentifierName = componentIdentifier.children?.find(item => item.name === ovsTokenName.IdentifierName)
+    const componentIdentifierName = componentIdentifier.children?.find(item => item.name === ovsTokenName.Identifier)
     let component
     if (htmlTag[componentIdentifierName.value]) {
       component = this.createStringCst(componentIdentifierName.value)
@@ -165,7 +165,7 @@ export default class OvsVueRenderFactory {
 
   static createIdentifierNameCst(IdentifierName: string) {
     const cst = new SubhutiCst()
-    cst.name = ovsTokenName.IdentifierName
+    cst.name = ovsTokenName.Identifier
     cst.value = IdentifierName
     return cst
   }

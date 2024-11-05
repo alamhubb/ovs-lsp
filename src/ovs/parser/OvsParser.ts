@@ -11,7 +11,7 @@ import JsonUtil from "../../../../subhuti/src/utils/JsonUtil.ts";
 export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
     @SubhutiRule
     ovsRenderDomClassDeclaration() {
-        this.tokenConsumer.IdentifierName()
+        this.tokenConsumer.Identifier()
         this.Option(() => {
             this.FunctionFormalParameters()
         })
@@ -55,7 +55,7 @@ export default class OvsParser extends Es6Parser<OvsTokenConsumer> {
     @SubhutiRule
     OvsRenderDomViewDeclaration() {
         this.Option(() => {
-            this.Identifier()
+            this.tokenConsumer.Identifier()
         })
         this.Option(() => {
             this.Arguments()

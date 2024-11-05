@@ -8,7 +8,7 @@ import {
     VariableDeclarator
 } from "estree";
 import Es6Parser from "subhuti/src/syntax/es6/Es6Parser.ts";
-import {es6TokenMapObj, es6Tokens, es6TokensObj} from "subhuti/src/syntax/es6/Es6Tokens.ts";
+import Es6TokenConsumer, {es6TokenMapObj, es6Tokens, es6TokensObj} from "subhuti/src/syntax/es6/Es6Tokens.ts";
 import {SubhutiCreateToken} from "subhuti/src/struct/SubhutiCreateToken.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "./ovs/interface/OvsInterface";
@@ -37,7 +37,7 @@ class SemanticToken {
 }
 
 const tokenTypesObj = {
-    identifier: "Identifier",
+    identifier: "IdentifierName",
 
     keyword: "keyword",
     string: "string",
@@ -66,7 +66,9 @@ export class TokenProvider {
     private static getTokenTypeIndex(tokenValue: string) {
         const token: SubhutiCreateToken = es6TokenMapObj[tokenValue]
         if (!token) {
-            throw new Error('token not exist')
+            console.log(tokenValue)
+            console.log(es6TokenMapObj[tokenValue])
+            throw new Error('token not exist:' + tokenValue)
         }
         if (token.isKeyword) {
             return tokenTypeIndexObj[tokenTypesObj.keyword]
@@ -131,19 +133,19 @@ export class TokenProvider {
                 this.visitVariableDeclaration(node)
                 break;
             case OvsParser.prototype.VariableDeclarator.name:
-                this.visitVariableDeclarator(node.id);
+                this.visitVariableDeclarator(node);
                 break;
-            case OvsParser.prototype.Identifier.name:
-                this.visitIdentifier(node.id);
+            case Es6TokenConsumer.prototype.Identifier.name:
+                this.visitIdentifier(node);
                 break;
             case OvsParser.prototype.OvsRenderDomViewDeclaration.name:
-                this.visitOvsRenderDomViewDeclaration(node.id);
+                this.visitOvsRenderDomViewDeclaration(node);
                 break;
             case OvsParser.prototype.OvsLexicalBinding.name:
-                this.visitOvsLexicalBinding(node.id);
+                this.visitOvsLexicalBinding(node);
                 break;
             case OvsParser.prototype.Literal.name:
-                this.visitLiteral(node.id);
+                this.visitLiteral(node);
                 break;
         }
     }
