@@ -19,8 +19,6 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
 
     createExpressionAst(cst: SubhutiCst): Expression {
         const astName = cst.name
-        console.trace('jinrule xreadfs0' + cst)
-        console.log(cst)
         let left
         if (astName === OvsParser.prototype.OvsRenderDomViewDeclaration.name) {
             left = this.createOvsRenderDomViewDeclarationAst(cst)
@@ -44,10 +42,7 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
     createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): OvsLexicalBinding | Expression {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclarator.name);
         const firstChild = cst.children[0]
-        console.log('chufale 2222')
-        console.log(firstChild)
         if (firstChild.name === OvsParser.prototype.OvsLexicalBinding.name) {
-            console.log(firstChild.children[1].children[1])
             const ast: OvsLexicalBinding = {
                 type: OvsParser.prototype.OvsLexicalBinding as any,
                 id: this.createIdentifierAst(firstChild.children[0].children[0]) as any,

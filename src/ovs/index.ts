@@ -30,7 +30,7 @@ export function vitePluginOvsTransform(code) {
     let curCst = parser.Program()
     curCst = traverseClearTokens(curCst)
     JsonUtil.log(curCst)
-    console.log(2313123)
+    console.log(111231)
     const ast = OvsToAstUtil.createProgramAst(curCst)
     JsonUtil.log(ast)
     // code1 = parser.exec()
@@ -47,7 +47,7 @@ export function vitePluginOvsTransform(code) {
 
 const code = `let a = div{
             header = div{123},
-            456
+            true
         }
 `
 const res = vitePluginOvsTransform(code)
