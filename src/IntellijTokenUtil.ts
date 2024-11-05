@@ -37,7 +37,7 @@ class SemanticToken {
 }
 
 const tokenTypesObj = {
-    identifier: "IdentifierName",
+    identifier: "Identifier",
 
     keyword: "keyword",
     string: "string",
@@ -86,6 +86,8 @@ export class TokenProvider {
 
     private static createSemanticToken(loc: SourceLocation, tokenType: string): SemanticToken {
         const tokenTypeIndex = this.getTokenTypeIndex(tokenType)
+        console.log(tokenType)
+        console.log(tokenTypeIndex)
         const token = new SemanticToken(loc, tokenTypeIndex)
         return token
     }
