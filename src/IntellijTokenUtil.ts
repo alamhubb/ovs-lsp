@@ -91,7 +91,15 @@ export class TokenProvider {
     }
 
     private static visitVariableDeclaration(node: VariableDeclaration) {
-        this.addToken(this.createSemanticTokenByTokenName(node.loc, node.kind))
+        const loc: SourceLocation = {
+            start: node.loc.start,
+            end: {
+                line: node.loc.start.line,
+                column: node.loc.start.column + node.kind.length,
+            }
+        }
+
+        this.addToken(this.createSemanticTokenByTokenName(loc, node.kind))
         node.declarations.forEach(item => this.visitNode(item))
     }
 
