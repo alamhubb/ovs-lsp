@@ -71,8 +71,6 @@ export class TokenProvider {
     static getTokenType(tokenName: string) {
         const token: SubhutiCreateToken = es6TokenMapObj[tokenName]
         if (!token) {
-            console.log(tokenName)
-            console.log(es6TokenMapObj[tokenName])
             throw new Error('token not exist:' + tokenName)
         }
         if (token.isKeyword) {
@@ -83,7 +81,7 @@ export class TokenProvider {
 
     private static createSemanticTokenByTokenName(loc: SourceLocation, tokenName: string): SemanticToken {
         const tokenType = this.getTokenType(tokenName)
-        return this.createSemanticToken(loc, tokenName)
+        return this.createSemanticToken(loc, tokenType)
     }
 
     private static createSemanticToken(loc: SourceLocation, tokenType: string): SemanticToken {
