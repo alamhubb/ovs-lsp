@@ -36,7 +36,7 @@ class SemanticToken {
     }
 }
 
-const tokenTypesObj = {
+export const tokenTypesObj = {
     identifier: "Identifier",
 
     keyword: "keyword",
@@ -68,6 +68,7 @@ export class TokenProvider {
         return tokenTypeIndexObj[tokenValue]
     }
 
+    //判断是不是keyword
     static getTokenType(tokenName: string) {
         const token: SubhutiCreateToken = es6TokenMapObj[tokenName]
         if (!token) {

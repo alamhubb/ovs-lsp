@@ -32,11 +32,15 @@ export function vitePluginOvsTransform(code) {
     curCst = traverseClearTokens(curCst)
     // JsonUtil.log(curCst)
     console.log(111231)
+    //cst转 estree ast
     const ast = OvsToAstUtil.createProgramAst(curCst)
     JsonUtil.log(ast)
     console.log(456465)
+    //ast to client ast
     TokenProvider.visitNode(ast)
     JsonUtil.log(TokenProvider.tokens)
+
+
     // code1 = parser.exec()
     // console.log(code1)
     // const mapping = new OvsMappingParser()
