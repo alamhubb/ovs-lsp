@@ -64,17 +64,26 @@ export class TokenProvider {
 
 
     private static getTokenTypeIndex(tokenValue: string) {
-        const token: SubhutiCreateToken = es6TokenMapObj[tokenValue]
-        if (!token) {
-            console.log(tokenValue)
-            console.log(es6TokenMapObj[tokenValue])
-            throw new Error('token not exist:' + tokenValue)
-        }
-        if (token.isKeyword) {
-            return tokenTypeIndexObj[tokenTypesObj.keyword]
-        }
         //tokenType, cst.name
         return tokenTypeIndexObj[tokenValue]
+    }
+
+    static getTokenType(tokenName: string) {
+        const token: SubhutiCreateToken = es6TokenMapObj[tokenName]
+        if (!token) {
+            console.log(tokenName)
+            console.log(es6TokenMapObj[tokenName])
+            throw new Error('token not exist:' + tokenName)
+        }
+        if (token.isKeyword) {
+            return tokenTypesObj.keyword
+        }
+        return token.name
+    }
+
+    private static createSemanticTokenByTokenName(loc: SourceLocation, tokenName: string): SemanticToken {
+        const tokenType = this.getTokenType(tokenName)
+        return this.createSemanticToken(loc, tokenName)
     }
 
     private static createSemanticToken(loc: SourceLocation, tokenType: string): SemanticToken {
@@ -84,8 +93,7 @@ export class TokenProvider {
     }
 
     private static visitVariableDeclaration(node: VariableDeclaration) {
-        console.log(node)
-        this.addToken(this.createSemanticToken(node.loc, node.kind))
+        this.addToken(this.createSemanticTokenByTokenName(node.loc, node.kind))
         node.declarations.forEach(item => this.visitNode(item))
     }
 
