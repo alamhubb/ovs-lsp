@@ -23,7 +23,7 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
         console.log(cst)
         let left
         if (astName === OvsParser.prototype.OvsRenderDomViewDeclaration.name) {
-            left = OvsToAstUtil.createOvsRenderDomViewDeclarationAst(cst)
+            left = this.createOvsRenderDomViewDeclarationAst(cst)
         } else {
             return super.createExpressionAst(cst)
         }
@@ -35,8 +35,8 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
         const ast: OvsRenderDomViewDeclaration = {
             type: astName as any,
             id: cst.children[0] as any,
-            children: cst.children[2].children.filter(item => item.name === OvsParser.prototype.OvsRenderDomViewDeclarator.name).map(item => OvsToAstUtil.createOvsRenderDomViewDeclaratorAst(item)) as any[],
-            // children: OvsToAstUtil.createAssignmentExpressionAst(cst.children[2])
+            children: cst.children[2].children.filter(item => item.name === OvsParser.prototype.OvsRenderDomViewDeclarator.name).map(item => this.createOvsRenderDomViewDeclaratorAst(item)) as any[],
+            // children: this.createAssignmentExpressionAst(cst.children[2])
         } as any
         return ast
     }
@@ -47,18 +47,19 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
 
     createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): Expression {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclarator.name);
-
         const firstChild = cst.children[0]
+        console.log('chufale 2222')
+        console.log(firstChild)
         if (firstChild.name === OvsParser.prototype.OvsLexicalBinding.name) {
-            console.log(cst)
+            console.log(firstChild.children[1].children[1])
             const ast: OvsLexicalBinding = {
                 type: astName as any,
-                id: SubhutiToAstUtil.createIdentifierAst(firstChild.children[0].children[0]) as any,
-                init: SubhutiToAstUtil.createAssignmentExpressionAst(firstChild.children[1].children[1]) as any,
+                id: this.createIdentifierAst(firstChild.children[0].children[0]) as any,
+                init: this.createAssignmentExpressionAst(firstChild.children[1].children[1]) as any,
             }
             return ast as any
         } else {
-            return OvsToAstUtil.createExpressionAst(firstChild)
+            return this.createAssignmentExpressionAst(firstChild)
         }
     }
 }
