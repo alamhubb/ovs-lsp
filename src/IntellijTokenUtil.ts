@@ -27,12 +27,12 @@ class SemanticToken {
     tokenModifiers: number;    // 文本内容
 
 
-    constructor(line: number, char: number, length: number, tokenType: number, tokenModifiers: number) {
-        this.line = line;
-        this.char = char;
-        this.length = length;
+    constructor(loc: SourceLocation, tokenType: number) {
+        this.line = loc.start.line;
+        this.char = loc.start.column;
+        this.length = loc.end.column - loc.start.column;
         this.tokenType = tokenType;
-        this.tokenModifiers = tokenModifiers;
+        this.tokenModifiers = 0;
     }
 }
 
@@ -86,7 +86,7 @@ export class TokenProvider {
 
     private static createSemanticToken(loc: SourceLocation, tokenType: string): SemanticToken {
         const tokenTypeIndex = this.getTokenTypeIndex(tokenType)
-        const token = new SemanticToken(loc.start.line, loc.start.column, loc.end.column - loc.start.column, tokenTypeIndex, 0)
+        const token = new SemanticToken(loc, tokenTypeIndex)
         return token
     }
 
@@ -104,20 +104,24 @@ export class TokenProvider {
     }
 
     private static visitVariableDeclarator(node: VariableDeclarator) {
+        console.log('visitVariableDeclarator')
         this.visitNode(node.id)
         this.visitNode(node.init)
     }
 
     private static visitIdentifier(node: Identifier) {
+        console.log('identiti')
         this.addToken(this.createSemanticToken(node.loc, node.type))
     }
 
     private static visitOvsRenderDomViewDeclaration(node: OvsRenderDomViewDeclaration) {
+        console.log('visitOvsRenderDomViewDeclaration')
         this.visitNode(node.id)
         node.children.forEach(item => this.visitNode(item))
     }
 
     private static visitOvsLexicalBinding(node: OvsLexicalBinding) {
+        console.log('visitOvsLexicalBinding')
         this.visitNode(node.id)
         this.visitNode(node.init)
     }
@@ -163,6 +167,7 @@ export class TokenProvider {
     }
 
     private static addToken(token: SemanticToken) {
+        console.log('jinru')
         this.tokens.push(token)
     }
 }

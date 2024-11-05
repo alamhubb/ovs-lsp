@@ -44,7 +44,7 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
         const firstChild = cst.children[0]
         if (firstChild.name === OvsParser.prototype.OvsLexicalBinding.name) {
             const ast: OvsLexicalBinding = {
-                type: OvsParser.prototype.OvsLexicalBinding as any,
+                type: OvsParser.prototype.OvsLexicalBinding.name as any,
                 id: this.createIdentifierAst(firstChild.children[0].children[0]) as any,
                 init: this.createAssignmentExpressionAst(firstChild.children[1].children[1]) as any,
             }
