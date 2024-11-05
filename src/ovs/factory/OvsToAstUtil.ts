@@ -36,9 +36,13 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
             type: astName as any,
             id: cst.children[0] as any,
             children: cst.children[2].children.filter(item => item.name === OvsParser.prototype.OvsRenderDomViewDeclarator.name).map(item => OvsToAstUtil.createOvsRenderDomViewDeclaratorAst(item)) as any[],
+            // children: OvsToAstUtil.createAssignmentExpressionAst(cst.children[2])
         } as any
         return ast
     }
+
+
+
 
 
     createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): Expression {
