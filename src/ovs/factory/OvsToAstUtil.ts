@@ -41,10 +41,6 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
         return ast
     }
 
-
-
-
-
     createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): Expression {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclarator.name);
         const firstChild = cst.children[0]
