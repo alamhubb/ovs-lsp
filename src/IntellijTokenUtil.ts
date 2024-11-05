@@ -37,85 +37,92 @@ class SemanticToken {
 }
 
 const tokenTypesObj = {
-    Keyword: "Keyword",
-    Identifier: "Identifier",
+    identifier: "Identifier",
+
+    keyword: "keyword",
+    string: "string",
+    number: "number",
 }
 
 // 定义语义标记类型和修饰符
-const tokenTypes = Object.keys(tokenTypesObj)
+const tokenTypes = Object.values(tokenTypesObj)
 
 const tokenTypeIndexObj = Object.fromEntries(tokenTypes.map((token, index) => [token, index]))
 
-class TokenProvider {
-    private tokens: SemanticToken[] = [];
+export class TokenProvider {
+    static tokens: SemanticToken[] = [];
 
-    getTokens(ast: any): SemanticToken[] {
+    private static getTokens(ast: any): SemanticToken[] {
         this.tokens = [];
         this.visitNode(ast);
         return this.tokens;
     }
 
-    visitProgram(node: Program) {
+    private static visitProgram(node: Program) {
         node.body.forEach(item => this.visitNode(item))
     }
 
 
-    getTokenTypeIndex(tokenValue: string) {
+    private static getTokenTypeIndex(tokenValue: string) {
         const token: SubhutiCreateToken = es6TokenMapObj[tokenValue]
         if (!token) {
             throw new Error('token not exist')
         }
         if (token.isKeyword) {
-            return tokenTypeIndexObj[tokenTypesObj.Keyword]
+            return tokenTypeIndexObj[tokenTypesObj.keyword]
         }
-        return
+        //tokenType, cst.name
+        return tokenTypeIndexObj[tokenValue]
     }
 
-    createSemanticToken(loc: SourceLocation, tokenType: string): SemanticToken {
+    private static createSemanticToken(loc: SourceLocation, tokenType: string): SemanticToken {
         const tokenTypeIndex = this.getTokenTypeIndex(tokenType)
         const token = new SemanticToken(loc.start.line, loc.start.column, loc.end.column - loc.start.column, tokenTypeIndex, 0)
         return token
     }
 
-    visitVariableDeclaration(node: VariableDeclaration) {
+    private static visitVariableDeclaration(node: VariableDeclaration) {
+        console.log(node)
         this.addToken(this.createSemanticToken(node.loc, node.kind))
         node.declarations.forEach(item => this.visitNode(item))
     }
 
-    visitVariableDeclarator(node: VariableDeclarator) {
+    private static visitVariableDeclarator(node: VariableDeclarator) {
+        console.log(node)
+        console.log(node.id)
         this.visitNode(node.id)
         this.visitNode(node.init)
     }
 
-    visitIdentifier(node: Identifier) {
+    private static visitIdentifier(node: Identifier) {
         this.addToken(this.createSemanticToken(node.loc, node.type))
     }
 
-    visitOvsRenderDomViewDeclaration(node: OvsRenderDomViewDeclaration) {
+    private static visitOvsRenderDomViewDeclaration(node: OvsRenderDomViewDeclaration) {
         this.visitNode(node.id)
         node.children.forEach(item => this.visitNode(item))
     }
 
-    visitOvsLexicalBinding(node: OvsLexicalBinding) {
+    private static visitOvsLexicalBinding(node: OvsLexicalBinding) {
         this.visitNode(node.id)
         this.visitNode(node.init)
     }
 
-    visitLiteral(node: Literal) {
+    private static visitLiteral(node: Literal) {
         const nodeValueType = typeof node.value
         let tokenType: string
         if (nodeValueType === 'boolean') {
-            tokenType = String(node.value)
+            tokenType = tokenTypesObj.keyword
         } else if (nodeValueType === 'string') {
-            tokenType = nodeValueType
+            tokenType = tokenTypesObj.string
         } else {
-            tokenType = 'number'
+            tokenType = tokenTypesObj.number
         }
         this.addToken(this.createSemanticToken(node.loc, tokenType))
     }
 
 
-    private visitNode(node: any) {
+    static visitNode(node: any) {
         switch (node.type) {
             case OvsParser.prototype.Program.name:
                 this.visitProgram(node)
@@ -141,7 +148,7 @@ class TokenProvider {
         }
     }
 
-    private addToken(token: SemanticToken) {
+    private static addToken(token: SemanticToken) {
         this.tokens.push(token)
     }
 }

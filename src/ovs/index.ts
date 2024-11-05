@@ -8,6 +8,7 @@ import OvsParser from "./parser/OvsParser.ts";
 import SubhutiLChaining from "subhuti/src/struct/SubhutiLChaining.ts";
 import SubhutiToAstUtil from "subhuti/src/parser/SubhutiToAstUtil.ts";
 import {OvsToAstUtil} from "./factory/OvsToAstUtil.ts";
+import {TokenProvider} from "../IntellijTokenUtil.ts";
 
 function traverseClearTokens(currentNode: SubhutiCst) {
     if (!currentNode || !currentNode.children || !currentNode.children.length)
@@ -32,7 +33,8 @@ export function vitePluginOvsTransform(code) {
     JsonUtil.log(curCst)
     console.log(111231)
     const ast = OvsToAstUtil.createProgramAst(curCst)
-    JsonUtil.log(ast)
+    TokenProvider.visitNode(ast)
+    JsonUtil.log(TokenProvider.tokens)
     // code1 = parser.exec()
     // console.log(code1)
     // const mapping = new OvsMappingParser()
