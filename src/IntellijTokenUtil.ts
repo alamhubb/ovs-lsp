@@ -1,7 +1,7 @@
 import {
     Expression,
     Identifier,
-    Literal,
+    Literal, Pattern,
     Program,
     SourceLocation,
     VariableDeclaration,
@@ -38,6 +38,9 @@ class SemanticToken {
 
 export const tokenTypesObj = {
     identifier: "Identifier",
+    LOCAL_VARIABLE: "LOCAL_VARIABLE",
+    FUNCTION_DECLARATION: "FUNCTION_DECLARATION",
+    FUNCTION_CALL: "FUNCTION_CALL",
 
     keyword: "keyword",
     string: "string",
@@ -107,25 +110,24 @@ export class TokenProvider {
     }
 
     private static visitVariableDeclarator(node: VariableDeclarator) {
-        console.log('visitVariableDeclarator')
-        this.visitNode(node.id)
+        this.visitIdentifier(node.id, tokenTypesObj.LOCAL_VARIABLE);
         this.visitNode(node.init)
     }
 
-    private static visitIdentifier(node: Identifier) {
+    private static visitIdentifier(node: Pattern, tokenType: string) {
         console.log('identiti')
-        this.addToken(this.createSemanticToken(node.loc, node.type))
+        this.addToken(this.createSemanticToken(node.loc, tokenType))
     }
 
     private static visitOvsRenderDomViewDeclaration(node: OvsRenderDomViewDeclaration) {
         console.log('visitOvsRenderDomViewDeclaration')
-        this.visitNode(node.id)
+        this.visitIdentifier(node.id, tokenTypesObj.FUNCTION_CALL);
         node.children.forEach(item => this.visitNode(item))
     }
 
     private static visitOvsLexicalBinding(node: OvsLexicalBinding) {
         console.log('visitOvsLexicalBinding')
-        this.visitNode(node.id)
+        this.visitIdentifier(node.id, tokenTypesObj.LOCAL_VARIABLE);
         this.visitNode(node.init)
     }
 
@@ -153,9 +155,6 @@ export class TokenProvider {
                 break;
             case OvsParser.prototype.VariableDeclarator.name:
                 this.visitVariableDeclarator(node);
-                break;
-            case Es6TokenConsumer.prototype.Identifier.name:
-                this.visitIdentifier(node);
                 break;
             case OvsParser.prototype.OvsRenderDomViewDeclaration.name:
                 this.visitOvsRenderDomViewDeclaration(node);
