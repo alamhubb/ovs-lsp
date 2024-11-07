@@ -1,8 +1,20 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import {fileURLToPath} from "url";
+import OvsToAstHandler from "../ovs/factory/OvsToAstUtil.ts";
 
 export class FileUtil {
+    // 读取文件内容
+    static readFileContent(filePath: string): string {
+        try {
+            return fs.readFileSync(filePath, 'utf8');
+        } catch (error) {
+            console.error(`Error reading file ${filePath}:`, error);
+            return '';
+        }
+    }
+
+
     static getAllFiles(dirPathUrl: string, extensions: string[] = ['.js', '.ts', '.ovs']): string[] {
         let results: string[] = []
         try {
@@ -36,4 +48,9 @@ export class FileUtil {
 
 const a = FileUtil.getAllFiles('file:///c%3A/Users/qinkaiyuan/IdeaProjects/testovsplg1')
 
-console.log(a)
+for (const file of a) {
+    console.log(file)
+    const fileCode = FileUtil.readFileContent(file)
+    console.log(fileCode)
+    const ast = OvsToAstHandler.toAst(fileCode)
+}

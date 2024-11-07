@@ -13,9 +13,25 @@ import {checkCstName, SubhutiToAstUtil} from "subhuti/src/parser/SubhutiToAstUti
 import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "../interface/OvsInterface";
 import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
 import SubhutiToAstHandler from "subhuti/src/parser/SubhutiToAstUtil.ts";
+import SubhutiLexer from "subhuti/src/parser/SubhutiLexer.ts";
+import {es6Tokens} from "subhuti/src/syntax/es6/Es6Tokens.ts";
+import JsonUtil from "subhuti/src/utils/JsonUtil.ts";
+import {TokenProvider} from "../../IntellijTokenUtil.ts";
 
 
 export default class OvsToAstHandler extends SubhutiToAstHandler {
+    static toAst(code: string) {
+        const lexer = new SubhutiLexer(es6Tokens)
+        const tokens = lexer.lexer(code)
+        const parser = new OvsParser(tokens)
+
+        let curCst = parser.Program()
+
+        const ast = OvsToAstUtil.createProgramAst(curCst)
+
+        JsonUtil.log(ast)
+        return ast
+    }
 
     createExpressionAst(cst: SubhutiCst): Expression {
         const astName = cst.name
