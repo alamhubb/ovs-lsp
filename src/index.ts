@@ -111,7 +111,11 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
                 full: true,
                 range: true
             },
-            hoverProvider: true
+            hoverProvider: true,
+            completionProvider: {
+                resolveProvider: true,
+                triggerCharacters: ['.']
+            }
         }
     }
 })
