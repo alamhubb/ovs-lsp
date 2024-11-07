@@ -76,16 +76,16 @@ export class TokenProvider {
     }
 
     private static visitExportDeclaration(node: ExportDeclaration) {
-        this.addToken(this.createSemanticTokenByTokenName(node.export))
+        this.addToken(this.createSemanticToken(node.export))
         if (node.default) {
-            this.addToken(this.createSemanticTokenByTokenName(node.default))
+            this.addToken(this.createSemanticToken(node.default))
         }
         this.visitNode(node.declaration)
     }
 
     private static visitClassDeclaration(node: ClassDeclaration) {
-        this.addToken(this.createSemanticTokenByTokenName(node.class))
-        this.visitIdentifier(node.id, tokenTypesObj.CLASS_NAME)
+        this.addToken(this.createSemanticToken(node.class))
+        this.visitIdentifier(node.id)
         this.visitNode(node.body)
     }
 
@@ -97,15 +97,15 @@ export class TokenProvider {
 
     private static visitMethodDefinition(node: MethodDefinition) {
         if (node.static) {
-            this.addToken(this.createSemanticTokenByTokenName(node.static))
+            this.addToken(this.createSemanticToken(node.static))
         }
-        this.visitIdentifier(node.key as any, tokenTypesObj.CLASS_NAME)
+        this.visitNode(node.key)
         this.visitNode(node.value)
     }
 
     private static visitFunctionExpression(node: FunctionExpression) {
         for (const param of node.params) {
-            this.visitIdentifier(param, tokenTypesObj.PARAMETER)
+            this.visitIdentifier(param)
         }
         this.visitNode(node.body)
     }
@@ -149,38 +149,36 @@ export class TokenProvider {
         return token.name
     }
 
-    private static createSemanticTokenByTokenName(token: SubhutiTokenAst): SemanticToken {
-        const tokenType = this.getTokenType(token.type)
-        return this.createSemanticToken(token.loc, tokenType)
-    }
-
-    private static createSemanticToken(loc: SourceLocation, tokenType: string): SemanticToken {
-        const tokenTypeIndex = this.getTokenTypeIndex(tokenType)
-        const token = new SemanticToken(loc, tokenTypeIndex)
-        return token
-    }
 
     private static visitVariableDeclaration(node: VariableDeclaration) {
-        this.addToken(this.createSemanticTokenByTokenName(node.kind))
+        this.addToken(this.createSemanticToken(node.kind))
         node.declarations.forEach(item => this.visitNode(item))
     }
 
     private static visitVariableDeclarator(node: VariableDeclarator) {
-        this.visitIdentifier(node.id, tokenTypesObj.LOCAL_VARIABLE);
+        this.visitIdentifier(node.id);
         this.visitNode(node.init)
     }
 
-    private static visitIdentifier(node: Pattern, tokenType: string) {
-        this.addToken(this.createSemanticToken(node.loc, tokenType))
+    private static visitIdentifier(node: Pattern) {
+        this.addToken(this.createSemanticToken(node))
     }
 
+
+    private static createSemanticToken(token: SubhutiTokenAst): SemanticToken {
+        let tokenType = es6TokenMapObj[token.type]?.isKeyword ? tokenTypesObj.keyword : token.type
+        const tokenTypeIndex = tokenTypeIndexObj[tokenType]
+        return new SemanticToken(token.loc, tokenTypeIndex)
+    }
+
+
     private static visitOvsRenderDomViewDeclaration(node: OvsRenderDomViewDeclaration) {
-        this.visitIdentifier(node.id, tokenTypesObj.FUNCTION_CALL);
+        this.visitIdentifier(node.id);
         node.children.forEach(item => this.visitNode(item))
     }
 
     private static visitOvsLexicalBinding(node: OvsLexicalBinding) {
-        this.visitIdentifier(node.id, tokenTypesObj.LOCAL_VARIABLE);
+        this.visitIdentifier(node.id);
         this.visitNode(node.init)
     }
 
@@ -194,12 +192,13 @@ export class TokenProvider {
         } else {
             tokenType = tokenTypesObj.number
         }
-        this.addToken(this.createSemanticToken(node.loc, tokenType))
+        this.addToken(this.createSemanticToken())
     }
 
 
     static visitNode(node: any) {
         console.log(node.type)
+        console.log(node)
         switch (node.type) {
             case OvsParser.prototype.Program.name:
                 this.visitProgram(node)
@@ -242,6 +241,9 @@ export class TokenProvider {
                 break;
             case OvsParser.prototype.OvsLexicalBinding.name:
                 this.visitOvsLexicalBinding(node);
+                break;
+            case Es6TokenConsumer.prototype.Identifier.name:
+                this.visitIdentifier(node);
                 break;
             case OvsParser.prototype.Literal.name:
                 this.visitLiteral(node);
