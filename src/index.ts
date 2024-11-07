@@ -39,18 +39,9 @@ const connection = createConnection(ProposedFeatures.all)
 const documents = new TextDocuments(TextDocument)
 
 
-// 将 import.meta.url 转换为本地文件路径
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
 // 定义日志文件路径
-const logFilePath = path.join(__dirname, 'temp2222.txt')
 
 console.log(logFilePath) // 输出日志文件的绝对路径
-
-// 初始化日志文件
-fs.writeFileSync(logFilePath, '=== LSP Server Started ===\n')
-
 // 定义语义标记类型和修饰符
 // const tokenTypes = tokenTypesObj.
 const tokenTypes = Object.values(tokenTypesObj).map(item => item.toUpperCase())
@@ -63,61 +54,125 @@ const legend: SemanticTokensLegend = {
 }
 
 connection.languages.semanticTokens.on(params => {
-    const document = documents.get(params.textDocument.uri)
+    const document = documents.get(params.textDocument.uri);
+    if (!document) {
+        return null; // 如果没有文档，返回 null
+    }
 
     const content = document.getText();
-
-    // 1. 验证内容
+    // 检查内容是否为空或只包含空白字符
     if (!content || content.trim().length === 0) {
+        return {
+            data: [] // 返回空的 tokens 数组
+        };
+    }
+
+    try {
+
+        const builder = new SemanticTokensBuilder()
+        const text = document.getText()
+
+        const lexer = new SubhutiLexer(es6Tokens)
+        let tokens = lexer.lexer(text)
+        const parser = new OvsParser(tokens)
+        let curCst = parser.Program()
+        const ast = OvsToAstUtil.createProgramAst(curCst)
+        TokenProvider.visitNode(ast)
+        JsonUtil.log(TokenProvider.tokens)
+        const tokens1 = TokenProvider.tokens
+        LogUtil.log('Sending tokensRecord', JsonUtil.toJson(tokens))
+
+        for (const token of tokens1) {
+            builder.push(
+                token.line,
+                token.char,
+                token.length,
+                token.tokenType,
+                token.tokenModifiers,
+            )
+
+        }
+        const build =  builder.build()
+        LogUtil.log(build)
+        return build
+    } catch (error) {
+        LogUtil.log('Error processing semantic tokens', error);
+        return {
+            data: [] // 发生错误时返回空数组
+        };
+    }
+});
+
+// 修改文档变化处理
+documents.onDidChangeContent(change => {
+    const document = change.document;
+    if (!document) return;
+
+    const content = document.getText();
+    // 检查内容是否有效
+    if (!content || content.trim().length === 0) {
+        LogUtil.log('Skipping empty document change');
         return;
     }
 
+    LogUtil.log('Document changed', {
+        uri: document.uri,
+        version: document.version,
+        contentLength: content.length
+    });
+});
 
-    const builder = new SemanticTokensBuilder()
-    const text = document.getText()
-
-    const lexer = new SubhutiLexer(es6Tokens)
-    let tokens = lexer.lexer(text)
-    const parser = new OvsParser(tokens)
-    let curCst = parser.Program()
-    const ast = OvsToAstUtil.createProgramAst(curCst)
-    TokenProvider.visitNode(ast)
-    JsonUtil.log(TokenProvider.tokens)
-    const tokens1 = TokenProvider.tokens
-    LogUtil.log('Sending tokensRecord', JsonUtil.toJson(tokens))
-
-    for (const token of tokens1) {
-        builder.push(
-            token.line,
-            token.char,
-            token.length,
-            token.tokenType,
-            token.tokenModifiers,
-        )
-
+// 添加内容验证工具
+class DocumentValidator {
+    static isValidContent(content: string | null | undefined): boolean {
+        if (!content) return false;
+        if (typeof content !== 'string') return false;
+        if (content.trim().length === 0) return false;
+        return true;
     }
-    const build =  builder.build()
-    LogUtil.log(build)
-    return build
-})
+}
 
-// 处理语义标记请求
-/*connection.onRequest(
-    'textDocument/semanticTokens/full',
-);*/
+// 修改文档打开处理
+documents.onDidOpen(event => {
+    const document = event.document;
+    if (!document) return;
 
-// 初始化处理
+    const content = document.getText();
+    if (!DocumentValidator.isValidContent(content)) {
+        LogUtil.log('Skipping empty document open');
+        return;
+    }
+
+    LogUtil.log('Document opened', {
+        uri: document.uri,
+        languageId: document.languageId,
+        contentLength: content.length
+    });
+});
+
+// 修改初始化处理
 connection.onInitialize((params: InitializeParams): InitializeResult => {
     LogUtil.log('Server initializing with capabilities', {
         capabilities: params.capabilities
-    })
+    });
 
-    LogUtil.log(params)
-    const files = FileUtil.getAllFiles(params.workspaceFolders[0].uri)
-    LogUtil.log(files)
+    // 确保工作区文件夹存在
+    if (params.workspaceFolders && params.workspaceFolders.length > 0) {
+        const files = FileUtil.getAllFiles(params.workspaceFolders[0].uri);
+        LogUtil.log('Workspace files:', files);
+    }
+
     return {
         capabilities: {
-            textDocumentSync: TextDocumentSyncKind.Incremental,
+            textDocumentSync: {
+                openClose: true,
+                change: TextDocumentSyncKind.Incremental,
+                willSave: false,
+                willSaveWaitUntil: false,
+                save: {
+                    includeText: false
+                }
+            },
             semanticTokensProvider: {
                 legend,
                 full: true,
