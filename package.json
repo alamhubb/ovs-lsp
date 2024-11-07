@@ -17,7 +17,6 @@
   "devDependencies": {
     "@types/node": "^22.8.6",
     "tsx": "^4.19.2",
-    "@types/estree": "^1.0.6",
     "vite": "^5.4.8"
   },
   "dependencies": {

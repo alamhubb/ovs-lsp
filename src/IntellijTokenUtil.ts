@@ -1,12 +1,11 @@
 import {
     BaseNode,
-    BlockStatement, CallExpression,
+    BlockStatement, CallExpression, ClassBody,
     ClassDeclaration,
     ExportDefaultDeclaration,
     Expression, ExpressionStatement, FunctionExpression,
     Identifier,
     Literal, MemberExpression, MethodDefinition, Pattern,
-    Program,
     SourceLocation,
     VariableDeclaration,
     VariableDeclarator
@@ -77,7 +76,15 @@ export class TokenProvider {
     }
 
     private static visitExportDefaultDeclaration(node: ExportDefaultDeclaration) {
-        this.addToken(this.createSemanticTokenByTokenName(node.loc, es6TokensObj.ExportTok.value))
+        this.addToken(
+            this.createSemanticTokenByTokenName({
+                start: node.loc.start,
+                end: {
+                    line: node.loc.start.line,
+                    column: node.loc.start.column + es6TokensObj.DefaultTok.value.length,
+                }
+            }, es6TokensObj.ExportTok.value)
+        )
         this.addToken(this.createSemanticTokenByTokenName(node.loc, es6TokensObj.DefaultTok.value))
         this.visitNode(node.declaration)
     }
@@ -86,6 +93,12 @@ export class TokenProvider {
         this.addToken(this.createSemanticTokenByTokenName(node.loc, es6TokensObj.ClassTok.value))
         this.visitIdentifier(node.id, tokenTypesObj.CLASS_NAME)
         this.visitNode(node.body)
+    }
+
+    private static visitClassBody(node: ClassBody) {
+        for (const bodyElement of node.body) {
+            this.visitNode(bodyElement)
+        }
     }
 
     private static visitMethodDefinition(node: MethodDefinition) {
@@ -210,6 +223,9 @@ export class TokenProvider {
                 break;
             case OvsParser.prototype.ClassDeclaration.name:
                 this.visitClassDeclaration(node)
+                break;
+            case OvsParser.prototype.ClassBody.name:
+                this.visitClassBody(node)
                 break;
             case OvsParser.prototype.MethodDefinition.name:
                 this.visitMethodDefinition(node)
