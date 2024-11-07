@@ -65,7 +65,9 @@ const legend: SemanticTokensLegend = {
     tokenTypes: tokenTypes,
     tokenModifiers: tokenModifiers
 }
-
+connection.onReferences(async (params: ReferenceParams): Promise<Location[]> => {
+    return await referenceProvider.findReferences(params);
+});
 
 connection.languages.semanticTokens.on(params => {
     const document = documents.get(params.textDocument.uri)
