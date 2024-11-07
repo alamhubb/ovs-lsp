@@ -192,7 +192,10 @@ export class TokenProvider {
         } else {
             tokenType = tokenTypesObj.number
         }
-        this.addToken(this.createSemanticToken())
+        this.addToken(this.createSemanticToken({
+            ...node,
+            type: tokenType
+        }))
     }
 
 

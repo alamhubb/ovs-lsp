@@ -55,7 +55,7 @@ export function vitePluginOvsTransform(code) {
 }
 const code = `export default class Testa {
     static print11(abc) {
-        console.log(abc)
+        console.log(true)
     }
 }
 `
