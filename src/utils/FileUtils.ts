@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import {fileURLToPath} from "url";
 import OvsToAstHandler from "../ovs/factory/OvsToAstUtil.ts";
+import {ClassDeclaration} from "subhuti/src/struct/SubhutiEs6Ast.ts";
 
 export class FileUtil {
     // 读取文件内容
@@ -53,4 +54,13 @@ for (const file of a) {
     const fileCode = FileUtil.readFileContent(file)
     console.log(fileCode)
     const ast = OvsToAstHandler.toAst(fileCode)
+    if (ast.sourceType === 'module') {
+        for (const bodyElement of ast.body) {
+            if (bodyElement.type === 'ExportDeclaration') {
+                if (bodyElement.declaration.type === 'ClassDeclaration') {
+                    console.log(bodyElement.declaration.id.name)
+                }
+            }
+        }
+    }
 }

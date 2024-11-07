@@ -29,7 +29,7 @@ export default class OvsToAstHandler extends SubhutiToAstHandler {
 
         const ast = OvsToAstUtil.createProgramAst(curCst)
 
-        JsonUtil.log(ast)
+        // JsonUtil.log(ast)
         return ast
     }
 
