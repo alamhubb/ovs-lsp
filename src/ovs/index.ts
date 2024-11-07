@@ -30,7 +30,7 @@ export function vitePluginOvsTransform(code) {
     let code1 = null
     let curCst = parser.Program()
     curCst = traverseClearTokens(curCst)
-    // JsonUtil.log(curCst)
+    JsonUtil.log(curCst)
     console.log(111231)
     // JsonUtil.log(curCst)
     //cst转 estree ast
@@ -55,8 +55,8 @@ export function vitePluginOvsTransform(code) {
 }
 
 const code = `export default class Testa {
-    static print11() {
-        console.log(11)
+    static print11(abc) {
+        console.log(abc)
     }
 }
 `
