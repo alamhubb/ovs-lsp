@@ -28,6 +28,8 @@ import JsonUtil from 'subhuti/src/utils/JsonUtil.ts'
 import {OvsToAstUtil} from "./ovs/factory/OvsToAstUtil.ts";
 import {TokenProvider, tokenTypesObj} from "./IntellijTokenUtil.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
+import {LogUtil} from "./logutil.ts";
+import {FileUtil} from "./utils/FileUtils.ts";
 
 // 创建连接
 const connection = createConnection(ProposedFeatures.all)
@@ -65,9 +67,6 @@ const legend: SemanticTokensLegend = {
     tokenTypes: tokenTypes,
     tokenModifiers: tokenModifiers
 }
-connection.onReferences(async (params: ReferenceParams): Promise<Location[]> => {
-    return await referenceProvider.findReferences(params);
-});
 
 connection.languages.semanticTokens.on(params => {
     const document = documents.get(params.textDocument.uri)
@@ -110,6 +109,9 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
         capabilities: params.capabilities
     })
 
+    LogUtil.log(params)
+    const files = FileUtil.getAllFiles(params.workspaceFolders[0].uri)
+    LogUtil.log(files)
     return {
         capabilities: {
             textDocumentSync: TextDocumentSyncKind.Incremental,

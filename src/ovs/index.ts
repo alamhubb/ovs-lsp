@@ -36,10 +36,10 @@ export function vitePluginOvsTransform(code) {
     //cst转 estree ast
     const ast = OvsToAstUtil.createProgramAst(curCst)
     JsonUtil.log(ast)
-    // console.log(456465)
+    console.log(456465)
     //ast to client ast
-    // TokenProvider.visitNode(ast)
-    // JsonUtil.log(TokenProvider.tokens)
+    TokenProvider.visitNode(ast)
+    JsonUtil.log(TokenProvider.tokens)
 
 
     // code1 = parser.exec()
@@ -53,13 +53,17 @@ export function vitePluginOvsTransform(code) {
     ${code1}
     `
 }
-
 const code = `export default class Testa {
     static print11(abc) {
         console.log(abc)
     }
 }
 `
+// const code = `let a = div{
+//             header = div{123},
+//             true
+//         }
+// `
 const res = vitePluginOvsTransform(code)
 
 
