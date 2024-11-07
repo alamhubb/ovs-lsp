@@ -58,6 +58,10 @@ const code = `export default class Testa {
         console.log(true)
     }
 }
+
+
+
+
 `
 // const code = `let a = div{
 //             header = div{123},

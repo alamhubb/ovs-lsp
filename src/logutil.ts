@@ -17,7 +17,7 @@ export class LogUtil {
         }
     }
 
-    static log(data?: any) {
+    static log(data?: any, msg = null) {
         try {
             const timestamp = new Date().toISOString()
             let logMessage = `\n[${timestamp}]`
