@@ -52,10 +52,49 @@ const legend: SemanticTokensLegend = {
     tokenModifiers: tokenModifiers
 }
 
+connection.languages.semanticTokens.on(params => {
+    const document = documents.get(params.textDocument.uri)
+
+    if (!document){
+        LogUtil.log('chufale kong'+params.textDocument.uri+'fasfd')
+        return  { data: [] }
+    }
+
+    const builder = new SemanticTokensBuilder()
+    const text = document.getText()
+
+    const lexer = new SubhutiLexer(es6Tokens)
+    let tokens = lexer.lexer(text)
+    const parser = new OvsParser(tokens)
+    let curCst = parser.Program()
+    const ast = OvsToAstUtil.createProgramAst(curCst)
+    TokenProvider.visitNode(ast)
+    JsonUtil.log(TokenProvider.tokens)
+    const tokens1 = TokenProvider.tokens
+    LogUtil.log('Sending tokensRecord', JsonUtil.toJson(tokens))
+
+    if (tokens1.length) {
+        for (const semanticToken of tokens1) {
+            builder.push(
+                semanticToken.line,
+                semanticToken.char,
+                semanticToken.length,
+                semanticToken.tokenType,
+                semanticToken.tokenModifiers,
+            )
+        }
+    } else {
+        LogUtil.log('chufale kong'+text+'fasfd')
+    }
+
+    const build = builder.build()
+    LogUtil.log(build)
+    return build
+})
 
 // 修改初始化处理
 connection.onInitialize((params: InitializeParams): InitializeResult => {
-    LogUtil.log('Server initializing with capabilities', {
+    /*LogUtil.log('Server initializing with capabilities', {
         capabilities: params.capabilities
     });
 
@@ -64,28 +103,15 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
         const files = FileUtil.getAllFiles(params.workspaceFolders[0].uri);
         LogUtil.log('Workspace files:', files);
     }
-
+*/
     return {
         capabilities: {
-            textDocumentSync: {
-                openClose: true,
-                change: TextDocumentSyncKind.Incremental,
-                willSave: false,
-                willSaveWaitUntil: false,
-                save: {
-                    includeText: false
-                }
-            },
             semanticTokensProvider: {
                 legend,
                 full: true,
                 range: true
             },
-            hoverProvider: true,
-            completionProvider: {
-                resolveProvider: true,
-                triggerCharacters: ['.']
-            }
+            hoverProvider: true
         }
     }
 })
