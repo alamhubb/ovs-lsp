@@ -7,7 +7,7 @@ import type {
     Program,
     Statement,
     VariableDeclaration, VariableDeclarator
-} from "estree";
+} from "subhuti/src/struct/SubhutiEs6Ast.ts";
 import OvsParser from "../parser/OvsParser.ts";
 import {checkCstName, SubhutiToAstUtil} from "subhuti/src/parser/SubhutiToAstUtil.ts";
 import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "../interface/OvsInterface";

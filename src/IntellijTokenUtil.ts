@@ -1,15 +1,15 @@
 import {
     BaseNode,
     BlockStatement, CallExpression, ClassBody,
-    ClassDeclaration,
-    ExportDefaultDeclaration,
+    ClassDeclaration, ExportDeclaration,
     Expression, ExpressionStatement, FunctionExpression,
     Identifier,
     Literal, MemberExpression, MethodDefinition, Pattern,
-    SourceLocation,
+    Program,
+    SourceLocation, type SubhutiTokenAst,
     VariableDeclaration,
     VariableDeclarator
-} from "estree";
+} from "subhuti/src/struct/SubhutiEs6Ast.ts";
 import Es6Parser from "subhuti/src/syntax/es6/Es6Parser.ts";
 import Es6TokenConsumer, {
     es6TokenMapObj,
@@ -75,22 +75,16 @@ export class TokenProvider {
         node.body.forEach(item => this.visitNode(item))
     }
 
-    private static visitExportDefaultDeclaration(node: ExportDefaultDeclaration) {
-        this.addToken(
-            this.createSemanticTokenByTokenName({
-                start: node.loc.start,
-                end: {
-                    line: node.loc.start.line,
-                    column: node.loc.start.column + es6TokensObj.DefaultTok.value.length,
-                }
-            }, es6TokensObj.ExportTok.value)
-        )
-        this.addToken(this.createSemanticTokenByTokenName(node.loc, es6TokensObj.DefaultTok.value))
+    private static visitExportDeclaration(node: ExportDeclaration) {
+        this.addToken(this.createSemanticTokenByTokenName(node.export))
+        if (node.default) {
+            this.addToken(this.createSemanticTokenByTokenName(node.default))
+        }
         this.visitNode(node.declaration)
     }
 
     private static visitClassDeclaration(node: ClassDeclaration) {
-        this.addToken(this.createSemanticTokenByTokenName(node.loc, es6TokensObj.ClassTok.value))
+        this.addToken(this.createSemanticTokenByTokenName(node.class))
         this.visitIdentifier(node.id, tokenTypesObj.CLASS_NAME)
         this.visitNode(node.body)
     }
@@ -103,7 +97,7 @@ export class TokenProvider {
 
     private static visitMethodDefinition(node: MethodDefinition) {
         if (node.static) {
-            this.addToken(this.createSemanticTokenByTokenName(node.loc, es6TokensObj.StaticTok.value))
+            this.addToken(this.createSemanticTokenByTokenName(node.static))
         }
         this.visitIdentifier(node.key as any, tokenTypesObj.CLASS_NAME)
         this.visitNode(node.value)
@@ -155,9 +149,9 @@ export class TokenProvider {
         return token.name
     }
 
-    private static createSemanticTokenByTokenName(loc: SourceLocation, tokenName: string): SemanticToken {
-        const tokenType = this.getTokenType(tokenName)
-        return this.createSemanticToken(loc, tokenType)
+    private static createSemanticTokenByTokenName(token: SubhutiTokenAst): SemanticToken {
+        const tokenType = this.getTokenType(token.type)
+        return this.createSemanticToken(token.loc, tokenType)
     }
 
     private static createSemanticToken(loc: SourceLocation, tokenType: string): SemanticToken {
@@ -167,15 +161,7 @@ export class TokenProvider {
     }
 
     private static visitVariableDeclaration(node: VariableDeclaration) {
-        const loc: SourceLocation = {
-            start: node.loc.start,
-            end: {
-                line: node.loc.start.line,
-                column: node.loc.start.column + node.kind.length,
-            }
-        }
-
-        this.addToken(this.createSemanticTokenByTokenName(loc, node.kind))
+        this.addToken(this.createSemanticTokenByTokenName(node.kind))
         node.declarations.forEach(item => this.visitNode(item))
     }
 
@@ -218,8 +204,8 @@ export class TokenProvider {
             case OvsParser.prototype.Program.name:
                 this.visitProgram(node)
                 break;
-            case esTreeAstType.ExportDefaultDeclaration:
-                this.visitExportDefaultDeclaration(node)
+            case OvsParser.prototype.ExportDeclaration.name:
+                this.visitExportDeclaration(node)
                 break;
             case OvsParser.prototype.ClassDeclaration.name:
                 this.visitClassDeclaration(node)
