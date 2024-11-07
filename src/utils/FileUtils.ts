@@ -3,6 +3,7 @@ import * as path from 'path'
 import {fileURLToPath} from "url";
 import OvsToAstHandler from "../ovs/factory/OvsToAstUtil.ts";
 import {ClassDeclaration} from "subhuti/src/struct/SubhutiEs6Ast.ts";
+import {LogUtil} from "../logutil.ts";
 
 export class FileUtil {
     // 读取文件内容
@@ -41,6 +42,7 @@ export class FileUtil {
             }
         } catch (error) {
             console.error('Error reading directory:', error)
+            LogUtil.log(error)
         }
 
         return results

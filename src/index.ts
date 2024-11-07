@@ -1,4 +1,3 @@
-// src/server.ts
 import {
     createConnection,
     TextDocuments,
@@ -88,22 +87,18 @@ connection.languages.semanticTokens.on(params => {
     }
 
     const build = builder.build()
-    LogUtil.log(build)
+    // LogUtil.log(build)
     return build
 })
 
 // 修改初始化处理
 connection.onInitialize((params: InitializeParams): InitializeResult => {
-    /*LogUtil.log('Server initializing with capabilities', {
-        capabilities: params.capabilities
-    });
-
     // 确保工作区文件夹存在
     if (params.workspaceFolders && params.workspaceFolders.length > 0) {
         const files = FileUtil.getAllFiles(params.workspaceFolders[0].uri);
-        LogUtil.log('Workspace files:', files);
+        // LogUtil.log('Workspace files:', files);
     }
-*/
+
     return {
         capabilities: {
             semanticTokensProvider: {
@@ -111,11 +106,7 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
                 full: true,
                 range: true
             },
-            hoverProvider: true,
-            completionProvider: {
-                resolveProvider: true,
-                triggerCharacters: ['.']
-            }
+            hoverProvider: true
         }
     }
 })
