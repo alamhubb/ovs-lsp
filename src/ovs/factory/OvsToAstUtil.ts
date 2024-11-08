@@ -1,11 +1,20 @@
-
 import OvsParser from "../parser/OvsParser.ts";
-import Es6CstToEstreeAstUtil, {checkCstName} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
-import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "../interface/OvsInterface";
+import Es6CstToEstreeAstUtil, {
+    checkCstName,
+    EsTreeAstType
+} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
+import {
+    OvsAstClassDeclaration,
+    OvsAstExportDeclaration,
+    OvsAstLexicalBinding,
+    OvsAstRenderDomViewDeclaration
+} from "../interface/OvsInterface";
 import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
 import SubhutiLexer from "subhuti/src/parser/SubhutiLexer.ts";
 import {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
-import {OvsAstExpression} from "../interface/OvsEs6Ast.ts";
+import type {ClassDeclaration, ExportDefaultDeclaration, Expression} from "estree";
+import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
+import {BaseNode} from "estree";
 
 
 export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
@@ -22,7 +31,44 @@ export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
         return ast
     }
 
-    createExpressionAst(cst: SubhutiCst): OvsAstExpression {
+
+    createSubhutiTokenAst(cst: SubhutiCst): BaseNode {
+        return {
+            type: cst.value,
+            loc: cst.loc
+        }
+    }
+
+    createExportDeclarationAst(cst: SubhutiCst): OvsAstExportDeclaration {
+        let astName = checkCstName(cst, Es6Parser.prototype.ExportDeclaration.name);
+        const {children} = cst;
+        const [exportToken, secondChild, thirdChild] = children;
+
+        let ast: OvsAstExportDeclaration = super.createExportDeclarationAst(cst) as OvsAstExportDeclaration
+
+        if (ast.type === EsTreeAstType.ExportDefaultDeclaration) {
+            ast = {
+                export: this.createSubhutiTokenAst(exportToken),
+                default: this.createSubhutiTokenAst(secondChild),
+                ...ast
+            }
+        }
+        return ast
+    }
+
+    createClassDeclarationAst(cst: SubhutiCst): OvsAstClassDeclaration {
+        const astName = checkCstName(cst, Es6Parser.prototype.ClassDeclaration.name);
+        const baseAst = super.createClassDeclarationAst(cst);
+
+        // 创建新对象，包含所有需要的属性
+        const ast: OvsAstClassDeclaration = {
+            ...baseAst,
+            class: this.createSubhutiTokenAst(cst.children[0])
+        };
+        return ast;
+    }
+
+    createExpressionAst(cst: SubhutiCst): Expression {
         const astName = cst.name
         let left
         if (astName === OvsParser.prototype.OvsRenderDomViewDeclaration.name) {
@@ -33,9 +79,9 @@ export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
         return left
     }
 
-    createOvsRenderDomViewDeclarationAst(cst: SubhutiCst): OvsRenderDomViewDeclaration {
+    createOvsRenderDomViewDeclarationAst(cst: SubhutiCst): OvsAstRenderDomViewDeclaration {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclaration.name);
-        const ast: OvsRenderDomViewDeclaration = {
+        const ast: OvsAstRenderDomViewDeclaration = {
             type: astName as any,
             id: this.createIdentifierAst(cst.children[0]) as any,
             children: cst.children[2].children.filter(item => item.name === OvsParser.prototype.OvsRenderDomViewDeclarator.name).map(item => this.createOvsRenderDomViewDeclaratorAst(item)) as any[],
@@ -44,11 +90,11 @@ export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
         return ast
     }
 
-    createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): OvsLexicalBinding | Expression {
+    createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): OvsAstLexicalBinding | Expression {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclarator.name);
         const firstChild = cst.children[0]
         if (firstChild.name === OvsParser.prototype.OvsLexicalBinding.name) {
-            const ast: OvsLexicalBinding = {
+            const ast: OvsAstLexicalBinding = {
                 type: OvsParser.prototype.OvsLexicalBinding.name as any,
                 id: this.createIdentifierAst(firstChild.children[0].children[0]) as any,
                 init: this.createAssignmentExpressionAst(firstChild.children[1].children[1]) as any,
@@ -58,6 +104,7 @@ export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
             return this.createAssignmentExpressionAst(firstChild)
         }
     }
+
 }
 
 export const ovsToAstUtil = new OvsToAstUtil()

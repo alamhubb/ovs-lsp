@@ -6,27 +6,14 @@ import Es6TokenConsumer, {
 } from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
 import {SubhutiCreateToken} from "subhuti/src/struct/SubhutiCreateToken.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
-import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "./ovs/interface/OvsInterface";
-import {esTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {
-    OvsAstBlockStatement,
-    OvsAstCallExpression,
-    OvsAstClassBody,
-    OvsAstClassDeclaration,
-    OvsAstExportDeclaration,
-    OvsAstExpressionStatement,
-    OvsAstFunctionExpression, OvsAstLiteral,
-    OvsAstMemberExpression,
-    OvsAstMethodDefinition, OvsAstPattern,
-    OvsAstProgram, OvsAstTokenAst, OvsAstVariableDeclaration, OvsAstVariableDeclarator
-} from "./ovs/interface/OvsEs6Ast.ts";
+    OvsAstClassDeclaration, OvsAstExportDeclaration,
+    OvsAstLexicalBinding, OvsAstMethodDefinition,
+    OvsAstRenderDomViewDeclaration
+} from "./ovs/interface/OvsInterface";
+import {EsTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {SourceLocation} from "subhuti/src/struct/SubhutiCst.ts";
-
-export default class IntellijTokenUtil {
-    tokenHandler(ast: OvsAstProgram) {
-
-    }
-}
+import {Program} from "estree";
 
 class SemanticToken {
     line: number;    // token 类型
@@ -72,7 +59,7 @@ export class TokenProvider {
         return this.tokens;
     }
 
-    private static visitProgram(node: OvsAstProgram) {
+    private static visitProgram(node: Program) {
         node.body.forEach(item => this.visitNode(item))
     }
 
@@ -97,8 +84,8 @@ export class TokenProvider {
     }
 
     private static visitMethodDefinition(node: OvsAstMethodDefinition) {
-        if (node.static) {
-            this.addToken(this.createSemanticToken(node.static))
+        if (node.staticToken) {
+            this.addToken(this.createSemanticToken(node.staticToken))
         }
         this.visitNode(node.key)
         this.visitNode(node.value)
@@ -174,12 +161,12 @@ export class TokenProvider {
     }
 
 
-    private static visitOvsRenderDomViewDeclaration(node: OvsRenderDomViewDeclaration) {
+    private static visitOvsRenderDomViewDeclaration(node: OvsAstRenderDomViewDeclaration) {
         this.visitIdentifier(node.id);
         node.children.forEach(item => this.visitNode(item))
     }
 
-    private static visitOvsLexicalBinding(node: OvsLexicalBinding) {
+    private static visitOvsLexicalBinding(node: OvsAstLexicalBinding) {
         this.visitIdentifier(node.id);
         this.visitNode(node.init)
     }
@@ -208,7 +195,7 @@ export class TokenProvider {
             case OvsParser.prototype.Program.name:
                 this.visitProgram(node)
                 break;
-            case esTreeAstType.ExportDefaultDeclaration:
+            case EsTreeAstType.ExportDefaultDeclaration:
                 this.visitExportDefaultDeclaration(node)
                 break;
             case OvsParser.prototype.ClassDeclaration.name:
