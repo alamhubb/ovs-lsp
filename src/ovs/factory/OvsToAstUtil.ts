@@ -7,12 +7,12 @@ import type {
     Program,
     Statement,
     VariableDeclaration, VariableDeclarator
-} from "subhuti-ts/src/SubhutiEs6Ast.ts";
+} from "subhuti-ts/src/language/es2015/SubhutiEs6Ast.ts";
 import OvsParser from "../parser/OvsParser.ts";
-import {checkCstName, SubhutiToAstUtil} from "subhuti-ts/src/SubhutiToAstUtil.ts";
+import {checkCstName, Es6CstToEstreeAstUtil} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "../interface/OvsInterface";
 import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
-import SubhutiToAstHandler from "subhuti-ts/src/SubhutiToAstUtil.ts";
+import SubhutiToAstHandler from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import SubhutiLexer from "subhuti/src/parser/SubhutiLexer.ts";
 import {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
 import JsonUtil from "subhuti/src/utils/JsonUtil.ts";
