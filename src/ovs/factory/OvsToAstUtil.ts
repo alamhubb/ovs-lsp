@@ -1,15 +1,16 @@
 
 import OvsParser from "../parser/OvsParser.ts";
-import {checkCstName} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
+import Es6CstToEstreeAstUtil, {checkCstName} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "../interface/OvsInterface";
 import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
 import SubhutiLexer from "subhuti/src/parser/SubhutiLexer.ts";
 import {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
 import JsonUtil from "subhuti/src/utils/JsonUtil.ts";
 import {TokenProvider} from "../../IntellijTokenUtil.ts";
+import SubhutiEs6CstToOvsAstUtil from "./SubhutiEs6CstToOvsAstUtil.ts";
 
 
-export default class OvsToAstHandler extends  {
+export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
     static toAst(code: string) {
         const lexer = new SubhutiLexer(es6Tokens)
         const tokens = lexer.lexer(code)
@@ -61,4 +62,4 @@ export default class OvsToAstHandler extends  {
     }
 }
 
-export const OvsToAstUtil = new OvsToAstHandler()
+export const ovsToAstUtil = new OvsToAstUtil()

@@ -1,16 +1,3 @@
-import {
-    BaseNode,
-    BlockStatement, CallExpression, ClassBody,
-    ClassDeclaration, ExportDeclaration,
-    Expression, ExpressionStatement, FunctionExpression,
-    Identifier,
-    Literal, MemberExpression, MethodDefinition, Pattern,
-    Program,
-    SourceLocation, type SubhutiTokenAst,
-    VariableDeclaration,
-    VariableDeclarator
-} from "src/subhuti/SubhutiEs6Ast.ts";
-import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import Es6TokenConsumer, {
     es6TokenMapObj,
     Es6TokenName,
@@ -21,9 +8,22 @@ import {SubhutiCreateToken} from "subhuti/src/struct/SubhutiCreateToken.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "./ovs/interface/OvsInterface";
 import {esTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
+import {
+    OvsAstBlockStatement,
+    OvsAstCallExpression,
+    OvsAstClassBody,
+    OvsAstClassDeclaration,
+    OvsAstExportDeclaration,
+    OvsAstExpressionStatement,
+    OvsAstFunctionExpression, OvsAstLiteral,
+    OvsAstMemberExpression,
+    OvsAstMethodDefinition, OvsAstPattern,
+    OvsAstProgram, OvsAstTokenAst, OvsAstVariableDeclaration, OvsAstVariableDeclarator
+} from "./ovs/interface/OvsEs6Ast.ts";
+import {SourceLocation} from "subhuti/src/struct/SubhutiCst.ts";
 
 export default class IntellijTokenUtil {
-    tokenHandler(ast: Program) {
+    tokenHandler(ast: OvsAstProgram) {
 
     }
 }
@@ -62,6 +62,7 @@ const tokenTypes = Object.values(tokenTypesObj)
 
 const tokenTypeIndexObj = Object.fromEntries(tokenTypes.map((token, index) => [token, index]))
 
+
 export class TokenProvider {
     static tokens: SemanticToken[] = [];
 
@@ -71,11 +72,11 @@ export class TokenProvider {
         return this.tokens;
     }
 
-    private static visitProgram(node: Program) {
+    private static visitProgram(node: OvsAstProgram) {
         node.body.forEach(item => this.visitNode(item))
     }
 
-    private static visitExportDefaultDeclaration(node: ExportDeclaration) {
+    private static visitExportDefaultDeclaration(node: OvsAstExportDeclaration) {
         this.addToken(this.createSemanticToken(node.export))
         if (node.default) {
             this.addToken(this.createSemanticToken(node.default))
@@ -83,19 +84,19 @@ export class TokenProvider {
         this.visitNode(node.declaration)
     }
 
-    private static visitClassDeclaration(node: ClassDeclaration) {
+    private static visitClassDeclaration(node: OvsAstClassDeclaration) {
         this.addToken(this.createSemanticToken(node.class))
         this.visitIdentifier(node.id)
         this.visitNode(node.body)
     }
 
-    private static visitClassBody(node: ClassBody) {
+    private static visitClassBody(node: OvsAstClassBody) {
         for (const bodyElement of node.body) {
             this.visitNode(bodyElement)
         }
     }
 
-    private static visitMethodDefinition(node: MethodDefinition) {
+    private static visitMethodDefinition(node: OvsAstMethodDefinition) {
         if (node.static) {
             this.addToken(this.createSemanticToken(node.static))
         }
@@ -103,31 +104,31 @@ export class TokenProvider {
         this.visitNode(node.value)
     }
 
-    private static visitFunctionExpression(node: FunctionExpression) {
+    private static visitFunctionExpression(node: OvsAstFunctionExpression) {
         for (const param of node.params) {
             this.visitIdentifier(param)
         }
         this.visitNode(node.body)
     }
 
-    private static visitBlockStatement(node: BlockStatement) {
+    private static visitBlockStatement(node: OvsAstBlockStatement) {
         for (const bodyElement of node.body) {
             this.visitNode(bodyElement)
         }
     }
 
-    private static visitExpressionStatement(node: ExpressionStatement) {
+    private static visitExpressionStatement(node: OvsAstExpressionStatement) {
         this.visitNode(node.expression)
     }
 
-    private static visitCallExpression(node: CallExpression) {
+    private static visitCallExpression(node: OvsAstCallExpression) {
         this.visitNode(node.callee)
         for (const argument of node.arguments) {
             this.visitNode(argument)
         }
     }
 
-    private static visitMemberExpression(node: MemberExpression) {
+    private static visitMemberExpression(node: OvsAstMemberExpression) {
         this.visitNode(node.object)
         this.visitNode(node.property)
     }
@@ -150,22 +151,23 @@ export class TokenProvider {
     }
 
 
-    private static visitVariableDeclaration(node: VariableDeclaration) {
+    private static visitVariableDeclaration(node: OvsAstVariableDeclaration) {
         this.addToken(this.createSemanticToken(node.kind))
         node.declarations.forEach(item => this.visitNode(item))
     }
 
-    private static visitVariableDeclarator(node: VariableDeclarator) {
+    private static visitVariableDeclarator(node: OvsAstVariableDeclarator) {
         this.visitIdentifier(node.id);
         this.visitNode(node.init)
     }
 
-    private static visitIdentifier(node: Pattern) {
+    private static visitIdentifier(node: OvsAstPattern) {
         this.addToken(this.createSemanticToken(node))
     }
 
 
-    private static createSemanticToken(token: SubhutiTokenAst): SemanticToken {
+    private static createSemanticToken(token: OvsAstTokenAst): SemanticToken {
+        console.log(token)
         let tokenType = es6TokenMapObj[token.type]?.isKeyword ? tokenTypesObj.keyword : token.type
         const tokenTypeIndex = tokenTypeIndexObj[tokenType]
         return new SemanticToken(token.loc, tokenTypeIndex)
@@ -182,7 +184,7 @@ export class TokenProvider {
         this.visitNode(node.init)
     }
 
-    private static visitLiteral(node: Literal) {
+    private static visitLiteral(node: OvsAstLiteral) {
         const nodeValueType = typeof node.value
         let tokenType: string
         if (nodeValueType === 'boolean') {

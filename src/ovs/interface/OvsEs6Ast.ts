@@ -250,7 +250,7 @@ export interface OvsAstFunctionDeclaration extends OvsAstMaybeNamedFunctionDecla
 export interface OvsAstVariableDeclaration extends OvsAstBaseDeclaration {
     type: "VariableDeclaration";
     declarations: OvsAstVariableDeclarator[];
-    kind: OvsAstSubhutiTokenAst;
+    kind: OvsAstTokenAst;
 }
 
 export interface OvsAstVariableDeclarator extends OvsAstBaseNode {
@@ -601,7 +601,7 @@ export interface OvsAstMethodDefinition extends OvsAstBaseNode {
     value: OvsAstFunctionExpression;
     kind: "constructor" | "method" | "get" | "set";
     computed: boolean;
-    static: OvsAstSubhutiTokenAst;
+    static: OvsAstTokenAst;
 }
 
 export interface OvsAstMaybeNamedClassDeclaration extends OvsAstBaseClass, OvsAstBaseDeclaration {
@@ -612,7 +612,7 @@ export interface OvsAstMaybeNamedClassDeclaration extends OvsAstBaseClass, OvsAs
 
 export interface OvsAstClassDeclaration extends OvsAstMaybeNamedClassDeclaration {
     id: OvsAstIdentifier;
-    class: OvsAstSubhutiTokenAst
+    class: OvsAstTokenAst
 }
 
 export interface OvsAstClassExpression extends OvsAstBaseClass, OvsAstBaseExpression {
@@ -678,14 +678,14 @@ export interface OvsAstExportSpecifier extends Omit<OvsAstBaseModuleSpecifier, "
     exported: OvsAstIdentifier | OvsAstLiteral;
 }
 
-export interface OvsAstSubhutiTokenAst extends OvsAstBaseNodeWithoutComments {
+export interface OvsAstTokenAst extends OvsAstBaseNodeWithoutComments {
 
 }
 
 export interface OvsAstExportDeclaration extends OvsAstBaseModuleDeclaration {
     type: "ExportDeclaration";
-    export: OvsAstSubhutiTokenAst
-    default: OvsAstSubhutiTokenAst
+    export: OvsAstTokenAst
+    default: OvsAstTokenAst
     declaration: OvsAstMaybeNamedFunctionDeclaration | OvsAstMaybeNamedClassDeclaration | OvsAstExpression;
 }
 
