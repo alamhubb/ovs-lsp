@@ -1,5 +1,5 @@
 import { createKeywordToken } from 'subhuti/src/struct/SubhutiCreateToken.ts'
-import Es6TokenConsumer, { Es6TokenName, es6TokensObj } from 'subhuti/src/syntax/es6/Es6Tokens.ts'
+import Es6TokenConsumer, { Es6TokenName, es6TokensObj } from 'subhuti-ts/src/language/es2015/Es6Tokens.ts'
 
 export const ovsTokenName = {
   ...Es6TokenName,

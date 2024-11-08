@@ -23,7 +23,7 @@ import {
     TextDocumentIdentifier
 } from 'vscode-languageserver'
 import SubhutiLexer from 'subhuti/src/parser/SubhutiLexer.ts'
-import {es6Tokens, es6TokensObj} from 'subhuti/src/syntax/es6/Es6Tokens.ts'
+import {es6Tokens, es6TokensObj} from 'subhuti-ts/src/language/es2015/Es6Tokens.ts'
 import JsonUtil from 'subhuti/src/utils/JsonUtil.ts'
 import OvsToAstHandler, {OvsToAstUtil} from "./ovs/factory/OvsToAstUtil.ts";
 import {TokenProvider, tokenTypesObj} from "./IntellijTokenUtil.ts";

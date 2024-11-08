@@ -1,7 +1,7 @@
 // Vite 插件
 import {createFilter, Plugin} from "vite"
 import SubhutiLexer from '../../../subhuti/src/parser/SubhutiLexer.ts'
-import {es6Tokens} from '../../../subhuti/src/syntax/es6/Es6Tokens.ts'
+import {es6Tokens} from 'subhuti-ts/src/language/es2015/Es6Tokens.ts'
 import SubhutiCst from "../../../subhuti/src/struct/SubhutiCst.ts";
 import JsonUtil from "../../../subhuti/src/utils/JsonUtil.ts";
 import OvsParser from "./parser/OvsParser.ts";

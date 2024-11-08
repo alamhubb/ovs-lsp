@@ -10,13 +10,13 @@ import {
     VariableDeclaration,
     VariableDeclarator
 } from "subhuti/src/struct/SubhutiEs6Ast.ts";
-import Es6Parser from "subhuti/src/syntax/es6/Es6Parser.ts";
+import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import Es6TokenConsumer, {
     es6TokenMapObj,
     Es6TokenName,
     es6Tokens,
     es6TokensObj
-} from "subhuti/src/syntax/es6/Es6Tokens.ts";
+} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
 import {SubhutiCreateToken} from "subhuti/src/struct/SubhutiCreateToken.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "./ovs/interface/OvsInterface";

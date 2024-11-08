@@ -14,7 +14,7 @@ import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "../interface/OvsIn
 import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
 import SubhutiToAstHandler from "subhuti/src/parser/SubhutiToAstUtil.ts";
 import SubhutiLexer from "subhuti/src/parser/SubhutiLexer.ts";
-import {es6Tokens} from "subhuti/src/syntax/es6/Es6Tokens.ts";
+import {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
 import JsonUtil from "subhuti/src/utils/JsonUtil.ts";
 import {TokenProvider} from "../../IntellijTokenUtil.ts";
 

@@ -1,7 +1,7 @@
 import SubhutiCst from "../../../../subhuti/src/struct/SubhutiCst.ts"
 import { ovsTokenName, ovsTokensObj } from "../parser/OvsConsumer.ts"
 import OvsParser, { ovsParserInstance } from "../parser/OvsParser.ts"
-import Es6Parser from "../../../../subhuti/src/syntax/es6/Es6Parser.ts"
+import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts"
 import JsonUtil from "subhuti/src/utils/JsonUtil.ts"
 
 const htmlTag = {

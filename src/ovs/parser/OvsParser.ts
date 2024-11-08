@@ -1,7 +1,7 @@
 import OvsTokenConsumer, {ovsTokenName} from "./OvsConsumer.ts"
-import Es6Parser from "../../../../subhuti/src/syntax/es6/Es6Parser.ts"
+import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts"
 import {Subhuti, SubhutiRule} from '../../../../subhuti/src/parser/SubhutiParser.ts'
-import {es6TokensObj} from '../../../../subhuti/src/syntax/es6/Es6Tokens.ts'
+import {es6TokensObj} from 'subhuti-ts/src/language/es2015/Es6Tokens.ts'
 import QqqqUtil from "../../../../subhuti/src/utils/qqqqUtil.ts";
 import OvsVueRenderFactory from "../factory/OvsVueRenderFactory.ts";
 import SubhutiCst from "../../../../subhuti/src/struct/SubhutiCst.ts";
