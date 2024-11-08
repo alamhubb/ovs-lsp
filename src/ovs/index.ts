@@ -9,6 +9,7 @@ import SubhutiToAstUtil, {es6CstToEstreeAstUtil} from "subhuti-ts/src/language/e
 import {OvsToAstUtil} from "./factory/OvsToAstUtil.ts";
 import {TokenProvider} from "../IntellijTokenUtil.ts";
 import Es6CstToEstreeAstUtil from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
+import {es6CstToSubhutiEs6AstUtil} from "./factory/SubhutiEs6CstToOvsAstUtil.ts";
 
 function traverseClearTokens(currentNode: SubhutiCst) {
     if (!currentNode || !currentNode.children || !currentNode.children.length)
@@ -34,12 +35,12 @@ export function vitePluginOvsTransform(code) {
     console.log(111231)
     // JsonUtil.log(curCst)
     //cst转 estree ast
-    const ast = es6CstToEstreeAstUtil.createProgramAst(curCst)
+    const ast = es6CstToSubhutiEs6AstUtil.createProgramAst(curCst)
     JsonUtil.log(ast)
     // console.log(456465)
     //ast to client ast
-    // TokenProvider.visitNode(ast)
-    // JsonUtil.log(TokenProvider.tokens)
+    TokenProvider.visitNode(ast)
+    JsonUtil.log(TokenProvider.tokens)
 
 
     // code1 = parser.exec()
