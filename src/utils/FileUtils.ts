@@ -67,6 +67,12 @@ export function initCompletionMap(filePath: string) {
         const ast = ovsToAstUtil.toAst(fileCode)
         if (ast.sourceType === 'module') {
             for (const bodyElement of ast.body) {
+                LogUtil.log('474444')
+                LogUtil.log(ast)
+                LogUtil.log(ast.body)
+                // LogUtil.log(bodyElement)
+                // LogUtil.log(bodyElement.type)
+                LogUtil.log('6666')
                 if (bodyElement.type === EsTreeAstType.ExportDefaultDeclaration) {
                     if (bodyElement.declaration.type === 'ClassDeclaration') {
                         completionItemAry.push({

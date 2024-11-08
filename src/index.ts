@@ -28,7 +28,7 @@ import JsonUtil from 'subhuti/src/utils/JsonUtil.ts'
 import {TokenProvider, tokenTypesObj} from "./IntellijTokenUtil.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {LogUtil} from "./logutil.ts";
-import {FileUtil} from "./utils/FileUtils.ts";
+import {FileUtil, initCompletionMap} from "./utils/FileUtils.ts";
 import {ovsToAstUtil} from "./ovs/factory/OvsToAstUtil.ts";
 import {EsTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 
@@ -64,7 +64,6 @@ let completionAry: objtype[] = []
 let completionItemAry: CompletionItem[] = []
 
 
-
 // 1. 基本补全请求处理
 connection.onCompletion(
     (params: CompletionParams): CompletionItem[] => {
@@ -83,7 +82,7 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
 
     // 确保工作区文件夹存在
     if (params.workspaceFolders && params.workspaceFolders.length > 0) {
-        initCompletionMap(params.workspaceFolders[0].uri)
+        completionItemAry = initCompletionMap(params.workspaceFolders[0].uri)
         LogUtil.log(completionItemAry);
     }
 
@@ -113,31 +112,37 @@ connection.languages.semanticTokens.on(params => {
     }
 
     const builder = new SemanticTokensBuilder()
-    const text = document.getText()
+    try {
+        const text = document.getText()
 
-    const lexer = new SubhutiLexer(es6Tokens)
-    let tokens = lexer.lexer(text)
-    const parser = new OvsParser(tokens)
-    let curCst = parser.Program()
-    const ast = ovsToAstUtil.createProgramAst(curCst)
-    TokenProvider.visitNode(ast)
-    JsonUtil.log(TokenProvider.tokens)
-    const tokens1 = TokenProvider.tokens
-    LogUtil.log('Sending tokensRecord', JsonUtil.toJson(tokens))
+        const lexer = new SubhutiLexer(es6Tokens)
+        let tokens = lexer.lexer(text)
+        const parser = new OvsParser(tokens)
+        let curCst = parser.Program()
+        const ast = ovsToAstUtil.createProgramAst(curCst)
+        TokenProvider.visitNode(ast)
+        JsonUtil.log(TokenProvider.tokens)
+        const tokens1 = TokenProvider.tokens
+        LogUtil.log('Sending tokensRecord', JsonUtil.toJson(tokens))
 
-    if (tokens1.length) {
-        for (const semanticToken of tokens1) {
-            builder.push(
-                semanticToken.line,
-                semanticToken.char,
-                semanticToken.length,
-                semanticToken.tokenType,
-                semanticToken.tokenModifiers,
-            )
+        if (tokens1.length) {
+            for (const semanticToken of tokens1) {
+                builder.push(
+                    semanticToken.line,
+                    semanticToken.char,
+                    semanticToken.length,
+                    semanticToken.tokenType,
+                    semanticToken.tokenModifiers,
+                )
+            }
+        } else {
+            LogUtil.log('chufale kong' + text + 'fasfd')
         }
-    } else {
-        LogUtil.log('chufale kong' + text + 'fasfd')
+    } catch (e) {
+        LogUtil.log('error')
+        LogUtil.log(e)
     }
+
 
     const build = builder.build()
     return build
