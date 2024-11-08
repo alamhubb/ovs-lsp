@@ -15,6 +15,7 @@ import {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
 import type {ClassDeclaration, ExportDefaultDeclaration, Expression} from "estree";
 import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import {BaseNode} from "estree";
+import {LogUtil} from "../../logutil.ts";
 
 
 export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
@@ -25,7 +26,9 @@ export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
 
         let curCst = parser.Program()
 
-        const ast = this.createProgramAst(curCst)
+        LogUtil.log(ovsToAstUtil)
+
+        const ast = ovsToAstUtil.createProgramAst(curCst)
 
         // JsonUtil.log(ast)
         return ast

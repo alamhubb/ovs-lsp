@@ -1,10 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import {fileURLToPath} from "url";
-import OvsToAstHandler from "../ovs/factory/OvsToAstUtil.ts";
-import {ClassDeclaration} from "src/subhuti/SubhutiEs6Ast.ts";
 import {LogUtil} from "../logutil.ts";
-import {CompletionItemKind} from "vscode-languageserver/node";
 
 export class FileUtil {
     // 读取文件内容

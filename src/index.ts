@@ -25,7 +25,7 @@ import {
 import SubhutiLexer from 'subhuti/src/parser/SubhutiLexer.ts'
 import {es6Tokens, es6TokensObj} from 'subhuti-ts/src/language/es2015/Es6Tokens.ts'
 import JsonUtil from 'subhuti/src/utils/JsonUtil.ts'
-import OvsToAstHandler, {OvsToAstUtil} from "./ovs/factory/OvsToAstUtil.ts";
+import OvsToAstHandler from "./ovs/factory/OvsToAstUtil.ts";
 import {TokenProvider, tokenTypesObj} from "./IntellijTokenUtil.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {LogUtil} from "./logutil.ts";
