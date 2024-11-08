@@ -1,6 +1,6 @@
 import {
-    ArrayExpression,
-    AssignmentExpression,
+    ArrayExpression, ArrayPattern,
+    AssignmentExpression, AssignmentOperator, AssignmentPattern, AssignmentProperty,
     AwaitExpression,
     BaseCallExpression,
     BaseClass,
@@ -13,37 +13,37 @@ import {
     BaseNode,
     BaseNodeWithoutComments,
     BasePattern,
-    BaseStatement,
-    BinaryExpression,
-    BlockStatement,
+    BaseStatement, BigIntLiteral,
+    BinaryExpression, BinaryOperator,
+    BlockStatement, BreakStatement, CatchClause,
     ChainExpression,
     ClassBody,
     ClassDeclaration,
     Comment,
-    ConditionalExpression,
-    Directive,
+    ConditionalExpression, ContinueStatement, DebuggerStatement,
+    Directive, DoWhileStatement, EmptyStatement,
     ExportDefaultDeclaration,
     Expression,
-    ExpressionMap,
-    Identifier,
+    ExpressionMap, ExpressionStatement, ForOfStatement, ForStatement,
+    Identifier, IfStatement, ImportExpression, LabeledStatement,
     LogicalExpression,
     MaybeNamedClassDeclaration,
     MaybeNamedFunctionDeclaration,
     MemberExpression,
     MetaProperty,
     MethodDefinition,
-    ModuleDeclaration, ObjectExpression,
-    Pattern,
+    ModuleDeclaration, NewExpression, ObjectExpression, ObjectPattern,
+    Pattern, PrivateIdentifier,
     type Program,
-    Property,
-    SequenceExpression,
+    Property, RegExpLiteral, RestElement, ReturnStatement,
+    SequenceExpression, SimpleCallExpression, SimpleLiteral,
     SpreadElement,
-    Statement,
-    TaggedTemplateExpression,
+    Statement, StaticBlock, Super, SwitchCase, SwitchStatement,
+    TaggedTemplateExpression, TemplateElement,
     TemplateLiteral,
-    ThisExpression,
+    ThisExpression, ThrowStatement, TryStatement,
     UnaryExpression,
-    UpdateExpression,
+    UpdateExpression, UpdateOperator, VariableDeclarator, WhileStatement, WithStatement,
     YieldExpression
 } from "estree";
 
@@ -145,7 +145,7 @@ export type OvsAstStatement =
 export interface OvsAstBaseStatement extends BaseStatement {
 }
 
-export interface OvsAstEmptyStatement extends BaseStatement {
+export interface OvsAstEmptyStatement extends EmptyStatement {
     type: "EmptyStatement";
 }
 
@@ -155,81 +155,81 @@ export interface OvsAstBlockStatement extends BlockStatement {
     innerComments?: Comment[] | undefined;
 }
 
-export interface OvsAstStaticBlock extends Omit<OvsAstBlockStatement, "type"> {
+export interface OvsAstStaticBlock extends StaticBlock {
     type: "StaticBlock";
 }
 
-export interface OvsAstExpressionStatement extends BaseStatement {
+export interface OvsAstExpressionStatement extends ExpressionStatement {
     type: "ExpressionStatement";
     expression: OvsAstExpression;
 }
 
 // Statement 相关接口继续
-export interface OvsAstIfStatement extends BaseStatement {
+export interface OvsAstIfStatement extends IfStatement {
     type: "IfStatement";
     test: OvsAstExpression;
     consequent: OvsAstStatement;
     alternate?: OvsAstStatement | null | undefined;
 }
 
-export interface OvsAstLabeledStatement extends BaseStatement {
+export interface OvsAstLabeledStatement extends LabeledStatement {
     type: "LabeledStatement";
     label: OvsAstIdentifier;
     body: OvsAstStatement;
 }
 
-export interface OvsAstBreakStatement extends BaseStatement {
+export interface OvsAstBreakStatement extends BreakStatement {
     type: "BreakStatement";
     label?: OvsAstIdentifier | null | undefined;
 }
 
-export interface OvsAstContinueStatement extends BaseStatement {
+export interface OvsAstContinueStatement extends ContinueStatement {
     type: "ContinueStatement";
     label?: OvsAstIdentifier | null | undefined;
 }
 
-export interface OvsAstWithStatement extends BaseStatement {
+export interface OvsAstWithStatement extends WithStatement {
     type: "WithStatement";
     object: OvsAstExpression;
     body: OvsAstStatement;
 }
 
-export interface OvsAstSwitchStatement extends BaseStatement {
+export interface OvsAstSwitchStatement extends SwitchStatement {
     type: "SwitchStatement";
     discriminant: OvsAstExpression;
     cases: OvsAstSwitchCase[];
 }
 
-export interface OvsAstReturnStatement extends BaseStatement {
+export interface OvsAstReturnStatement extends ReturnStatement {
     type: "ReturnStatement";
     argument?: OvsAstExpression | null | undefined;
 }
 
-export interface OvsAstThrowStatement extends BaseStatement {
+export interface OvsAstThrowStatement extends ThrowStatement {
     type: "ThrowStatement";
     argument: OvsAstExpression;
 }
 
-export interface OvsAstTryStatement extends BaseStatement {
+export interface OvsAstTryStatement extends TryStatement {
     type: "TryStatement";
     block: OvsAstBlockStatement;
     handler?: OvsAstCatchClause | null | undefined;
     finalizer?: OvsAstBlockStatement | null | undefined;
 }
 
-export interface OvsAstWhileStatement extends BaseStatement {
+export interface OvsAstWhileStatement extends WhileStatement {
     type: "WhileStatement";
     test: OvsAstExpression;
     body: OvsAstStatement;
 }
 
-export interface OvsAstDoWhileStatement extends BaseStatement {
+export interface OvsAstDoWhileStatement extends DoWhileStatement {
     type: "DoWhileStatement";
     body: OvsAstStatement;
     test: OvsAstExpression;
 }
 
-export interface OvsAstForStatement extends BaseStatement {
+export interface OvsAstForStatement extends ForStatement {
     type: "ForStatement";
     init?: OvsAstVariableDeclaration | OvsAstExpression | null | undefined;
     test?: OvsAstExpression | null | undefined;
@@ -247,15 +247,13 @@ export interface OvsAstForInStatement extends OvsAstBaseForXStatement {
     type: "ForInStatement";
 }
 
-export interface OvsAstDebuggerStatement extends BaseStatement {
+export interface OvsAstDebuggerStatement extends DebuggerStatement {
     type: "DebuggerStatement";
 }
 
 // Declaration 相关定义
 export type OvsAstDeclaration = OvsAstFunctionDeclaration | OvsAstVariableDeclaration | OvsAstClassDeclaration;
 
-export interface OvsAstBaseDeclaration extends BaseDeclaration {
-}
 
 export interface OvsAstMaybeNamedFunctionDeclaration extends MaybeNamedFunctionDeclaration, OvsAstBaseFunction {
     type: "FunctionDeclaration";
@@ -270,10 +268,10 @@ export interface OvsAstFunctionDeclaration extends OvsAstMaybeNamedFunctionDecla
 export interface OvsAstVariableDeclaration extends BaseDeclaration {
     type: "VariableDeclaration";
     declarations: OvsAstVariableDeclarator[];
-    kind: OvsAstSubhutiTokenAst;
+    kind: BaseNode;
 }
 
-export interface OvsAstVariableDeclarator extends BaseNode {
+export interface OvsAstVariableDeclarator extends VariableDeclarator {
     type: "VariableDeclarator";
     id: OvsAstPattern;
     init?: OvsAstExpression | null | undefined;
@@ -310,9 +308,6 @@ export interface OvsAstExpressionMap extends ExpressionMap {
 
 export type OvsAstExpression = OvsAstExpressionMap[keyof OvsAstExpressionMap];
 
-export interface OvsAstBaseExpression extends BaseExpression {
-}
-
 // Expression 相关接口继续
 export type OvsAstChainElement = OvsAstSimpleCallExpression | OvsAstMemberExpression;
 
@@ -335,7 +330,7 @@ export interface OvsAstObjectExpression extends ObjectExpression {
     properties: Array<OvsAstProperty | OvsAstSpreadElement>;
 }
 
-export interface OvsAstPrivateIdentifier extends BaseNode {
+export interface OvsAstPrivateIdentifier extends PrivateIdentifier {
     type: "PrivateIdentifier";
     name: string;
 }
@@ -350,7 +345,7 @@ export interface OvsAstProperty extends Property {
     computed: boolean;
 }
 
-export interface OvsAstPropertyDefinition extends BaseNode {
+export interface OvsAstPropertyDefinition extends PropertyDefinition {
     type: "PropertyDefinition";
     key: OvsAstExpression | OvsAstPrivateIdentifier;
     value?: OvsAstExpression | null | undefined;
@@ -378,7 +373,7 @@ export interface OvsAstUnaryExpression extends UnaryExpression {
 
 export interface OvsAstBinaryExpression extends BinaryExpression {
     type: "BinaryExpression";
-    operator: OvsAstBinaryOperator;
+    operator: BinaryOperator;
     left: OvsAstExpression | OvsAstPrivateIdentifier;
     right: OvsAstExpression;
 }
@@ -386,14 +381,14 @@ export interface OvsAstBinaryExpression extends BinaryExpression {
 // Expression 相关接口继续
 export interface OvsAstAssignmentExpression extends AssignmentExpression {
     type: "AssignmentExpression";
-    operator: OvsAstAssignmentOperator;
+    operator: AssignmentOperator;
     left: OvsAstPattern | OvsAstMemberExpression;
     right: OvsAstExpression;
 }
 
 export interface OvsAstUpdateExpression extends UpdateExpression {
     type: "UpdateExpression";
-    operator: OvsAstUpdateOperator;
+    operator: UpdateOperator;
     argument: OvsAstExpression;
     prefix: boolean;
 }
@@ -419,16 +414,17 @@ export interface OvsAstBaseCallExpression extends BaseCallExpression {
 
 export type OvsAstCallExpression = OvsAstSimpleCallExpression | OvsAstNewExpression;
 
-export interface OvsAstSimpleCallExpression extends OvsAstBaseCallExpression {
+export interface OvsAstSimpleCallExpression extends SimpleCallExpression, OvsAstBaseCallExpression {
     type: "CallExpression";
     optional: boolean;
 }
 
-export interface OvsAstNewExpression extends OvsAstBaseCallExpression {
+export interface OvsAstNewExpression extends NewExpression, OvsAstBaseCallExpression {
     type: "NewExpression";
 }
 
-export interface OvsAstMemberExpression extends MemberExpression, BasePattern {
+
+export interface OvsAstMemberExpression extends MemberExpression {
     type: "MemberExpression";
     object: OvsAstExpression | OvsAstSuper;
     property: OvsAstExpression | OvsAstPrivateIdentifier;
@@ -446,23 +442,20 @@ export type OvsAstPattern = Pattern & (
     | OvsAstMemberExpression
     )
 
-export interface OvsAstBasePattern extends BasePattern {
-}
-
 // 其他节点类型定义
-export interface OvsAstSwitchCase extends BaseNode {
+export interface OvsAstSwitchCase extends SwitchCase {
     type: "SwitchCase";
     test?: OvsAstExpression | null | undefined;
     consequent: OvsAstStatement[];
 }
 
-export interface OvsAstCatchClause extends BaseNode {
+export interface OvsAstCatchClause extends CatchClause {
     type: "CatchClause";
     param: OvsAstPattern | null;
     body: OvsAstBlockStatement;
 }
 
-export interface OvsAstIdentifier extends BaseNode, BaseExpression, BasePattern {
+export interface OvsAstIdentifier extends Identifier {
     type: "Identifier";
     name: string;
 }
@@ -470,13 +463,13 @@ export interface OvsAstIdentifier extends BaseNode, BaseExpression, BasePattern 
 // Literal 相关定义
 export type OvsAstLiteral = OvsAstSimpleLiteral | OvsAstRegExpLiteral | OvsAstBigIntLiteral;
 
-export interface OvsAstSimpleLiteral extends BaseNode, BaseExpression {
+export interface OvsAstSimpleLiteral extends SimpleLiteral, BaseExpression {
     type: "Literal";
     value: string | boolean | number | null;
     raw?: string | undefined;
 }
 
-export interface OvsAstRegExpLiteral extends BaseNode, BaseExpression {
+export interface OvsAstRegExpLiteral extends RegExpLiteral {
     type: "Literal";
     value?: RegExp | null | undefined;
     regex: {
@@ -486,69 +479,20 @@ export interface OvsAstRegExpLiteral extends BaseNode, BaseExpression {
     raw?: string | undefined;
 }
 
-export interface OvsAstBigIntLiteral extends BaseNode, BaseExpression {
+export interface OvsAstBigIntLiteral extends BigIntLiteral {
     type: "Literal";
     value?: bigint | null | undefined;
     bigint: string;
     raw?: string | undefined;
 }
 
-// 操作符类型定义
-export type OvsAstUnaryOperator = "-" | "+" | "!" | "~" | "typeof" | "void" | "delete";
-
-export type OvsAstBinaryOperator =
-    | "=="
-    | "!="
-    | "==="
-    | "!=="
-    | "<"
-    | "<="
-    | ">"
-    | ">="
-    | "<<"
-    | ">>"
-    | ">>>"
-    | "+"
-    | "-"
-    | "*"
-    | "/"
-    | "%"
-    | "**"
-    | "|"
-    | "^"
-    | "&"
-    | "in"
-    | "instanceof";
-
-export type OvsAstLogicalOperator = "||" | "&&" | "??";
-
-export type OvsAstAssignmentOperator =
-    | "="
-    | "+="
-    | "-="
-    | "*="
-    | "/="
-    | "%="
-    | "**="
-    | "<<="
-    | ">>="
-    | ">>>="
-    | "|="
-    | "^="
-    | "&="
-    | "||="
-    | "&&="
-    | "??=";
-
-export type OvsAstUpdateOperator = "++" | "--";
-
 // ForOfStatement 和其他类型定义
-export interface OvsAstForOfStatement extends BaseForXStatement {
+export interface OvsAstForOfStatement extends ForOfStatement {
     type: "ForOfStatement";
     await: boolean;
 }
 
-export interface OvsAstSuper extends BaseNode {
+export interface OvsAstSuper extends Super {
     type: "Super";
 }
 
@@ -557,7 +501,7 @@ export interface OvsAstSpreadElement extends SpreadElement {
     argument: OvsAstExpression;
 }
 
-export interface OvsAstArrowFunctionExpression extends OvsAstBaseFunction, BaseExpression {
+export interface OvsAstArrowFunctionExpression extends OvsAstBaseFunction {
     type: "ArrowFunctionExpression";
     expression: boolean;
     body: OvsAstBlockStatement | OvsAstExpression;
@@ -582,7 +526,7 @@ export interface OvsAstTaggedTemplateExpression extends TaggedTemplateExpression
     quasi: OvsAstTemplateLiteral;
 }
 
-export interface OvsAstTemplateElement extends BaseNode {
+export interface OvsAstTemplateElement extends TemplateElement {
     type: "TemplateElement";
     tail: boolean;
     value: {
@@ -592,28 +536,28 @@ export interface OvsAstTemplateElement extends BaseNode {
 }
 
 // Pattern 相关定义
-export interface OvsAstAssignmentProperty extends Property {
+export interface OvsAstAssignmentProperty extends AssignmentProperty {
     value: OvsAstPattern;
     kind: "init";
     method: false;
 }
 
-export interface OvsAstObjectPattern extends BasePattern {
+export interface OvsAstObjectPattern extends ObjectPattern {
     type: "ObjectPattern";
     properties: Array<OvsAstAssignmentProperty | OvsAstRestElement>;
 }
 
-export interface OvsAstArrayPattern extends BasePattern {
+export interface OvsAstArrayPattern extends ArrayPattern {
     type: "ArrayPattern";
     elements: Array<OvsAstPattern | null>;
 }
 
-export interface OvsAstRestElement extends BasePattern {
+export interface OvsAstRestElement extends RestElement {
     type: "RestElement";
     argument: OvsAstPattern;
 }
 
-export interface OvsAstAssignmentPattern extends BasePattern {
+export interface OvsAstAssignmentPattern extends AssignmentPattern {
     type: "AssignmentPattern";
     left: OvsAstPattern;
     right: OvsAstExpression;
@@ -646,7 +590,7 @@ export interface OvsAstClassDeclaration extends ClassDeclaration {
     class: BaseNode;
 }
 
-export interface OvsAstClassExpression extends OvsAstBaseClass, BaseExpression {
+export interface OvsAstClassExpression extends OvsAstBaseClass {
     type: "ClassExpression";
     id?: OvsAstIdentifier | null | undefined;
 }
@@ -662,7 +606,6 @@ export type OvsAstModuleDeclaration = ModuleDeclaration & (
     | OvsAstImportDeclaration
     | OvsAstExportNamedDeclaration
     | OvsAstExportDefaultDeclaration
-    | OvsAstExportDeclaration
     | OvsAstExportAllDeclaration
     );
 
@@ -717,22 +660,11 @@ export interface OvsAstExportSpecifier extends Omit<OvsAstBaseModuleSpecifier, "
     exported: OvsAstIdentifier | OvsAstLiteral;
 }
 
-// 你的自定义类型
-export interface OvsAstSubhutiTokenAst extends BaseNodeWithoutComments {
-}
-
 export interface OvsAstExportDefaultDeclaration extends ExportDefaultDeclaration, OvsAstBaseModuleDeclaration {
     type: "ExportDefaultDeclaration";
     declaration: OvsAstMaybeNamedFunctionDeclaration | OvsAstMaybeNamedClassDeclaration | OvsAstExpression;
     export: BaseNode;
     default: BaseNode;
-}
-
-export interface OvsAstExportDeclaration extends BaseModuleDeclaration {
-    type: "ExportDeclaration";
-    export: OvsAstSubhutiTokenAst;
-    default: OvsAstSubhutiTokenAst;
-    declaration: OvsAstMaybeNamedFunctionDeclaration | OvsAstMaybeNamedClassDeclaration | OvsAstExpression;
 }
 
 export interface OvsAstExportAllDeclaration extends BaseModuleDeclaration {
