@@ -122,7 +122,7 @@ export interface OvsAstBaseFunction extends BaseNode {
 
 export type OvsAstFunction = OvsAstFunctionDeclaration | OvsAstFunctionExpression | OvsAstArrowFunctionExpression;
 
-export type OvsAstStatement =
+export type OvsAstStatement = Statement & (
     | OvsAstExpressionStatement
     | OvsAstBlockStatement
     | OvsAstStaticBlock
@@ -142,7 +142,8 @@ export type OvsAstStatement =
     | OvsAstForStatement
     | OvsAstForInStatement
     | OvsAstForOfStatement
-    | OvsAstDeclaration;
+    | OvsAstDeclaration
+    );
 
 export interface OvsAstBaseStatement extends BaseNode {
 }
@@ -257,7 +258,7 @@ export type OvsAstDeclaration = OvsAstFunctionDeclaration | OvsAstVariableDeclar
 export interface OvsAstBaseDeclaration extends BaseStatement {
 }
 
-export interface OvsAstMaybeNamedFunctionDeclaration extends BaseFunction, BaseDeclaration {
+export interface OvsAstMaybeNamedFunctionDeclaration extends OvsAstBaseFunction, OvsAstBaseDeclaration {
 
 }
 
@@ -544,7 +545,7 @@ export interface OvsAstSpreadElement extends BaseNode {
     argument: OvsAstExpression;
 }
 
-export interface OvsAstArrowFunctionExpression extends BaseExpression, BaseFunction {
+export interface OvsAstArrowFunctionExpression extends OvsAstBaseFunction, OvsAstBaseFunction {
     type: "ArrowFunctionExpression";
     expression: boolean;
     body: OvsAstBlockStatement | OvsAstExpression;
@@ -640,11 +641,12 @@ export interface OvsAstMetaProperty extends BaseExpression {
     property: OvsAstIdentifier;
 }
 
-export type OvsAstModuleDeclaration =
+export type OvsAstModuleDeclaration = ModuleDeclaration & (
     | OvsAstImportDeclaration
     | OvsAstExportNamedDeclaration
     | OvsAstExportDeclaration
-    | OvsAstExportAllDeclaration;
+    | OvsAstExportAllDeclaration
+    );
 
 export interface OvsAstBaseModuleDeclaration extends BaseNode {
 }
