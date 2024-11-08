@@ -7,7 +7,7 @@ import {
     InitializeResult,
     SemanticTokensRequest,
     SemanticTokensBuilder,
-    SemanticTokensLegend, CompletionItem, CompletionItemKind
+    SemanticTokensLegend, CompletionItem, CompletionItemKind, MarkupKind
 } from 'vscode-languageserver/node'
 
 import {fileURLToPath} from 'url'
@@ -25,7 +25,7 @@ import {
 import SubhutiLexer from 'subhuti/src/parser/SubhutiLexer.ts'
 import {es6Tokens, es6TokensObj} from 'subhuti/src/syntax/es6/Es6Tokens.ts'
 import JsonUtil from 'subhuti/src/utils/JsonUtil.ts'
-import {OvsToAstUtil} from "./ovs/factory/OvsToAstUtil.ts";
+import OvsToAstHandler, {OvsToAstUtil} from "./ovs/factory/OvsToAstUtil.ts";
 import {TokenProvider, tokenTypesObj} from "./IntellijTokenUtil.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {LogUtil} from "./logutil.ts";
@@ -51,12 +51,74 @@ const legend: SemanticTokensLegend = {
     tokenModifiers: tokenModifiers
 }
 
+interface objtype {
+    label: string,
+    type: number,
+    file: string,
+    default: boolean
+}
+
+const completionMap: Map<string, objtype> = new Map()
+
+function initCompletionMap(filePath: string) {
+    const files = FileUtil.getAllFiles(filePath);
+    for (const file of files) {
+        console.log(file)
+        const fileCode = FileUtil.readFileContent(file)
+        console.log(fileCode)
+        const ast = OvsToAstHandler.toAst(fileCode)
+        if (ast.sourceType === 'module') {
+            for (const bodyElement of ast.body) {
+                if (bodyElement.type === 'ExportDeclaration') {
+                    if (bodyElement.declaration.type === 'ClassDeclaration') {
+                        completionMap.set(bodyElement.declaration.id.name, {
+                            label: bodyElement.declaration.id.name,
+                            type: CompletionItemKind.Class,
+                            file: file,
+                            default: !!bodyElement.default,
+                        })
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 修改初始化处理
+connection.onInitialize((params: InitializeParams): InitializeResult => {
+    // LogUtil.log('Server initializing with capabilities', {
+    //     capabilities: params.capabilities
+    // });
+
+    // 确保工作区文件夹存在
+    if (params.workspaceFolders && params.workspaceFolders.length > 0) {
+        const files = FileUtil.getAllFiles(params.workspaceFolders[0].uri);
+        LogUtil.log('Workspace files:', files);
+    }
+
+    return {
+        capabilities: {
+            semanticTokensProvider: {
+                legend,
+                full: true,
+                range: true
+            },
+            hoverProvider: true,
+            completionProvider: {
+                resolveProvider: true,
+                triggerCharacters: ['.']
+            }
+        }
+    }
+})
+
+
 connection.languages.semanticTokens.on(params => {
     const document = documents.get(params.textDocument.uri)
 
-    if (!document){
-        LogUtil.log('chufale kong'+params.textDocument.uri+'fasfd')
-        return  { data: [] }
+    if (!document) {
+        LogUtil.log('chufale kong' + params.textDocument.uri + 'fasfd')
+        return {data: []}
     }
 
     const builder = new SemanticTokensBuilder()
@@ -83,34 +145,42 @@ connection.languages.semanticTokens.on(params => {
             )
         }
     } else {
-        LogUtil.log('chufale kong'+text+'fasfd')
+        LogUtil.log('chufale kong' + text + 'fasfd')
     }
 
     const build = builder.build()
-    // LogUtil.log(build)
     return build
 })
 
-// 修改初始化处理
-connection.onInitialize((params: InitializeParams): InitializeResult => {
-    // 确保工作区文件夹存在
-    if (params.workspaceFolders && params.workspaceFolders.length > 0) {
-        const files = FileUtil.getAllFiles(params.workspaceFolders[0].uri);
-        // LogUtil.log('Workspace files:', files);
+// 1. 基本补全请求处理
+connection.onCompletion(
+    (params: CompletionParams): CompletionItem[] => {
+        LogUtil.log(params)
+        // 返回基本的补全列表
+        return [
+            {
+                label: 'someFunction',
+                kind: CompletionItemKind.Function,
+                data: 1  // 可以传递给 resolve 的数据
+            }
+        ];
     }
+);
 
-    return {
-        capabilities: {
-            semanticTokensProvider: {
-                legend,
-                full: true,
-                range: true
-            },
-            hoverProvider: true
+// 2. 补全项解析处理 - 对应 completionItem/resolve
+connection.onCompletionResolve(
+    (item: CompletionItem): CompletionItem => {
+        // 根据 item.data 加载详细信息
+        if (item.data === 1) {
+            item.detail = 'Function details';
+            item.documentation = {
+                kind: MarkupKind.Markdown,
+                value: '# Documentation\n...'
+            };
         }
+        return item;
     }
-})
-
+);
 
 // 启动服务器
 documents.listen(connection)

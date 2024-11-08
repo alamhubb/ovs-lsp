@@ -4,6 +4,7 @@ import {fileURLToPath} from "url";
 import OvsToAstHandler from "../ovs/factory/OvsToAstUtil.ts";
 import {ClassDeclaration} from "subhuti/src/struct/SubhutiEs6Ast.ts";
 import {LogUtil} from "../logutil.ts";
+import {CompletionItemKind} from "vscode-languageserver/node";
 
 export class FileUtil {
     // 读取文件内容
@@ -49,20 +50,4 @@ export class FileUtil {
     }
 }
 
-const a = FileUtil.getAllFiles('file:///c%3A/Users/qinkaiyuan/IdeaProjects/testovsplg1')
 
-for (const file of a) {
-    console.log(file)
-    const fileCode = FileUtil.readFileContent(file)
-    console.log(fileCode)
-    const ast = OvsToAstHandler.toAst(fileCode)
-    if (ast.sourceType === 'module') {
-        for (const bodyElement of ast.body) {
-            if (bodyElement.type === 'ExportDeclaration') {
-                if (bodyElement.declaration.type === 'ClassDeclaration') {
-                    console.log(bodyElement.declaration.id.name)
-                }
-            }
-        }
-    }
-}
