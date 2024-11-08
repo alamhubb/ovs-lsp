@@ -233,13 +233,8 @@ export type OvsAstStatement =
     | OvsAstForStatement
     | OvsAstForInStatement
     | OvsAstForOfStatement
+    // | OvsAstDeclaration;
     | Declaration;
-
-export interface OvsAstBaseForXStatement extends BaseForXStatement {
-    left: VariableDeclaration | Pattern;
-    right: Expression;
-    body: Statement;
-}
 
 export interface OvsAstForInStatement extends ForInStatement {
     type: "ForInStatement";
