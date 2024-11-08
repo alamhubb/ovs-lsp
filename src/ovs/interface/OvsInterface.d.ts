@@ -10,6 +10,7 @@ import {
     BaseFunction,
     BaseModuleDeclaration,
     BaseModuleSpecifier,
+    PropertyDefinition,
     BaseNode,
     BaseNodeWithoutComments,
     BasePattern,
@@ -20,7 +21,7 @@ import {
     ClassBody,
     ClassDeclaration, ClassExpression,
     Comment,
-    ConditionalExpression, ContinueStatement, DebuggerStatement,
+    ConditionalExpression, ContinueStatement, DebuggerStatement, Declaration,
     Directive, DoWhileStatement, EmptyStatement,
     ExportDefaultDeclaration,
     Expression,
@@ -44,7 +45,7 @@ import {
     ThisExpression, ThrowStatement, TryStatement,
     UnaryExpression, UnaryOperator,
     UpdateExpression, UpdateOperator, VariableDeclarator, WhileStatement, WithStatement,
-    YieldExpression
+    YieldExpression, VariableDeclaration
 } from "estree";
 
 // 自定义声明类型
@@ -119,28 +120,6 @@ export interface OvsAstBaseFunction extends BaseFunction {
 
 export type OvsAstFunction = OvsAstFunctionDeclaration | OvsAstFunctionExpression | OvsAstArrowFunctionExpression;
 
-// Statement 相关定义
-export type OvsAstStatement =
-    | OvsAstExpressionStatement
-    | OvsAstBlockStatement
-    | OvsAstStaticBlock
-    | OvsAstEmptyStatement
-    | OvsAstDebuggerStatement
-    | OvsAstWithStatement
-    | OvsAstReturnStatement
-    | OvsAstLabeledStatement
-    | OvsAstBreakStatement
-    | OvsAstContinueStatement
-    | OvsAstIfStatement
-    | OvsAstSwitchStatement
-    | OvsAstThrowStatement
-    | OvsAstTryStatement
-    | OvsAstWhileStatement
-    | OvsAstDoWhileStatement
-    | OvsAstForStatement
-    | OvsAstForInStatement
-    | OvsAstForOfStatement
-    | OvsAstDeclaration
 
 export interface OvsAstEmptyStatement extends EmptyStatement {
     type: "EmptyStatement";
@@ -228,16 +207,39 @@ export interface OvsAstDoWhileStatement extends DoWhileStatement {
 
 export interface OvsAstForStatement extends ForStatement {
     type: "ForStatement";
-    init?: OvsAstVariableDeclaration | OvsAstExpression | null | undefined;
-    test?: OvsAstExpression | null | undefined;
-    update?: OvsAstExpression | null | undefined;
-    body: OvsAstStatement;
+    init?: VariableDeclaration | Expression | null | undefined;
+    test?: Expression | null | undefined;
+    update?: Expression | null | undefined;
+    body: Statement;
 }
 
+// Statement 相关定义
+export type OvsAstStatement =
+    | OvsAstExpressionStatement
+    | OvsAstBlockStatement
+    | OvsAstStaticBlock
+    | OvsAstEmptyStatement
+    | OvsAstDebuggerStatement
+    | OvsAstWithStatement
+    | OvsAstReturnStatement
+    | OvsAstLabeledStatement
+    | OvsAstBreakStatement
+    | OvsAstContinueStatement
+    | OvsAstIfStatement
+    | OvsAstSwitchStatement
+    | OvsAstThrowStatement
+    | OvsAstTryStatement
+    | OvsAstWhileStatement
+    | OvsAstDoWhileStatement
+    | OvsAstForStatement
+    | OvsAstForInStatement
+    | OvsAstForOfStatement
+    | OvsAstDeclaration
+
 export interface OvsAstBaseForXStatement extends BaseForXStatement {
-    left: OvsAstVariableDeclaration | OvsAstPattern;
-    right: OvsAstExpression;
-    body: OvsAstStatement;
+    left: VariableDeclaration | Pattern;
+    right: Expression;
+    body: Statement;
 }
 
 export interface OvsAstForInStatement extends ForInStatement {
@@ -252,7 +254,7 @@ export interface OvsAstDebuggerStatement extends DebuggerStatement {
 export type OvsAstDeclaration = OvsAstFunctionDeclaration | OvsAstVariableDeclaration | OvsAstClassDeclaration;
 
 
-export interface OvsAstMaybeNamedFunctionDeclaration extends MaybeNamedFunctionDeclaration, OvsAstBaseFunction {
+export interface OvsAstMaybeNamedFunctionDeclaration extends MaybeNamedFunctionDeclaration {
     type: "FunctionDeclaration";
     id: OvsAstIdentifier | null;
     body: OvsAstBlockStatement;
@@ -411,12 +413,12 @@ export interface OvsAstBaseCallExpression extends BaseCallExpression {
 
 export type OvsAstCallExpression = OvsAstSimpleCallExpression | OvsAstNewExpression;
 
-export interface OvsAstSimpleCallExpression extends SimpleCallExpression, OvsAstBaseCallExpression {
+export interface OvsAstSimpleCallExpression extends SimpleCallExpression {
     type: "CallExpression";
     optional: boolean;
 }
 
-export interface OvsAstNewExpression extends NewExpression, OvsAstBaseCallExpression {
+export interface OvsAstNewExpression extends NewExpression {
     type: "NewExpression";
 }
 
@@ -484,7 +486,7 @@ export interface OvsAstBigIntLiteral extends BigIntLiteral {
 }
 
 // ForOfStatement 和其他类型定义
-export interface OvsAstForOfStatement extends ForOfStatement,OvsAstBaseForXStatement {
+export interface OvsAstForOfStatement extends ForOfStatement {
     type: "ForOfStatement";
     await: boolean;
 }
@@ -571,7 +573,12 @@ export interface OvsAstClassBody extends ClassBody {
 
 // 你的自定义扩展
 export interface OvsAstMethodDefinition extends MethodDefinition {
-    staticToken: BaseNode;
+    type: "MethodDefinition";
+    key: Expression | PrivateIdentifier;
+    value: OvsAstFunctionExpression;
+    kind: "constructor" | "method" | "get" | "set";
+    computed: boolean;
+    static: boolean;
 }
 
 export interface OvsAstMaybeNamedClassDeclaration extends BaseClass {

@@ -24,7 +24,7 @@ import {
     Directive, DoWhileStatement, EmptyStatement,
     ExportDefaultDeclaration,
     Expression,
-    ExpressionMap, ExpressionStatement, ForInStatement, ForOfStatement, ForStatement,
+    ExpressionMap, ExpressionStatement, ForInStatement, ForOfStatement, ForStatement, FunctionDeclaration,
     Identifier, IfStatement, ImportExpression, LabeledStatement,
     LogicalExpression, LogicalOperator,
     MaybeNamedClassDeclaration,
@@ -258,7 +258,7 @@ export interface OvsAstMaybeNamedFunctionDeclaration extends MaybeNamedFunctionD
     body: OvsAstBlockStatement;
 }
 
-export interface OvsAstFunctionDeclaration extends OvsAstMaybeNamedFunctionDeclaration {
+export interface OvsAstFunctionDeclaration extends FunctionDeclaration ,OvsAstMaybeNamedFunctionDeclaration {
     id: OvsAstIdentifier;
 }
 
@@ -563,10 +563,6 @@ export interface OvsAstAssignmentPattern extends AssignmentPattern {
 // Class 相关定义
 export type OvsAstClass = OvsAstClassDeclaration | OvsAstClassExpression;
 
-export interface OvsAstBaseClass extends BaseClass {
-    superClass?: OvsAstExpression | null | undefined;
-    body: OvsAstClassBody;
-}
 
 export interface OvsAstClassBody extends ClassBody {
     type: "ClassBody";
@@ -578,7 +574,7 @@ export interface OvsAstMethodDefinition extends MethodDefinition {
     staticToken: BaseNode;
 }
 
-export interface OvsAstMaybeNamedClassDeclaration extends BaseClass, BaseDeclaration {
+export interface OvsAstMaybeNamedClassDeclaration extends BaseClass {
     type: "ClassDeclaration";
     id: OvsAstIdentifier | null;
 }
