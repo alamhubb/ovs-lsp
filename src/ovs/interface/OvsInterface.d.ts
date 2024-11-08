@@ -233,8 +233,7 @@ export type OvsAstStatement =
     | OvsAstForStatement
     | OvsAstForInStatement
     | OvsAstForOfStatement
-    // | OvsAstDeclaration;
-    | Declaration;
+    | OvsAstDeclaration;
 
 export interface OvsAstForInStatement extends ForInStatement {
     type: "ForInStatement";
@@ -247,6 +246,11 @@ export interface OvsAstDebuggerStatement extends DebuggerStatement {
 // Declaration 相关定义
 export type OvsAstDeclaration = OvsAstFunctionDeclaration | OvsAstVariableDeclaration | OvsAstClassDeclaration;
 
+export interface OvsAstVariableDeclaration extends VariableDeclaration {
+    type: "VariableDeclaration";
+    declarations: OvsAstVariableDeclarator[];
+    kind: "var" | "let" | "const";
+}
 
 export interface OvsAstMaybeNamedFunctionDeclaration extends MaybeNamedFunctionDeclaration {
     type: "FunctionDeclaration";
@@ -258,11 +262,7 @@ export interface OvsAstFunctionDeclaration extends FunctionDeclaration {
     id: OvsAstIdentifier;
 }
 
-export interface OvsAstVariableDeclaration extends BaseDeclaration {
-    type: "VariableDeclaration";
-    declarations: OvsAstVariableDeclarator[];
-    kind: BaseNode;
-}
+
 
 export interface OvsAstVariableDeclarator extends VariableDeclarator {
     type: "VariableDeclarator";
