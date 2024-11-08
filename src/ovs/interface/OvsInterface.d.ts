@@ -262,8 +262,6 @@ export interface OvsAstFunctionDeclaration extends FunctionDeclaration {
     id: OvsAstIdentifier;
 }
 
-
-
 export interface OvsAstVariableDeclarator extends VariableDeclarator {
     type: "VariableDeclarator";
     id: OvsAstPattern;
