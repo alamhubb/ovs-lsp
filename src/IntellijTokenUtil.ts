@@ -9,7 +9,7 @@ import {
     SourceLocation, type SubhutiTokenAst,
     VariableDeclaration,
     VariableDeclarator
-} from "subhuti/src/struct/SubhutiEs6Ast.ts";
+} from "subhuti-ts/src/SubhutiEs6Ast.ts";
 import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import Es6TokenConsumer, {
     es6TokenMapObj,
@@ -20,7 +20,7 @@ import Es6TokenConsumer, {
 import {SubhutiCreateToken} from "subhuti/src/struct/SubhutiCreateToken.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "./ovs/interface/OvsInterface";
-import {esTreeAstType} from "subhuti/src/parser/SubhutiToAstUtil.ts";
+import {esTreeAstType} from "subhuti-ts/src/SubhutiToAstUtil.ts";
 
 export default class IntellijTokenUtil {
     tokenHandler(ast: Program) {

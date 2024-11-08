@@ -6,7 +6,7 @@ import SubhutiCst from "../../../subhuti/src/struct/SubhutiCst.ts";
 import JsonUtil from "../../../subhuti/src/utils/JsonUtil.ts";
 import OvsParser from "./parser/OvsParser.ts";
 import SubhutiLChaining from "subhuti/src/struct/SubhutiLChaining.ts";
-import SubhutiToAstUtil from "subhuti/src/parser/SubhutiToAstUtil.ts";
+import SubhutiToAstUtil from "subhuti-ts/src/SubhutiToAstUtil.ts";
 import {OvsToAstUtil} from "./factory/OvsToAstUtil.ts";
 import {TokenProvider} from "../IntellijTokenUtil.ts";
 
