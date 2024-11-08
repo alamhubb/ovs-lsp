@@ -76,9 +76,9 @@ connection.onCompletion(
 
 // 修改初始化处理
 connection.onInitialize((params: InitializeParams): InitializeResult => {
-    // LogUtil.log('Server initializing with capabilities', {
-    //     capabilities: params.capabilities
-    // });
+    LogUtil.log({
+        capabilities: params.capabilities
+    });
 
     // 确保工作区文件夹存在
     if (params.workspaceFolders && params.workspaceFolders.length > 0) {
