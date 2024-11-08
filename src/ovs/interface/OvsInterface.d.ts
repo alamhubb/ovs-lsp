@@ -1,4 +1,5 @@
 import {
+    ArrayExpression,
     BaseCallExpression,
     BaseClass, BaseDeclaration,
     BaseExpression, BaseForXStatement, BaseFunction,
@@ -6,14 +7,14 @@ import {
     BaseModuleSpecifier,
     BaseNode,
     BaseNodeWithoutComments,
-    BasePattern, BaseStatement,
+    BasePattern, BaseStatement, BlockStatement,
     ClassBody,
     ClassDeclaration,
     Comment,
     Directive,
     ExportDefaultDeclaration,
-    Expression,
-    Identifier, MaybeNamedFunctionDeclaration,
+    Expression, ExpressionMap,
+    Identifier, MaybeNamedClassDeclaration, MaybeNamedFunctionDeclaration,
     MethodDefinition,
     ModuleDeclaration,
     type Program,
@@ -21,7 +22,9 @@ import {
     Statement
 } from "estree";
 
-export interface OvsAstExportDefaultDeclaration extends ExportDefaultDeclaration {
+export interface OvsAstExportDefaultDeclaration extends ExportDefaultDeclaration, OvsAstBaseModuleDeclaration {
+    type: "ExportDefaultDeclaration";
+    declaration: OvsAstMaybeNamedFunctionDeclaration | OvsAstMaybeNamedClassDeclaration | OvsAstExpression;
     export: BaseNode
     default: BaseNode
 }
@@ -38,21 +41,6 @@ export interface OvsAstLexicalBinding {
     type: "OvsLexicalBinding",
     id: Identifier
     init?: Expression | null | undefined;
-}
-
-
-export interface OvsAstBaseNodeWithoutComments {
-    // Every leaf interface OvsAstthat extends BaseNode must specify a type property.
-    // The type property should be a string literal. For example, Identifier
-    // has: OvsAst`type: "Identifier"`
-    type: string;
-    loc?: OvsAstSourceLocation | null | undefined;
-    range?: [number, number] | undefined;
-}
-
-export interface OvsAstBaseNode extends BaseNodeWithoutComments {
-    leadingComments?: OvsAstComment[] | undefined;
-    trailingComments?: OvsAstComment[] | undefined;
 }
 
 export interface OvsAstNodeMap {
@@ -110,7 +98,7 @@ export interface OvsAstDirective extends Directive {
     directive: string;
 }
 
-export interface OvsAstBaseFunction extends BaseNode {
+export interface OvsAstBaseFunction extends BaseFunction, BaseNode {
     params: OvsAstPattern[];
     generator?: boolean | undefined;
     async?: boolean | undefined;
@@ -258,8 +246,11 @@ export type OvsAstDeclaration = OvsAstFunctionDeclaration | OvsAstVariableDeclar
 export interface OvsAstBaseDeclaration extends BaseStatement {
 }
 
-export interface OvsAstMaybeNamedFunctionDeclaration extends OvsAstBaseFunction, OvsAstBaseDeclaration {
-
+export interface OvsAstMaybeNamedFunctionDeclaration extends MaybeNamedFunctionDeclaration, OvsAstBaseFunction, OvsAstBaseDeclaration {
+    type: "FunctionDeclaration";
+    /** It is null when a function declaration is a part of the `export default function` statement */
+    id: Identifier | null;
+    body: BlockStatement;
 }
 
 export interface OvsAstFunctionDeclaration extends MaybeNamedFunctionDeclaration {
@@ -278,7 +269,7 @@ export interface OvsAstVariableDeclarator extends BaseNode {
     init?: OvsAstExpression | null | undefined;
 }
 
-export interface OvsAstExpressionMap {
+export interface OvsAstExpressionMap extends ExpressionMap {
     ArrayExpression: OvsAstArrayExpression;
     ArrowFunctionExpression: OvsAstArrowFunctionExpression;
     AssignmentExpression: OvsAstAssignmentExpression;
@@ -322,7 +313,7 @@ export interface OvsAstThisExpression extends BaseExpression {
     type: "ThisExpression";
 }
 
-export interface OvsAstArrayExpression extends BaseExpression {
+export interface OvsAstArrayExpression extends ArrayExpression, BaseExpression {
     type: "ArrayExpression";
     elements: Array<OvsAstExpression | OvsAstSpreadElement | null>;
 }
