@@ -5,11 +5,8 @@ import {es6Tokens} from 'subhuti-ts/src/language/es2015/Es6Tokens.ts'
 import SubhutiCst from "../../../subhuti/src/struct/SubhutiCst.ts";
 import JsonUtil from "../../../subhuti/src/utils/JsonUtil.ts";
 import OvsParser from "./parser/OvsParser.ts";
-import SubhutiToAstUtil, {es6CstToEstreeAstUtil} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
-import {ovsToAstUtil, OvsToAstUtil} from "./factory/OvsToAstUtil.ts";
+import {ovsToAstUtil} from "./factory/OvsToAstUtil.ts";
 import {TokenProvider} from "../IntellijTokenUtil.ts";
-import Es6CstToEstreeAstUtil from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
-import {es6CstToSubhutiEs6AstUtil} from "./factory/SubhutiEs6CstToOvsAstUtil.ts";
 
 function traverseClearTokens(currentNode: SubhutiCst) {
     if (!currentNode || !currentNode.children || !currentNode.children.length)
