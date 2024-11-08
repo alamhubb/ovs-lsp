@@ -3,25 +3,19 @@ import {
     AssignmentExpression, AssignmentOperator, AssignmentPattern, AssignmentProperty,
     AwaitExpression,
     BaseCallExpression,
-    BaseClass,
-    BaseDeclaration,
-    BaseExpression,
-    BaseForXStatement,
     BaseFunction,
     BaseModuleDeclaration,
     BaseModuleSpecifier,
     PropertyDefinition,
     BaseNode,
-    BaseNodeWithoutComments,
-    BasePattern,
-    BaseStatement, BigIntLiteral,
+    BigIntLiteral,
     BinaryExpression, BinaryOperator,
     BlockStatement, BreakStatement, CatchClause,
     ChainExpression,
     ClassBody,
     ClassDeclaration, ClassExpression,
     Comment,
-    ConditionalExpression, ContinueStatement, DebuggerStatement, Declaration,
+    ConditionalExpression, ContinueStatement, DebuggerStatement,
     Directive, DoWhileStatement, EmptyStatement,
     ExportDefaultDeclaration,
     Expression,
@@ -573,7 +567,7 @@ export interface OvsAstMethodDefinition extends MethodDefinition {
     static: boolean;
 }
 
-export interface OvsAstMaybeNamedClassDeclaration extends BaseClass {
+export interface OvsAstMaybeNamedClassDeclaration extends MaybeNamedClassDeclaration {
     type: "ClassDeclaration";
     id: OvsAstIdentifier | null;
 }
