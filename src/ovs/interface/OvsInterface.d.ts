@@ -1,6 +1,6 @@
 import {
-    BaseNode, ClassBody, ClassDeclaration,
-    ExportDefaultDeclaration, Expression, Identifier, MethodDefinition, type Program
+    BaseNode, ClassBody, ClassDeclaration, Comment, Directive,
+    ExportDefaultDeclaration, Expression, Identifier, MethodDefinition, ModuleDeclaration, type Program, Statement
 } from "estree";
 
 export interface OvsAstExportDefaultDeclaration extends ExportDefaultDeclaration {
@@ -83,9 +83,10 @@ export interface OvsAstPosition {
 }
 
 export interface OvsAstProgram extends Program {
+    body: Array<OvsAstDirective | OvsAstStatement | OvsAstModuleDeclaration>;
 }
 
-export interface OvsAstDirective extends OvsAstBaseNode {
+export interface OvsAstDirective extends Directive {
     type: "ExpressionStatement";
     expression: OvsAstLiteral;
     directive: string;
