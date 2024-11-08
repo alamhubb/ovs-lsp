@@ -31,7 +31,7 @@ import type {
     SubhutiHighlithStaticBlock, SubhutiHighlithSubhutiTokenAst,
     SubhutiHighlithVariableDeclaration,
     SubhutiHighlithVariableDeclarator
-} from "src/subhuti/SubhutiEs6Ast.ts";
+} from "./OvsEs6Ast.ts";
 
 export const esTreeAstType = {
     ExportNamedDeclaration: 'ExportNamedDeclaration'
@@ -49,7 +49,7 @@ export function throwNewError(errorMsg: string = 'syntax error') {
     throw new Error(errorMsg)
 }
 
-export default class Es6CstToSubhutiEs6AstUtil {
+export default class SubhutiEs6CstToOvsAstUtil {
     createIdentifierAst(cst: SubhutiCst): SubhutiHighlithIdentifier {
         const astName = checkCstName(cst, Es6TokenConsumer.prototype.Identifier.name);
         const ast: SubhutiHighlithIdentifier = {
@@ -551,4 +551,4 @@ export default class Es6CstToSubhutiEs6AstUtil {
     }
 }
 
-export const es6CstToSubhutiEs6AstUtil = new Es6CstToSubhutiEs6AstUtil()
+export const es6CstToSubhutiEs6AstUtil = new SubhutiEs6CstToOvsAstUtil()
