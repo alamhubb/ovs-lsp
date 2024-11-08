@@ -33,10 +33,6 @@ import type {
     SubhutiHighlithVariableDeclarator
 } from "../interface/OvsEs6Ast.ts";
 
-export const esTreeAstType = {
-    ExportNamedDeclaration: 'ExportNamedDeclaration'
-}
-
 export function checkCstName(cst: SubhutiCst, cstName: string) {
     if (cst.name !== cstName) {
         console.log(cst)
