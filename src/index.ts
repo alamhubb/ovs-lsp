@@ -119,7 +119,11 @@ connection.languages.semanticTokens.on(params => {
         let tokens = lexer.lexer(text)
         const parser = new OvsParser(tokens)
         let curCst = parser.Program()
+        LogUtil.log('curCst')
+        LogUtil.log(curCst)
         const ast = ovsToAstUtil.createProgramAst(curCst)
+        LogUtil.log('ast')
+        LogUtil.log(ast)
         TokenProvider.visitNode(ast)
         JsonUtil.log(TokenProvider.tokens)
         const tokens1 = TokenProvider.tokens
@@ -138,9 +142,10 @@ connection.languages.semanticTokens.on(params => {
         } else {
             LogUtil.log('chufale kong' + text + 'fasfd')
         }
-    } catch (e) {
+    } catch (e: Error) {
         LogUtil.log('error')
-        LogUtil.log(e)
+        LogUtil.log(e.message)
+        LogUtil.log(e.stack)
     }
 
 

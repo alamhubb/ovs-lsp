@@ -14,6 +14,7 @@ import {
 import {EsTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {SourceLocation} from "subhuti/src/struct/SubhutiCst.ts";
 import {Program} from "estree";
+import {LogUtil} from "./logutil.ts";
 
 class SemanticToken {
     line: number;    // token 类型
@@ -189,8 +190,9 @@ export class TokenProvider {
 
 
     static visitNode(node: any) {
-        console.log(node.type)
-        console.log(node)
+        // LogUtil.log('jinru node')
+        // LogUtil.log(node)
+        // LogUtil.log('666666')
         switch (node.type) {
             case OvsParser.prototype.Program.name:
                 this.visitProgram(node)

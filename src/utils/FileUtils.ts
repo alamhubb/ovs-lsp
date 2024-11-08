@@ -63,42 +63,46 @@ console.log(res)
 export function initCompletionMap(filePath: string) {
     const files = FileUtil.getAllFiles(filePath);
     let completionItemAry: CompletionItem[] = []
-    for (const file of files) {
-        LogUtil.log(file)
-        const fileCode = FileUtil.readFileContent(file)
-        LogUtil.log(fileCode)
-        const ast = ovsToAstUtil.toAst(fileCode)
-        JsonUtil.log(ast)
-        if (ast.sourceType === 'module') {
-            for (const bodyElement of ast.body) {
-                LogUtil.log('474444')
-                LogUtil.log(ast)
-                LogUtil.log(ast.body)
-                // LogUtil.log(bodyElement)
-                // LogUtil.log(bodyElement.type)
-                LogUtil.log('6666')
-                if (bodyElement.type === EsTreeAstType.ExportDefaultDeclaration) {
-                    if (bodyElement.declaration.type === Es6Parser.prototype.ClassDeclaration) {
-                        const item: CompletionItem = {
-                            label: bodyElement.declaration.id.name,
-                            kind: CompletionItemKind.Class,
-                            detail:'detailItem',
-                            labelDetails: {
-                                detail: 'detail',
-                                description: 'description'
-                            },
-                            data: {
+    try {
+        for (const file of files) {
+            LogUtil.log(file)
+            const fileCode = FileUtil.readFileContent(file)
+            LogUtil.log(fileCode)
+            const ast = ovsToAstUtil.toAst(fileCode)
+            JsonUtil.log(ast)
+            if (ast.sourceType === 'module') {
+                for (const bodyElement of ast.body) {
+                    LogUtil.log('474444')
+                    LogUtil.log(ast)
+                    LogUtil.log(ast.body)
+                    // LogUtil.log(bodyElement)
+                    // LogUtil.log(bodyElement.type)
+                    LogUtil.log('6666')
+                    if (bodyElement.type === EsTreeAstType.ExportDefaultDeclaration) {
+                        if (bodyElement.declaration.type === Es6Parser.prototype.ClassDeclaration) {
+                            const item: CompletionItem = {
                                 label: bodyElement.declaration.id.name,
-                                type: CompletionItemKind.Class,
-                                file: file,
-                                default: !!bodyElement.default,
+                                kind: CompletionItemKind.Class,
+                                detail: 'detailItem',
+                                labelDetails: {
+                                    detail: 'detail',
+                                    description: 'description'
+                                },
+                                data: {
+                                    label: bodyElement.declaration.id.name,
+                                    type: CompletionItemKind.Class,
+                                    file: file,
+                                    default: !!bodyElement.default,
+                                }
                             }
+                            completionItemAry.push(item)
                         }
-                        completionItemAry.push(item)
                     }
                 }
             }
         }
+    } catch (e) {
+        LogUtil.log('jinrulecuowurizhi')
     }
     return completionItemAry
 }
