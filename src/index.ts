@@ -59,9 +59,12 @@ interface objtype {
 }
 
 const completionMap: Map<string, objtype> = new Map()
+let completionAry: objtype[] = []
+let completionItemAry: CompletionItem[] = []
 
 function initCompletionMap(filePath: string) {
     const files = FileUtil.getAllFiles(filePath);
+    completionItemAry = []
     for (const file of files) {
         console.log(file)
         const fileCode = FileUtil.readFileContent(file)
@@ -71,11 +74,15 @@ function initCompletionMap(filePath: string) {
             for (const bodyElement of ast.body) {
                 if (bodyElement.type === 'ExportDeclaration') {
                     if (bodyElement.declaration.type === 'ClassDeclaration') {
-                        completionMap.set(bodyElement.declaration.id.name, {
+                        completionItemAry.push({
                             label: bodyElement.declaration.id.name,
-                            type: CompletionItemKind.Class,
-                            file: file,
-                            default: !!bodyElement.default,
+                            kind: CompletionItemKind.Class,
+                            data: {
+                                label: bodyElement.declaration.id.name,
+                                type: CompletionItemKind.Class,
+                                file: file,
+                                default: !!bodyElement.default,
+                            }
                         })
                     }
                 }
@@ -83,6 +90,17 @@ function initCompletionMap(filePath: string) {
         }
     }
 }
+
+
+// 1. 基本补全请求处理
+connection.onCompletion(
+    (params: CompletionParams): CompletionItem[] => {
+        LogUtil.log(params)
+        // 返回基本的补全列表
+        return completionItemAry
+    }
+);
+
 
 // 修改初始化处理
 connection.onInitialize((params: InitializeParams): InitializeResult => {
@@ -92,8 +110,8 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
 
     // 确保工作区文件夹存在
     if (params.workspaceFolders && params.workspaceFolders.length > 0) {
-        const files = FileUtil.getAllFiles(params.workspaceFolders[0].uri);
-        LogUtil.log('Workspace files:', files);
+        initCompletionMap(params.workspaceFolders[0].uri)
+        LogUtil.log(completionItemAry);
     }
 
     return {
@@ -151,21 +169,6 @@ connection.languages.semanticTokens.on(params => {
     const build = builder.build()
     return build
 })
-
-// 1. 基本补全请求处理
-connection.onCompletion(
-    (params: CompletionParams): CompletionItem[] => {
-        LogUtil.log(params)
-        // 返回基本的补全列表
-        return [
-            {
-                label: 'someFunction',
-                kind: CompletionItemKind.Function,
-                data: 1  // 可以传递给 resolve 的数据
-            }
-        ];
-    }
-);
 
 // 2. 补全项解析处理 - 对应 completionItem/resolve
 connection.onCompletionResolve(
