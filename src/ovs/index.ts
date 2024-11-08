@@ -5,10 +5,10 @@ import {es6Tokens} from 'subhuti-ts/src/language/es2015/Es6Tokens.ts'
 import SubhutiCst from "../../../subhuti/src/struct/SubhutiCst.ts";
 import JsonUtil from "../../../subhuti/src/utils/JsonUtil.ts";
 import OvsParser from "./parser/OvsParser.ts";
-import SubhutiLChaining from "subhuti/src/struct/SubhutiLChaining.ts";
-import SubhutiToAstUtil from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
+import SubhutiToAstUtil, {es6CstToEstreeAstUtil} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {OvsToAstUtil} from "./factory/OvsToAstUtil.ts";
 import {TokenProvider} from "../IntellijTokenUtil.ts";
+import Es6CstToEstreeAstUtil from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 
 function traverseClearTokens(currentNode: SubhutiCst) {
     if (!currentNode || !currentNode.children || !currentNode.children.length)
@@ -30,16 +30,16 @@ export function vitePluginOvsTransform(code) {
     let code1 = null
     let curCst = parser.Program()
     curCst = traverseClearTokens(curCst)
-    JsonUtil.log(curCst)
+    // JsonUtil.log(curCst)
     console.log(111231)
     // JsonUtil.log(curCst)
     //cst转 estree ast
-    const ast = OvsToAstUtil.createProgramAst(curCst)
+    const ast = es6CstToEstreeAstUtil.createProgramAst(curCst)
     JsonUtil.log(ast)
-    console.log(456465)
+    // console.log(456465)
     //ast to client ast
-    TokenProvider.visitNode(ast)
-    JsonUtil.log(TokenProvider.tokens)
+    // TokenProvider.visitNode(ast)
+    // JsonUtil.log(TokenProvider.tokens)
 
 
     // code1 = parser.exec()

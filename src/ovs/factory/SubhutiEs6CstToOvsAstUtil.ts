@@ -31,7 +31,7 @@ import type {
     SubhutiHighlithStaticBlock, SubhutiHighlithSubhutiTokenAst,
     SubhutiHighlithVariableDeclaration,
     SubhutiHighlithVariableDeclarator
-} from "./OvsEs6Ast.ts";
+} from "../interface/OvsEs6Ast.ts";
 
 export const esTreeAstType = {
     ExportNamedDeclaration: 'ExportNamedDeclaration'
