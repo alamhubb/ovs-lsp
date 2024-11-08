@@ -25,11 +25,12 @@ import {
 import SubhutiLexer from 'subhuti/src/parser/SubhutiLexer.ts'
 import {es6Tokens, es6TokensObj} from 'subhuti-ts/src/language/es2015/Es6Tokens.ts'
 import JsonUtil from 'subhuti/src/utils/JsonUtil.ts'
-import OvsToAstHandler from "./ovs/factory/OvsToAstUtil.ts";
 import {TokenProvider, tokenTypesObj} from "./IntellijTokenUtil.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {LogUtil} from "./logutil.ts";
 import {FileUtil} from "./utils/FileUtils.ts";
+import {ovsToAstUtil} from "./ovs/factory/OvsToAstUtil.ts";
+import {EsTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 
 // 创建连接
 const connection = createConnection(ProposedFeatures.all)
@@ -69,10 +70,10 @@ function initCompletionMap(filePath: string) {
         console.log(file)
         const fileCode = FileUtil.readFileContent(file)
         console.log(fileCode)
-        const ast = OvsToAstHandler.toAst(fileCode)
+        const ast = ovsToAstUtil.toAst(fileCode)
         if (ast.sourceType === 'module') {
             for (const bodyElement of ast.body) {
-                if (bodyElement.type === 'ExportDeclaration') {
+                if (bodyElement.type === EsTreeAstType.ExportDefaultDeclaration) {
                     if (bodyElement.declaration.type === 'ClassDeclaration') {
                         completionItemAry.push({
                             label: bodyElement.declaration.id.name,
@@ -146,7 +147,7 @@ connection.languages.semanticTokens.on(params => {
     let tokens = lexer.lexer(text)
     const parser = new OvsParser(tokens)
     let curCst = parser.Program()
-    const ast = OvsToAstUtil.createProgramAst(curCst)
+    const ast = ovsToAstUtil.createProgramAst(curCst)
     TokenProvider.visitNode(ast)
     JsonUtil.log(TokenProvider.tokens)
     const tokens1 = TokenProvider.tokens

@@ -1,9 +1,12 @@
 import {
     BaseNode, ClassBody, ClassDeclaration,
-    ExportDefaultDeclaration, Expression, Identifier, MethodDefinition
+    ExportDefaultDeclaration, Expression, Identifier, MethodDefinition, type Program
 } from "estree";
 
-export interface OvsAstExportDeclaration extends ExportDefaultDeclaration {
+export interface OvsAstProgram extends Program {
+}
+
+export interface OvsAstExportDefaultDeclaration extends ExportDefaultDeclaration {
     export: BaseNode
     default: BaseNode
 }
@@ -11,12 +14,6 @@ export interface OvsAstExportDeclaration extends ExportDefaultDeclaration {
 export interface OvsAstMethodDefinition extends MethodDefinition {
     staticToken: BaseNode
 }
-
-
-//
-// export interface OvsAstClassBody extends ClassBody {
-//     class: BaseNode
-// }
 
 export interface OvsAstClassDeclaration extends ClassDeclaration {
     class: BaseNode

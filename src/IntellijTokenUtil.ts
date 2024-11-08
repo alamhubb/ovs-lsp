@@ -7,7 +7,7 @@ import Es6TokenConsumer, {
 import {SubhutiCreateToken} from "subhuti/src/struct/SubhutiCreateToken.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {
-    OvsAstClassDeclaration, OvsAstExportDeclaration,
+    OvsAstClassDeclaration, OvsAstExportDefaultDeclaration,
     OvsAstLexicalBinding, OvsAstMethodDefinition,
     OvsAstRenderDomViewDeclaration
 } from "./ovs/interface/OvsInterface";
@@ -63,7 +63,7 @@ export class TokenProvider {
         node.body.forEach(item => this.visitNode(item))
     }
 
-    private static visitExportDefaultDeclaration(node: OvsAstExportDeclaration) {
+    private static visitExportDefaultDeclaration(node: OvsAstExportDefaultDeclaration) {
         this.addToken(this.createSemanticToken(node.export))
         if (node.default) {
             this.addToken(this.createSemanticToken(node.default))
