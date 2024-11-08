@@ -63,34 +63,6 @@ const completionMap: Map<string, objtype> = new Map()
 let completionAry: objtype[] = []
 let completionItemAry: CompletionItem[] = []
 
-function initCompletionMap(filePath: string) {
-    const files = FileUtil.getAllFiles(filePath);
-    completionItemAry = []
-    for (const file of files) {
-        console.log(file)
-        const fileCode = FileUtil.readFileContent(file)
-        console.log(fileCode)
-        const ast = ovsToAstUtil.toAst(fileCode)
-        if (ast.sourceType === 'module') {
-            for (const bodyElement of ast.body) {
-                if (bodyElement.type === EsTreeAstType.ExportDefaultDeclaration) {
-                    if (bodyElement.declaration.type === 'ClassDeclaration') {
-                        completionItemAry.push({
-                            label: bodyElement.declaration.id.name,
-                            kind: CompletionItemKind.Class,
-                            data: {
-                                label: bodyElement.declaration.id.name,
-                                type: CompletionItemKind.Class,
-                                file: file,
-                                default: !!bodyElement.default,
-                            }
-                        })
-                    }
-                }
-            }
-        }
-    }
-}
 
 
 // 1. 基本补全请求处理

@@ -2,6 +2,9 @@ import * as fs from 'fs'
 import * as path from 'path'
 import {fileURLToPath} from "url";
 import {LogUtil} from "../logutil.ts";
+import {ovsToAstUtil} from "../ovs/factory/OvsToAstUtil.ts";
+import {EsTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
+import {CompletionItemKind} from "vscode-languageserver/node";
 
 export class FileUtil {
     // 读取文件内容
@@ -48,3 +51,38 @@ export class FileUtil {
 }
 
 
+const a = 'file:///c%3A/Users/qinkaiyuan/IdeaProjects/testovsplg1'
+
+const res = initCompletionMap(a)
+
+console.log(res)
+
+export function initCompletionMap(filePath: string) {
+    const files = FileUtil.getAllFiles(filePath);
+    let completionItemAry = []
+    for (const file of files) {
+        LogUtil.log(file)
+        const fileCode = FileUtil.readFileContent(file)
+        LogUtil.log(fileCode)
+        const ast = ovsToAstUtil.toAst(fileCode)
+        if (ast.sourceType === 'module') {
+            for (const bodyElement of ast.body) {
+                if (bodyElement.type === EsTreeAstType.ExportDefaultDeclaration) {
+                    if (bodyElement.declaration.type === 'ClassDeclaration') {
+                        completionItemAry.push({
+                            label: bodyElement.declaration.id.name,
+                            kind: CompletionItemKind.Class,
+                            data: {
+                                label: bodyElement.declaration.id.name,
+                                type: CompletionItemKind.Class,
+                                file: file,
+                                default: !!bodyElement.default,
+                            }
+                        })
+                    }
+                }
+            }
+        }
+    }
+    return completionItemAry
+}
