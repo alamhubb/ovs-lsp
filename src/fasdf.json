@@ -1,266 +1,1757 @@
 {
-  "type": "Program",
-  "sourceType": "module",
-  "body": [
+  "name": "Program",
+  "children": [
     {
-      "export": {
-        "type": "export",
-        "loc": {
-          "start": {
-            "line": 0,
-            "column": 0
-          },
-          "end": {
-            "line": 0,
-            "column": 6
-          }
-        }
-      },
-      "default": {
-        "type": "default",
-        "loc": {
-          "start": {
-            "line": 0,
-            "column": 7
-          },
-          "end": {
-            "line": 0,
-            "column": 14
-          }
-        }
-      },
-      "type": "ExportDefaultDeclaration",
-      "declaration": {
-        "type": "ClassDeclaration",
-        "id": {
-          "type": "Identifier",
-          "name": "Testa",
+      "name": "ModuleItemList",
+      "children": [
+        {
+          "name": "ExportDeclaration",
+          "children": [
+            {
+              "name": "ExportTok",
+              "loc": {
+                "start": {
+                  "line": 0,
+                  "column": 0
+                },
+                "end": {
+                  "line": 0,
+                  "column": 6
+                }
+              },
+              "value": "export"
+            },
+            {
+              "name": "DefaultTok",
+              "loc": {
+                "start": {
+                  "line": 0,
+                  "column": 7
+                },
+                "end": {
+                  "line": 0,
+                  "column": 14
+                }
+              },
+              "value": "default"
+            },
+            {
+              "name": "ClassDeclaration",
+              "children": [
+                {
+                  "name": "ClassTok",
+                  "loc": {
+                    "start": {
+                      "line": 0,
+                      "column": 15
+                    },
+                    "end": {
+                      "line": 0,
+                      "column": 20
+                    }
+                  },
+                  "value": "class"
+                },
+                {
+                  "name": "BindingIdentifier",
+                  "children": [
+                    {
+                      "name": "Identifier",
+                      "loc": {
+                        "start": {
+                          "line": 0,
+                          "column": 21
+                        },
+                        "end": {
+                          "line": 0,
+                          "column": 26
+                        }
+                      },
+                      "value": "Testa"
+                    }
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 0,
+                      "column": 21
+                    },
+                    "end": {
+                      "line": 0,
+                      "column": 26
+                    }
+                  },
+                  "tokens": [
+                    {
+                      "tokenName": "Identifier",
+                      "tokenValue": "Testa",
+                      "rowNum": 0,
+                      "columnStartNum": 21,
+                      "columnEndNum": 26
+                    }
+                  ]
+                },
+                {
+                  "name": "ClassTail",
+                  "children": [
+                    {
+                      "name": "LBrace",
+                      "loc": {
+                        "start": {
+                          "line": 0,
+                          "column": 27
+                        },
+                        "end": {
+                          "line": 0,
+                          "column": 28
+                        }
+                      },
+                      "value": "{"
+                    },
+                    {
+                      "name": "ClassBody",
+                      "children": [
+                        {
+                          "name": "ClassElementList",
+                          "children": [
+                            {
+                              "name": "ClassElement",
+                              "children": [
+                                {
+                                  "name": "StaticTok",
+                                  "loc": {
+                                    "start": {
+                                      "line": 1,
+                                      "column": 4
+                                    },
+                                    "end": {
+                                      "line": 1,
+                                      "column": 10
+                                    }
+                                  },
+                                  "value": "static"
+                                },
+                                {
+                                  "name": "MethodDefinition",
+                                  "children": [
+                                    {
+                                      "name": "PropertyName",
+                                      "children": [
+                                        {
+                                          "name": "LiteralPropertyName",
+                                          "children": [
+                                            {
+                                              "name": "Identifier",
+                                              "loc": {
+                                                "start": {
+                                                  "line": 1,
+                                                  "column": 11
+                                                },
+                                                "end": {
+                                                  "line": 1,
+                                                  "column": 18
+                                                }
+                                              },
+                                              "value": "print11"
+                                            }
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 1,
+                                              "column": 11
+                                            },
+                                            "end": {
+                                              "line": 1,
+                                              "column": 18
+                                            }
+                                          },
+                                          "tokens": [
+                                            {
+                                              "tokenName": "Identifier",
+                                              "tokenValue": "print11",
+                                              "rowNum": 1,
+                                              "columnStartNum": 11,
+                                              "columnEndNum": 18
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 1,
+                                          "column": 11
+                                        },
+                                        "end": {
+                                          "line": 1,
+                                          "column": 18
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "LParen",
+                                      "loc": {
+                                        "start": {
+                                          "line": 1,
+                                          "column": 18
+                                        },
+                                        "end": {
+                                          "line": 1,
+                                          "column": 19
+                                        }
+                                      },
+                                      "value": "("
+                                    },
+                                    {
+                                      "name": "FormalParameters",
+                                      "children": [
+                                        {
+                                          "name": "FormalParameterList",
+                                          "children": [
+                                            {
+                                              "name": "FormalsList",
+                                              "children": [
+                                                {
+                                                  "name": "FormalParameter",
+                                                  "children": [
+                                                    {
+                                                      "name": "BindingElement",
+                                                      "children": [
+                                                        {
+                                                          "name": "SingleNameBinding",
+                                                          "children": [
+                                                            {
+                                                              "name": "BindingIdentifier",
+                                                              "children": [
+                                                                {
+                                                                  "name": "Identifier",
+                                                                  "loc": {
+                                                                    "start": {
+                                                                      "line": 1,
+                                                                      "column": 19
+                                                                    },
+                                                                    "end": {
+                                                                      "line": 1,
+                                                                      "column": 22
+                                                                    }
+                                                                  },
+                                                                  "value": "abc"
+                                                                }
+                                                              ],
+                                                              "loc": {
+                                                                "start": {
+                                                                  "line": 1,
+                                                                  "column": 19
+                                                                },
+                                                                "end": {
+                                                                  "line": 1,
+                                                                  "column": 22
+                                                                }
+                                                              },
+                                                              "tokens": [
+                                                                {
+                                                                  "tokenName": "Identifier",
+                                                                  "tokenValue": "abc",
+                                                                  "rowNum": 1,
+                                                                  "columnStartNum": 19,
+                                                                  "columnEndNum": 22
+                                                                }
+                                                              ]
+                                                            }
+                                                          ],
+                                                          "loc": {
+                                                            "start": {
+                                                              "line": 1,
+                                                              "column": 19
+                                                            },
+                                                            "end": {
+                                                              "line": 1,
+                                                              "column": 22
+                                                            }
+                                                          }
+                                                        }
+                                                      ],
+                                                      "loc": {
+                                                        "start": {
+                                                          "line": 1,
+                                                          "column": 19
+                                                        },
+                                                        "end": {
+                                                          "line": 1,
+                                                          "column": 22
+                                                        }
+                                                      }
+                                                    }
+                                                  ],
+                                                  "loc": {
+                                                    "start": {
+                                                      "line": 1,
+                                                      "column": 19
+                                                    },
+                                                    "end": {
+                                                      "line": 1,
+                                                      "column": 22
+                                                    }
+                                                  }
+                                                }
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 1,
+                                                  "column": 19
+                                                },
+                                                "end": {
+                                                  "line": 1,
+                                                  "column": 22
+                                                }
+                                              }
+                                            }
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 1,
+                                              "column": 19
+                                            },
+                                            "end": {
+                                              "line": 1,
+                                              "column": 22
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 1,
+                                          "column": 19
+                                        },
+                                        "end": {
+                                          "line": 1,
+                                          "column": 22
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "RParen",
+                                      "loc": {
+                                        "start": {
+                                          "line": 1,
+                                          "column": 22
+                                        },
+                                        "end": {
+                                          "line": 1,
+                                          "column": 23
+                                        }
+                                      },
+                                      "value": ")"
+                                    },
+                                    {
+                                      "name": "LBrace",
+                                      "loc": {
+                                        "start": {
+                                          "line": 1,
+                                          "column": 24
+                                        },
+                                        "end": {
+                                          "line": 1,
+                                          "column": 25
+                                        }
+                                      },
+                                      "value": "{"
+                                    },
+                                    {
+                                      "name": "FunctionBody",
+                                      "children": [
+                                        {
+                                          "name": "StatementList",
+                                          "children": [
+                                            {
+                                              "name": "StatementListItem",
+                                              "children": [
+                                                {
+                                                  "name": "Statement",
+                                                  "children": [
+                                                    {
+                                                      "name": "ExpressionStatement",
+                                                      "children": [
+                                                        {
+                                                          "name": "Expression",
+                                                          "children": [
+                                                            {
+                                                              "name": "AssignmentExpression",
+                                                              "children": [
+                                                                {
+                                                                  "name": "ConditionalExpression",
+                                                                  "children": [
+                                                                    {
+                                                                      "name": "LogicalORExpression",
+                                                                      "children": [
+                                                                        {
+                                                                          "name": "LogicalANDExpression",
+                                                                          "children": [
+                                                                            {
+                                                                              "name": "BitwiseORExpression",
+                                                                              "children": [
+                                                                                {
+                                                                                  "name": "BitwiseXORExpression",
+                                                                                  "children": [
+                                                                                    {
+                                                                                      "name": "BitwiseANDExpression",
+                                                                                      "children": [
+                                                                                        {
+                                                                                          "name": "EqualityExpression",
+                                                                                          "children": [
+                                                                                            {
+                                                                                              "name": "RelationalExpression",
+                                                                                              "children": [
+                                                                                                {
+                                                                                                  "name": "ShiftExpression",
+                                                                                                  "children": [
+                                                                                                    {
+                                                                                                      "name": "AdditiveExpression",
+                                                                                                      "children": [
+                                                                                                        {
+                                                                                                          "name": "MultiplicativeExpression",
+                                                                                                          "children": [
+                                                                                                            {
+                                                                                                              "name": "UnaryExpression",
+                                                                                                              "children": [
+                                                                                                                {
+                                                                                                                  "name": "PostfixExpression",
+                                                                                                                  "children": [
+                                                                                                                    {
+                                                                                                                      "name": "LeftHandSideExpression",
+                                                                                                                      "children": [
+                                                                                                                        {
+                                                                                                                          "name": "CallExpression",
+                                                                                                                          "children": [
+                                                                                                                            {
+                                                                                                                              "name": "MemberExpression",
+                                                                                                                              "children": [
+                                                                                                                                {
+                                                                                                                                  "name": "PrimaryExpression",
+                                                                                                                                  "children": [
+                                                                                                                                    {
+                                                                                                                                      "name": "IdentifierReference",
+                                                                                                                                      "children": [
+                                                                                                                                        {
+                                                                                                                                          "name": "Identifier",
+                                                                                                                                          "loc": {
+                                                                                                                                            "start": {
+                                                                                                                                              "line": 2,
+                                                                                                                                              "column": 8
+                                                                                                                                            },
+                                                                                                                                            "end": {
+                                                                                                                                              "line": 2,
+                                                                                                                                              "column": 15
+                                                                                                                                            }
+                                                                                                                                          },
+                                                                                                                                          "value": "console"
+                                                                                                                                        }
+                                                                                                                                      ],
+                                                                                                                                      "loc": {
+                                                                                                                                        "start": {
+                                                                                                                                          "line": 2,
+                                                                                                                                          "column": 8
+                                                                                                                                        },
+                                                                                                                                        "end": {
+                                                                                                                                          "line": 2,
+                                                                                                                                          "column": 15
+                                                                                                                                        }
+                                                                                                                                      },
+                                                                                                                                      "tokens": [
+                                                                                                                                        {
+                                                                                                                                          "tokenName": "Identifier",
+                                                                                                                                          "tokenValue": "console",
+                                                                                                                                          "rowNum": 2,
+                                                                                                                                          "columnStartNum": 8,
+                                                                                                                                          "columnEndNum": 15
+                                                                                                                                        }
+                                                                                                                                      ]
+                                                                                                                                    }
+                                                                                                                                  ],
+                                                                                                                                  "loc": {
+                                                                                                                                    "start": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 8
+                                                                                                                                    },
+                                                                                                                                    "end": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 15
+                                                                                                                                    }
+                                                                                                                                  }
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                  "name": "Dot",
+                                                                                                                                  "loc": {
+                                                                                                                                    "start": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 15
+                                                                                                                                    },
+                                                                                                                                    "end": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 16
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "value": "."
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                  "name": "Identifier",
+                                                                                                                                  "loc": {
+                                                                                                                                    "start": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 16
+                                                                                                                                    },
+                                                                                                                                    "end": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 19
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "value": "log"
+                                                                                                                                }
+                                                                                                                              ],
+                                                                                                                              "loc": {
+                                                                                                                                "start": {
+                                                                                                                                  "line": 2,
+                                                                                                                                  "column": 8
+                                                                                                                                },
+                                                                                                                                "end": {
+                                                                                                                                  "line": 2,
+                                                                                                                                  "column": 19
+                                                                                                                                }
+                                                                                                                              },
+                                                                                                                              "tokens": [
+                                                                                                                                {
+                                                                                                                                  "tokenName": "Dot",
+                                                                                                                                  "tokenValue": ".",
+                                                                                                                                  "rowNum": 2,
+                                                                                                                                  "columnStartNum": 15,
+                                                                                                                                  "columnEndNum": 16
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                  "tokenName": "Identifier",
+                                                                                                                                  "tokenValue": "log",
+                                                                                                                                  "rowNum": 2,
+                                                                                                                                  "columnStartNum": 16,
+                                                                                                                                  "columnEndNum": 19
+                                                                                                                                }
+                                                                                                                              ]
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                              "name": "Arguments",
+                                                                                                                              "children": [
+                                                                                                                                {
+                                                                                                                                  "name": "LParen",
+                                                                                                                                  "loc": {
+                                                                                                                                    "start": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 19
+                                                                                                                                    },
+                                                                                                                                    "end": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 20
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "value": "("
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                  "name": "ArgumentList",
+                                                                                                                                  "children": [
+                                                                                                                                    {
+                                                                                                                                      "name": "AssignmentExpression",
+                                                                                                                                      "children": [
+                                                                                                                                        {
+                                                                                                                                          "name": "ConditionalExpression",
+                                                                                                                                          "children": [
+                                                                                                                                            {
+                                                                                                                                              "name": "LogicalORExpression",
+                                                                                                                                              "children": [
+                                                                                                                                                {
+                                                                                                                                                  "name": "LogicalANDExpression",
+                                                                                                                                                  "children": [
+                                                                                                                                                    {
+                                                                                                                                                      "name": "BitwiseORExpression",
+                                                                                                                                                      "children": [
+                                                                                                                                                        {
+                                                                                                                                                          "name": "BitwiseXORExpression",
+                                                                                                                                                          "children": [
+                                                                                                                                                            {
+                                                                                                                                                              "name": "BitwiseANDExpression",
+                                                                                                                                                              "children": [
+                                                                                                                                                                {
+                                                                                                                                                                  "name": "EqualityExpression",
+                                                                                                                                                                  "children": [
+                                                                                                                                                                    {
+                                                                                                                                                                      "name": "RelationalExpression",
+                                                                                                                                                                      "children": [
+                                                                                                                                                                        {
+                                                                                                                                                                          "name": "ShiftExpression",
+                                                                                                                                                                          "children": [
+                                                                                                                                                                            {
+                                                                                                                                                                              "name": "AdditiveExpression",
+                                                                                                                                                                              "children": [
+                                                                                                                                                                                {
+                                                                                                                                                                                  "name": "MultiplicativeExpression",
+                                                                                                                                                                                  "children": [
+                                                                                                                                                                                    {
+                                                                                                                                                                                      "name": "UnaryExpression",
+                                                                                                                                                                                      "children": [
+                                                                                                                                                                                        {
+                                                                                                                                                                                          "name": "PostfixExpression",
+                                                                                                                                                                                          "children": [
+                                                                                                                                                                                            {
+                                                                                                                                                                                              "name": "LeftHandSideExpression",
+                                                                                                                                                                                              "children": [
+                                                                                                                                                                                                {
+                                                                                                                                                                                                  "name": "NewExpression",
+                                                                                                                                                                                                  "children": [
+                                                                                                                                                                                                    {
+                                                                                                                                                                                                      "name": "MemberExpression",
+                                                                                                                                                                                                      "children": [
+                                                                                                                                                                                                        {
+                                                                                                                                                                                                          "name": "PrimaryExpression",
+                                                                                                                                                                                                          "children": [
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                              "name": "Literal",
+                                                                                                                                                                                                              "children": [
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                  "name": "TrueTok",
+                                                                                                                                                                                                                  "loc": {
+                                                                                                                                                                                                                    "start": {
+                                                                                                                                                                                                                      "line": 2,
+                                                                                                                                                                                                                      "column": 20
+                                                                                                                                                                                                                    },
+                                                                                                                                                                                                                    "end": {
+                                                                                                                                                                                                                      "line": 2,
+                                                                                                                                                                                                                      "column": 24
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                  },
+                                                                                                                                                                                                                  "value": "true"
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                              ],
+                                                                                                                                                                                                              "loc": {
+                                                                                                                                                                                                                "start": {
+                                                                                                                                                                                                                  "line": 2,
+                                                                                                                                                                                                                  "column": 20
+                                                                                                                                                                                                                },
+                                                                                                                                                                                                                "end": {
+                                                                                                                                                                                                                  "line": 2,
+                                                                                                                                                                                                                  "column": 24
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                              },
+                                                                                                                                                                                                              "tokens": [
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                  "tokenName": "TrueTok",
+                                                                                                                                                                                                                  "tokenValue": "true",
+                                                                                                                                                                                                                  "rowNum": 2,
+                                                                                                                                                                                                                  "columnStartNum": 20,
+                                                                                                                                                                                                                  "columnEndNum": 24
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                              ]
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                          ],
+                                                                                                                                                                                                          "loc": {
+                                                                                                                                                                                                            "start": {
+                                                                                                                                                                                                              "line": 2,
+                                                                                                                                                                                                              "column": 20
+                                                                                                                                                                                                            },
+                                                                                                                                                                                                            "end": {
+                                                                                                                                                                                                              "line": 2,
+                                                                                                                                                                                                              "column": 24
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                          }
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                      ],
+                                                                                                                                                                                                      "loc": {
+                                                                                                                                                                                                        "start": {
+                                                                                                                                                                                                          "line": 2,
+                                                                                                                                                                                                          "column": 20
+                                                                                                                                                                                                        },
+                                                                                                                                                                                                        "end": {
+                                                                                                                                                                                                          "line": 2,
+                                                                                                                                                                                                          "column": 24
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                      }
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                  ],
+                                                                                                                                                                                                  "loc": {
+                                                                                                                                                                                                    "start": {
+                                                                                                                                                                                                      "line": 2,
+                                                                                                                                                                                                      "column": 20
+                                                                                                                                                                                                    },
+                                                                                                                                                                                                    "end": {
+                                                                                                                                                                                                      "line": 2,
+                                                                                                                                                                                                      "column": 24
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                  }
+                                                                                                                                                                                                }
+                                                                                                                                                                                              ],
+                                                                                                                                                                                              "loc": {
+                                                                                                                                                                                                "start": {
+                                                                                                                                                                                                  "line": 2,
+                                                                                                                                                                                                  "column": 20
+                                                                                                                                                                                                },
+                                                                                                                                                                                                "end": {
+                                                                                                                                                                                                  "line": 2,
+                                                                                                                                                                                                  "column": 24
+                                                                                                                                                                                                }
+                                                                                                                                                                                              }
+                                                                                                                                                                                            }
+                                                                                                                                                                                          ],
+                                                                                                                                                                                          "loc": {
+                                                                                                                                                                                            "start": {
+                                                                                                                                                                                              "line": 2,
+                                                                                                                                                                                              "column": 20
+                                                                                                                                                                                            },
+                                                                                                                                                                                            "end": {
+                                                                                                                                                                                              "line": 2,
+                                                                                                                                                                                              "column": 24
+                                                                                                                                                                                            }
+                                                                                                                                                                                          }
+                                                                                                                                                                                        }
+                                                                                                                                                                                      ],
+                                                                                                                                                                                      "loc": {
+                                                                                                                                                                                        "start": {
+                                                                                                                                                                                          "line": 2,
+                                                                                                                                                                                          "column": 20
+                                                                                                                                                                                        },
+                                                                                                                                                                                        "end": {
+                                                                                                                                                                                          "line": 2,
+                                                                                                                                                                                          "column": 24
+                                                                                                                                                                                        }
+                                                                                                                                                                                      }
+                                                                                                                                                                                    }
+                                                                                                                                                                                  ],
+                                                                                                                                                                                  "loc": {
+                                                                                                                                                                                    "start": {
+                                                                                                                                                                                      "line": 2,
+                                                                                                                                                                                      "column": 20
+                                                                                                                                                                                    },
+                                                                                                                                                                                    "end": {
+                                                                                                                                                                                      "line": 2,
+                                                                                                                                                                                      "column": 24
+                                                                                                                                                                                    }
+                                                                                                                                                                                  }
+                                                                                                                                                                                }
+                                                                                                                                                                              ],
+                                                                                                                                                                              "loc": {
+                                                                                                                                                                                "start": {
+                                                                                                                                                                                  "line": 2,
+                                                                                                                                                                                  "column": 20
+                                                                                                                                                                                },
+                                                                                                                                                                                "end": {
+                                                                                                                                                                                  "line": 2,
+                                                                                                                                                                                  "column": 24
+                                                                                                                                                                                }
+                                                                                                                                                                              }
+                                                                                                                                                                            }
+                                                                                                                                                                          ],
+                                                                                                                                                                          "loc": {
+                                                                                                                                                                            "start": {
+                                                                                                                                                                              "line": 2,
+                                                                                                                                                                              "column": 20
+                                                                                                                                                                            },
+                                                                                                                                                                            "end": {
+                                                                                                                                                                              "line": 2,
+                                                                                                                                                                              "column": 24
+                                                                                                                                                                            }
+                                                                                                                                                                          }
+                                                                                                                                                                        }
+                                                                                                                                                                      ],
+                                                                                                                                                                      "loc": {
+                                                                                                                                                                        "start": {
+                                                                                                                                                                          "line": 2,
+                                                                                                                                                                          "column": 20
+                                                                                                                                                                        },
+                                                                                                                                                                        "end": {
+                                                                                                                                                                          "line": 2,
+                                                                                                                                                                          "column": 24
+                                                                                                                                                                        }
+                                                                                                                                                                      }
+                                                                                                                                                                    }
+                                                                                                                                                                  ],
+                                                                                                                                                                  "loc": {
+                                                                                                                                                                    "start": {
+                                                                                                                                                                      "line": 2,
+                                                                                                                                                                      "column": 20
+                                                                                                                                                                    },
+                                                                                                                                                                    "end": {
+                                                                                                                                                                      "line": 2,
+                                                                                                                                                                      "column": 24
+                                                                                                                                                                    }
+                                                                                                                                                                  }
+                                                                                                                                                                }
+                                                                                                                                                              ],
+                                                                                                                                                              "loc": {
+                                                                                                                                                                "start": {
+                                                                                                                                                                  "line": 2,
+                                                                                                                                                                  "column": 20
+                                                                                                                                                                },
+                                                                                                                                                                "end": {
+                                                                                                                                                                  "line": 2,
+                                                                                                                                                                  "column": 24
+                                                                                                                                                                }
+                                                                                                                                                              }
+                                                                                                                                                            }
+                                                                                                                                                          ],
+                                                                                                                                                          "loc": {
+                                                                                                                                                            "start": {
+                                                                                                                                                              "line": 2,
+                                                                                                                                                              "column": 20
+                                                                                                                                                            },
+                                                                                                                                                            "end": {
+                                                                                                                                                              "line": 2,
+                                                                                                                                                              "column": 24
+                                                                                                                                                            }
+                                                                                                                                                          }
+                                                                                                                                                        }
+                                                                                                                                                      ],
+                                                                                                                                                      "loc": {
+                                                                                                                                                        "start": {
+                                                                                                                                                          "line": 2,
+                                                                                                                                                          "column": 20
+                                                                                                                                                        },
+                                                                                                                                                        "end": {
+                                                                                                                                                          "line": 2,
+                                                                                                                                                          "column": 24
+                                                                                                                                                        }
+                                                                                                                                                      }
+                                                                                                                                                    }
+                                                                                                                                                  ],
+                                                                                                                                                  "loc": {
+                                                                                                                                                    "start": {
+                                                                                                                                                      "line": 2,
+                                                                                                                                                      "column": 20
+                                                                                                                                                    },
+                                                                                                                                                    "end": {
+                                                                                                                                                      "line": 2,
+                                                                                                                                                      "column": 24
+                                                                                                                                                    }
+                                                                                                                                                  }
+                                                                                                                                                }
+                                                                                                                                              ],
+                                                                                                                                              "loc": {
+                                                                                                                                                "start": {
+                                                                                                                                                  "line": 2,
+                                                                                                                                                  "column": 20
+                                                                                                                                                },
+                                                                                                                                                "end": {
+                                                                                                                                                  "line": 2,
+                                                                                                                                                  "column": 24
+                                                                                                                                                }
+                                                                                                                                              }
+                                                                                                                                            }
+                                                                                                                                          ],
+                                                                                                                                          "loc": {
+                                                                                                                                            "start": {
+                                                                                                                                              "line": 2,
+                                                                                                                                              "column": 20
+                                                                                                                                            },
+                                                                                                                                            "end": {
+                                                                                                                                              "line": 2,
+                                                                                                                                              "column": 24
+                                                                                                                                            }
+                                                                                                                                          }
+                                                                                                                                        }
+                                                                                                                                      ],
+                                                                                                                                      "loc": {
+                                                                                                                                        "start": {
+                                                                                                                                          "line": 2,
+                                                                                                                                          "column": 20
+                                                                                                                                        },
+                                                                                                                                        "end": {
+                                                                                                                                          "line": 2,
+                                                                                                                                          "column": 24
+                                                                                                                                        }
+                                                                                                                                      }
+                                                                                                                                    }
+                                                                                                                                  ],
+                                                                                                                                  "loc": {
+                                                                                                                                    "start": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 20
+                                                                                                                                    },
+                                                                                                                                    "end": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 24
+                                                                                                                                    }
+                                                                                                                                  }
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                  "name": "RParen",
+                                                                                                                                  "loc": {
+                                                                                                                                    "start": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 24
+                                                                                                                                    },
+                                                                                                                                    "end": {
+                                                                                                                                      "line": 2,
+                                                                                                                                      "column": 25
+                                                                                                                                    }
+                                                                                                                                  },
+                                                                                                                                  "value": ")"
+                                                                                                                                }
+                                                                                                                              ],
+                                                                                                                              "loc": {
+                                                                                                                                "start": {
+                                                                                                                                  "line": 2,
+                                                                                                                                  "column": 19
+                                                                                                                                },
+                                                                                                                                "end": {
+                                                                                                                                  "line": 2,
+                                                                                                                                  "column": 25
+                                                                                                                                }
+                                                                                                                              },
+                                                                                                                              "tokens": [
+                                                                                                                                {
+                                                                                                                                  "tokenName": "LParen",
+                                                                                                                                  "tokenValue": "(",
+                                                                                                                                  "rowNum": 2,
+                                                                                                                                  "columnStartNum": 19,
+                                                                                                                                  "columnEndNum": 20
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                  "tokenName": "RParen",
+                                                                                                                                  "tokenValue": ")",
+                                                                                                                                  "rowNum": 2,
+                                                                                                                                  "columnStartNum": 24,
+                                                                                                                                  "columnEndNum": 25
+                                                                                                                                }
+                                                                                                                              ]
+                                                                                                                            }
+                                                                                                                          ],
+                                                                                                                          "loc": {
+                                                                                                                            "start": {
+                                                                                                                              "line": 2,
+                                                                                                                              "column": 8
+                                                                                                                            },
+                                                                                                                            "end": {
+                                                                                                                              "line": 2,
+                                                                                                                              "column": 25
+                                                                                                                            }
+                                                                                                                          }
+                                                                                                                        }
+                                                                                                                      ],
+                                                                                                                      "loc": {
+                                                                                                                        "start": {
+                                                                                                                          "line": 2,
+                                                                                                                          "column": 8
+                                                                                                                        },
+                                                                                                                        "end": {
+                                                                                                                          "line": 2,
+                                                                                                                          "column": 25
+                                                                                                                        }
+                                                                                                                      }
+                                                                                                                    }
+                                                                                                                  ],
+                                                                                                                  "loc": {
+                                                                                                                    "start": {
+                                                                                                                      "line": 2,
+                                                                                                                      "column": 8
+                                                                                                                    },
+                                                                                                                    "end": {
+                                                                                                                      "line": 2,
+                                                                                                                      "column": 25
+                                                                                                                    }
+                                                                                                                  }
+                                                                                                                }
+                                                                                                              ],
+                                                                                                              "loc": {
+                                                                                                                "start": {
+                                                                                                                  "line": 2,
+                                                                                                                  "column": 8
+                                                                                                                },
+                                                                                                                "end": {
+                                                                                                                  "line": 2,
+                                                                                                                  "column": 25
+                                                                                                                }
+                                                                                                              }
+                                                                                                            }
+                                                                                                          ],
+                                                                                                          "loc": {
+                                                                                                            "start": {
+                                                                                                              "line": 2,
+                                                                                                              "column": 8
+                                                                                                            },
+                                                                                                            "end": {
+                                                                                                              "line": 2,
+                                                                                                              "column": 25
+                                                                                                            }
+                                                                                                          }
+                                                                                                        }
+                                                                                                      ],
+                                                                                                      "loc": {
+                                                                                                        "start": {
+                                                                                                          "line": 2,
+                                                                                                          "column": 8
+                                                                                                        },
+                                                                                                        "end": {
+                                                                                                          "line": 2,
+                                                                                                          "column": 25
+                                                                                                        }
+                                                                                                      }
+                                                                                                    }
+                                                                                                  ],
+                                                                                                  "loc": {
+                                                                                                    "start": {
+                                                                                                      "line": 2,
+                                                                                                      "column": 8
+                                                                                                    },
+                                                                                                    "end": {
+                                                                                                      "line": 2,
+                                                                                                      "column": 25
+                                                                                                    }
+                                                                                                  }
+                                                                                                }
+                                                                                              ],
+                                                                                              "loc": {
+                                                                                                "start": {
+                                                                                                  "line": 2,
+                                                                                                  "column": 8
+                                                                                                },
+                                                                                                "end": {
+                                                                                                  "line": 2,
+                                                                                                  "column": 25
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          ],
+                                                                                          "loc": {
+                                                                                            "start": {
+                                                                                              "line": 2,
+                                                                                              "column": 8
+                                                                                            },
+                                                                                            "end": {
+                                                                                              "line": 2,
+                                                                                              "column": 25
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      ],
+                                                                                      "loc": {
+                                                                                        "start": {
+                                                                                          "line": 2,
+                                                                                          "column": 8
+                                                                                        },
+                                                                                        "end": {
+                                                                                          "line": 2,
+                                                                                          "column": 25
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  ],
+                                                                                  "loc": {
+                                                                                    "start": {
+                                                                                      "line": 2,
+                                                                                      "column": 8
+                                                                                    },
+                                                                                    "end": {
+                                                                                      "line": 2,
+                                                                                      "column": 25
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              ],
+                                                                              "loc": {
+                                                                                "start": {
+                                                                                  "line": 2,
+                                                                                  "column": 8
+                                                                                },
+                                                                                "end": {
+                                                                                  "line": 2,
+                                                                                  "column": 25
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "loc": {
+                                                                            "start": {
+                                                                              "line": 2,
+                                                                              "column": 8
+                                                                            },
+                                                                            "end": {
+                                                                              "line": 2,
+                                                                              "column": 25
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      "loc": {
+                                                                        "start": {
+                                                                          "line": 2,
+                                                                          "column": 8
+                                                                        },
+                                                                        "end": {
+                                                                          "line": 2,
+                                                                          "column": 25
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "loc": {
+                                                                    "start": {
+                                                                      "line": 2,
+                                                                      "column": 8
+                                                                    },
+                                                                    "end": {
+                                                                      "line": 2,
+                                                                      "column": 25
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "loc": {
+                                                                "start": {
+                                                                  "line": 2,
+                                                                  "column": 8
+                                                                },
+                                                                "end": {
+                                                                  "line": 2,
+                                                                  "column": 25
+                                                                }
+                                                              }
+                                                            }
+                                                          ],
+                                                          "loc": {
+                                                            "start": {
+                                                              "line": 2,
+                                                              "column": 8
+                                                            },
+                                                            "end": {
+                                                              "line": 2,
+                                                              "column": 25
+                                                            }
+                                                          }
+                                                        }
+                                                      ],
+                                                      "loc": {
+                                                        "start": {
+                                                          "line": 2,
+                                                          "column": 8
+                                                        },
+                                                        "end": {
+                                                          "line": 2,
+                                                          "column": 25
+                                                        }
+                                                      }
+                                                    }
+                                                  ],
+                                                  "loc": {
+                                                    "start": {
+                                                      "line": 2,
+                                                      "column": 8
+                                                    },
+                                                    "end": {
+                                                      "line": 2,
+                                                      "column": 25
+                                                    }
+                                                  }
+                                                }
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 2,
+                                                  "column": 8
+                                                },
+                                                "end": {
+                                                  "line": 2,
+                                                  "column": 25
+                                                }
+                                              }
+                                            }
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 2,
+                                              "column": 8
+                                            },
+                                            "end": {
+                                              "line": 2,
+                                              "column": 25
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 2,
+                                          "column": 8
+                                        },
+                                        "end": {
+                                          "line": 2,
+                                          "column": 25
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "RBrace",
+                                      "loc": {
+                                        "start": {
+                                          "line": 3,
+                                          "column": 4
+                                        },
+                                        "end": {
+                                          "line": 3,
+                                          "column": 5
+                                        }
+                                      },
+                                      "value": "}"
+                                    }
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 1,
+                                      "column": 11
+                                    },
+                                    "end": {
+                                      "line": 3,
+                                      "column": 5
+                                    }
+                                  },
+                                  "tokens": [
+                                    {
+                                      "tokenName": "LParen",
+                                      "tokenValue": "(",
+                                      "rowNum": 1,
+                                      "columnStartNum": 18,
+                                      "columnEndNum": 19
+                                    },
+                                    {
+                                      "tokenName": "RParen",
+                                      "tokenValue": ")",
+                                      "rowNum": 1,
+                                      "columnStartNum": 22,
+                                      "columnEndNum": 23
+                                    },
+                                    {
+                                      "tokenName": "LBrace",
+                                      "tokenValue": "{",
+                                      "rowNum": 1,
+                                      "columnStartNum": 24,
+                                      "columnEndNum": 25
+                                    },
+                                    {
+                                      "tokenName": "RBrace",
+                                      "tokenValue": "}",
+                                      "rowNum": 3,
+                                      "columnStartNum": 4,
+                                      "columnEndNum": 5
+                                    }
+                                  ]
+                                }
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 1,
+                                  "column": 4
+                                },
+                                "end": {
+                                  "line": 3,
+                                  "column": 5
+                                }
+                              },
+                              "tokens": [
+                                {
+                                  "tokenName": "StaticTok",
+                                  "tokenValue": "static",
+                                  "rowNum": 1,
+                                  "columnStartNum": 4,
+                                  "columnEndNum": 10
+                                }
+                              ]
+                            }
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 1,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 3,
+                              "column": 5
+                            }
+                          }
+                        }
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 1,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 5
+                        }
+                      }
+                    },
+                    {
+                      "name": "RBrace",
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 0
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 1
+                        }
+                      },
+                      "value": "}"
+                    }
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 0,
+                      "column": 27
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 1
+                    }
+                  },
+                  "tokens": [
+                    {
+                      "tokenName": "LBrace",
+                      "tokenValue": "{",
+                      "rowNum": 0,
+                      "columnStartNum": 27,
+                      "columnEndNum": 28
+                    },
+                    {
+                      "tokenName": "RBrace",
+                      "tokenValue": "}",
+                      "rowNum": 4,
+                      "columnStartNum": 0,
+                      "columnEndNum": 1
+                    }
+                  ]
+                }
+              ],
+              "loc": {
+                "start": {
+                  "line": 0,
+                  "column": 15
+                },
+                "end": {
+                  "line": 4,
+                  "column": 1
+                }
+              },
+              "tokens": [
+                {
+                  "tokenName": "ClassTok",
+                  "tokenValue": "class",
+                  "rowNum": 0,
+                  "columnStartNum": 15,
+                  "columnEndNum": 20
+                }
+              ]
+            }
+          ],
           "loc": {
             "start": {
               "line": 0,
-              "column": 21
+              "column": 0
             },
             "end": {
-              "line": 0,
-              "column": 26
+              "line": 4,
+              "column": 1
             }
-          }
-        },
-        "body": {
-          "type": "ClassBody",
-          "body": [
+          },
+          "tokens": [
             {
-              "type": "MethodDefinition",
-              "kind": "method",
-              "static": true,
-              "computed": false,
-              "key": {
-                "type": "Identifier",
-                "name": "print11",
-                "loc": {
-                  "start": {
-                    "line": 1,
-                    "column": 11
-                  },
-                  "end": {
-                    "line": 1,
-                    "column": 18
-                  }
-                }
-              },
-              "value": {
-                "type": "FunctionExpression",
-                "id": null,
-                "params": [
-                  {
-                    "type": "Identifier",
-                    "name": "abc",
-                    "loc": {
-                      "start": {
-                        "line": 1,
-                        "column": 19
-                      },
-                      "end": {
-                        "line": 1,
-                        "column": 22
-                      }
-                    }
-                  }
-                ],
-                "body": {
-                  "type": "BlockStatement",
-                  "body": [
+              "tokenName": "ExportTok",
+              "tokenValue": "export",
+              "rowNum": 0,
+              "columnStartNum": 0,
+              "columnEndNum": 6
+            },
+            {
+              "tokenName": "DefaultTok",
+              "tokenValue": "default",
+              "rowNum": 0,
+              "columnStartNum": 7,
+              "columnEndNum": 14
+            }
+          ]
+        },
+        {
+          "name": "StatementListItem",
+          "children": [
+            {
+              "name": "Statement",
+              "children": [
+                {
+                  "name": "ExpressionStatement",
+                  "children": [
                     {
-                      "type": "ExpressionStatement",
-                      "expression": {
-                        "type": "CallExpression",
-                        "callee": {
-                          "type": "MemberExpression",
-                          "object": {
-                            "type": "Identifier",
-                            "name": "console",
-                            "loc": {
-                              "start": {
-                                "line": 2,
-                                "column": 8
-                              },
-                              "end": {
-                                "line": 2,
-                                "column": 15
+                      "name": "Expression",
+                      "children": [
+                        {
+                          "name": "AssignmentExpression",
+                          "children": [
+                            {
+                              "name": "ConditionalExpression",
+                              "children": [
+                                {
+                                  "name": "LogicalORExpression",
+                                  "children": [
+                                    {
+                                      "name": "LogicalANDExpression",
+                                      "children": [
+                                        {
+                                          "name": "BitwiseORExpression",
+                                          "children": [
+                                            {
+                                              "name": "BitwiseXORExpression",
+                                              "children": [
+                                                {
+                                                  "name": "BitwiseANDExpression",
+                                                  "children": [
+                                                    {
+                                                      "name": "EqualityExpression",
+                                                      "children": [
+                                                        {
+                                                          "name": "RelationalExpression",
+                                                          "children": [
+                                                            {
+                                                              "name": "ShiftExpression",
+                                                              "children": [
+                                                                {
+                                                                  "name": "AdditiveExpression",
+                                                                  "children": [
+                                                                    {
+                                                                      "name": "MultiplicativeExpression",
+                                                                      "children": [
+                                                                        {
+                                                                          "name": "UnaryExpression",
+                                                                          "children": [
+                                                                            {
+                                                                              "name": "PostfixExpression",
+                                                                              "children": [
+                                                                                {
+                                                                                  "name": "LeftHandSideExpression",
+                                                                                  "children": [
+                                                                                    {
+                                                                                      "name": "NewExpression",
+                                                                                      "children": [
+                                                                                        {
+                                                                                          "name": "MemberExpression",
+                                                                                          "children": [
+                                                                                            {
+                                                                                              "name": "PrimaryExpression",
+                                                                                              "children": [
+                                                                                                {
+                                                                                                  "name": "IdentifierReference",
+                                                                                                  "children": [
+                                                                                                    {
+                                                                                                      "name": "Identifier",
+                                                                                                      "loc": {
+                                                                                                        "start": {
+                                                                                                          "line": 5,
+                                                                                                          "column": 0
+                                                                                                        },
+                                                                                                        "end": {
+                                                                                                          "line": 5,
+                                                                                                          "column": 1
+                                                                                                        }
+                                                                                                      },
+                                                                                                      "value": "T"
+                                                                                                    }
+                                                                                                  ],
+                                                                                                  "loc": {
+                                                                                                    "start": {
+                                                                                                      "line": 5,
+                                                                                                      "column": 0
+                                                                                                    },
+                                                                                                    "end": {
+                                                                                                      "line": 5,
+                                                                                                      "column": 1
+                                                                                                    }
+                                                                                                  },
+                                                                                                  "tokens": [
+                                                                                                    {
+                                                                                                      "tokenName": "Identifier",
+                                                                                                      "tokenValue": "T",
+                                                                                                      "rowNum": 5,
+                                                                                                      "columnStartNum": 0,
+                                                                                                      "columnEndNum": 1
+                                                                                                    }
+                                                                                                  ]
+                                                                                                }
+                                                                                              ],
+                                                                                              "loc": {
+                                                                                                "start": {
+                                                                                                  "line": 5,
+                                                                                                  "column": 0
+                                                                                                },
+                                                                                                "end": {
+                                                                                                  "line": 5,
+                                                                                                  "column": 1
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          ],
+                                                                                          "loc": {
+                                                                                            "start": {
+                                                                                              "line": 5,
+                                                                                              "column": 0
+                                                                                            },
+                                                                                            "end": {
+                                                                                              "line": 5,
+                                                                                              "column": 1
+                                                                                            }
+                                                                                          }
+                                                                                        }
+                                                                                      ],
+                                                                                      "loc": {
+                                                                                        "start": {
+                                                                                          "line": 5,
+                                                                                          "column": 0
+                                                                                        },
+                                                                                        "end": {
+                                                                                          "line": 5,
+                                                                                          "column": 1
+                                                                                        }
+                                                                                      }
+                                                                                    }
+                                                                                  ],
+                                                                                  "loc": {
+                                                                                    "start": {
+                                                                                      "line": 5,
+                                                                                      "column": 0
+                                                                                    },
+                                                                                    "end": {
+                                                                                      "line": 5,
+                                                                                      "column": 1
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                              ],
+                                                                              "loc": {
+                                                                                "start": {
+                                                                                  "line": 5,
+                                                                                  "column": 0
+                                                                                },
+                                                                                "end": {
+                                                                                  "line": 5,
+                                                                                  "column": 1
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "loc": {
+                                                                            "start": {
+                                                                              "line": 5,
+                                                                              "column": 0
+                                                                            },
+                                                                            "end": {
+                                                                              "line": 5,
+                                                                              "column": 1
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      "loc": {
+                                                                        "start": {
+                                                                          "line": 5,
+                                                                          "column": 0
+                                                                        },
+                                                                        "end": {
+                                                                          "line": 5,
+                                                                          "column": 1
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "loc": {
+                                                                    "start": {
+                                                                      "line": 5,
+                                                                      "column": 0
+                                                                    },
+                                                                    "end": {
+                                                                      "line": 5,
+                                                                      "column": 1
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "loc": {
+                                                                "start": {
+                                                                  "line": 5,
+                                                                  "column": 0
+                                                                },
+                                                                "end": {
+                                                                  "line": 5,
+                                                                  "column": 1
+                                                                }
+                                                              }
+                                                            }
+                                                          ],
+                                                          "loc": {
+                                                            "start": {
+                                                              "line": 5,
+                                                              "column": 0
+                                                            },
+                                                            "end": {
+                                                              "line": 5,
+                                                              "column": 1
+                                                            }
+                                                          }
+                                                        }
+                                                      ],
+                                                      "loc": {
+                                                        "start": {
+                                                          "line": 5,
+                                                          "column": 0
+                                                        },
+                                                        "end": {
+                                                          "line": 5,
+                                                          "column": 1
+                                                        }
+                                                      }
+                                                    }
+                                                  ],
+                                                  "loc": {
+                                                    "start": {
+                                                      "line": 5,
+                                                      "column": 0
+                                                    },
+                                                    "end": {
+                                                      "line": 5,
+                                                      "column": 1
+                                                    }
+                                                  }
+                                                }
+                                              ],
+                                              "loc": {
+                                                "start": {
+                                                  "line": 5,
+                                                  "column": 0
+                                                },
+                                                "end": {
+                                                  "line": 5,
+                                                  "column": 1
+                                                }
+                                              }
+                                            }
+                                          ],
+                                          "loc": {
+                                            "start": {
+                                              "line": 5,
+                                              "column": 0
+                                            },
+                                            "end": {
+                                              "line": 5,
+                                              "column": 1
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "loc": {
+                                        "start": {
+                                          "line": 5,
+                                          "column": 0
+                                        },
+                                        "end": {
+                                          "line": 5,
+                                          "column": 1
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 5,
+                                      "column": 0
+                                    },
+                                    "end": {
+                                      "line": 5,
+                                      "column": 1
+                                    }
+                                  }
+                                }
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 5,
+                                  "column": 0
+                                },
+                                "end": {
+                                  "line": 5,
+                                  "column": 1
+                                }
                               }
                             }
-                          },
-                          "property": {
-                            "type": "Identifier",
-                            "name": "log",
-                            "loc": {
-                              "start": {
-                                "line": 2,
-                                "column": 16
-                              },
-                              "end": {
-                                "line": 2,
-                                "column": 19
-                              }
-                            }
-                          },
-                          "computed": false,
-                          "optional": false,
+                          ],
                           "loc": {
                             "start": {
-                              "line": 2,
-                              "column": 8
+                              "line": 5,
+                              "column": 0
                             },
                             "end": {
-                              "line": 2,
-                              "column": 19
+                              "line": 5,
+                              "column": 1
                             }
-                          }
-                        },
-                        "arguments": [
-                          {
-                            "type": "Literal",
-                            "value": true,
-                            "loc": {
-                              "start": {
-                                "line": 2,
-                                "column": 20
-                              },
-                              "end": {
-                                "line": 2,
-                                "column": 24
-                              }
-                            }
-                          }
-                        ],
-                        "optional": false,
-                        "loc": {
-                          "start": {
-                            "line": 2,
-                            "column": 8
-                          },
-                          "end": {
-                            "line": 2,
-                            "column": 25
                           }
                         }
-                      },
+                      ],
                       "loc": {
                         "start": {
-                          "line": 2,
-                          "column": 8
+                          "line": 5,
+                          "column": 0
                         },
                         "end": {
-                          "line": 2,
-                          "column": 25
+                          "line": 5,
+                          "column": 1
                         }
                       }
                     }
                   ],
                   "loc": {
                     "start": {
-                      "line": 2,
-                      "column": 8
+                      "line": 5,
+                      "column": 0
                     },
                     "end": {
-                      "line": 2,
-                      "column": 25
+                      "line": 5,
+                      "column": 1
                     }
                   }
-                },
-                "generator": false,
-                "expression": false,
-                "async": false,
-                "loc": {
-                  "start": {
-                    "line": 2,
-                    "column": 8
-                  },
-                  "end": {
-                    "line": 2,
-                    "column": 25
-                  }
                 }
-              },
+              ],
               "loc": {
                 "start": {
-                  "line": 1,
-                  "column": 11
+                  "line": 5,
+                  "column": 0
                 },
                 "end": {
-                  "line": 3,
-                  "column": 5
+                  "line": 5,
+                  "column": 1
                 }
               }
             }
           ],
           "loc": {
             "start": {
-              "line": 1,
-              "column": 4
+              "line": 5,
+              "column": 0
             },
             "end": {
-              "line": 3,
-              "column": 5
-            }
-          }
-        },
-        "loc": {
-          "start": {
-            "line": 0,
-            "column": 15
-          },
-          "end": {
-            "line": 4,
-            "column": 1
-          }
-        },
-        "class": {
-          "type": "class",
-          "loc": {
-            "start": {
-              "line": 0,
-              "column": 15
-            },
-            "end": {
-              "line": 0,
-              "column": 20
+              "line": 5,
+              "column": 1
             }
           }
         }
-      },
+      ],
       "loc": {
         "start": {
           "line": 0,
           "column": 0
         },
         "end": {
-          "line": 4,
+          "line": 5,
           "column": 1
         }
       }
-    },
-    null
+    }
   ],
   "loc": {
     "start": {
@@ -271,5 +1762,6 @@
       "line": 5,
       "column": 1
     }
-  }
+  },
+  "tokens": []
 }
