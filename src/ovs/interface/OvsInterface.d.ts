@@ -82,11 +82,7 @@ export interface OvsAstPosition {
     column: number;
 }
 
-export interface OvsAstProgram extends OvsAstBaseNode {
-    type: "Program";
-    sourceType: "script" | "module";
-    body: Array<OvsAstDirective | OvsAstStatement | OvsAstModuleDeclaration>;
-    comments?: OvsAstComment[] | undefined;
+export interface OvsAstProgram extends Program {
 }
 
 export interface OvsAstDirective extends OvsAstBaseNode {
@@ -607,13 +603,7 @@ export interface OvsAstClassBody extends OvsAstBaseNode {
     body: Array<OvsAstMethodDefinition | OvsAstPropertyDefinition | OvsAstStaticBlock>;
 }
 
-export interface OvsAstMethodDefinition extends OvsAstBaseNode,MethodDefinition {
-    type: "MethodDefinition";
-    key: OvsAstExpression | OvsAstPrivateIdentifier;
-    value: OvsAstFunctionExpression;
-    kind: "constructor" | "method" | "get" | "set";
-    computed: boolean;
-    static: OvsAstSubhutiTokenAst;
+export interface OvsAstMethodDefinition extends MethodDefinition {
     staticToken: BaseNode
 }
 
@@ -623,8 +613,7 @@ export interface OvsAstMaybeNamedClassDeclaration extends OvsAstBaseClass, OvsAs
     id: OvsAstIdentifier | null;
 }
 
-export interface OvsAstClassDeclaration extends OvsAstMaybeNamedClassDeclaration, ClassDeclaration {
-    id: OvsAstIdentifier;
+export interface OvsAstClassDeclaration extends ClassDeclaration {
     class: BaseNode
 }
 

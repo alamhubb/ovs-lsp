@@ -1,18 +1,26 @@
 import OvsParser from "../parser/OvsParser.ts";
 import Es6CstToEstreeAstUtil, {
     checkCstName,
-    EsTreeAstType
+    EsTreeAstType, throwNewError
 } from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {
     OvsAstClassDeclaration,
     OvsAstExportDefaultDeclaration,
-    OvsAstLexicalBinding,
+    OvsAstLexicalBinding, OvsAstProgram,
     OvsAstRenderDomViewDeclaration
 } from "../interface/OvsInterface";
 import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
 import SubhutiLexer from "subhuti/src/parser/SubhutiLexer.ts";
 import {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
-import type {ClassDeclaration, ExportDefaultDeclaration, Expression} from "estree";
+import type {
+    ClassDeclaration,
+    Directive,
+    ExportDefaultDeclaration,
+    Expression,
+    ModuleDeclaration,
+    Program,
+    Statement
+} from "estree";
 import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import {BaseNode} from "estree";
 
@@ -31,6 +39,10 @@ export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
         return ast
     }
 
+    createProgramAst(cst: SubhutiCst): OvsAstProgram {
+        const ast = this.createProgramAst(cst)
+        return ast as OvsAstProgram
+    }
 
     createSubhutiTokenAst(cst: SubhutiCst): BaseNode {
         return {
