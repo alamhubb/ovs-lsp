@@ -9,7 +9,7 @@ import {
     SourceLocation, type SubhutiTokenAst,
     VariableDeclaration,
     VariableDeclarator
-} from "subhuti-ts/src/language/es2015/SubhutiEs6Ast.ts";
+} from "src/subhuti/SubhutiEs6Ast.ts";
 import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import Es6TokenConsumer, {
     es6TokenMapObj,

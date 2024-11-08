@@ -7,7 +7,7 @@ import type {
     Program,
     Statement,
     VariableDeclaration, VariableDeclarator
-} from "subhuti-ts/src/language/es2015/SubhutiEs6Ast.ts";
+} from "src/subhuti/SubhutiEs6Ast.ts";
 import OvsParser from "../parser/OvsParser.ts";
 import {checkCstName, Es6CstToEstreeAstUtil} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "../interface/OvsInterface";
