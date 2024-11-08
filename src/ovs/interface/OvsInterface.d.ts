@@ -39,7 +39,7 @@ import {
     Property, RegExpLiteral, RestElement, ReturnStatement,
     SequenceExpression, SimpleCallExpression, SimpleLiteral,
     SpreadElement,
-    StaticBlock, Super, SwitchCase, SwitchStatement,
+    Statement, StaticBlock, Super, SwitchCase, SwitchStatement,
     TaggedTemplateExpression, TemplateElement,
     TemplateLiteral,
     ThisExpression, ThrowStatement, TryStatement,
@@ -81,7 +81,7 @@ export interface OvsAstNodeMap {
     Property: OvsAstProperty;
     PropertyDefinition: OvsAstPropertyDefinition;
     SpreadElement: OvsAstSpreadElement;
-    Statement: Statement;
+    Statement: OvsAstStatement;
     Super: OvsAstSuper;
     SwitchCase: OvsAstSwitchCase;
     TemplateElement: OvsAstTemplateElement;
@@ -102,7 +102,7 @@ export interface OvsAstPosition {
 }
 
 export interface OvsAstProgram extends Program {
-    body: Array<OvsAstDirective | Statement | OvsAstModuleDeclaration>;
+    body: Array<OvsAstDirective | OvsAstStatement | OvsAstModuleDeclaration>;
 }
 
 export interface OvsAstDirective extends Directive {
@@ -127,7 +127,7 @@ export interface OvsAstEmptyStatement extends EmptyStatement {
 
 export interface OvsAstBlockStatement extends BlockStatement {
     type: "BlockStatement";
-    body: Statement[];
+    body: OvsAstStatement[];
     innerComments?: Comment[] | undefined;
 }
 
@@ -144,14 +144,14 @@ export interface OvsAstExpressionStatement extends ExpressionStatement {
 export interface OvsAstIfStatement extends IfStatement {
     type: "IfStatement";
     test: OvsAstExpression;
-    consequent: Statement;
-    alternate?: Statement | null | undefined;
+    consequent: OvsAstStatement;
+    alternate?: OvsAstStatement | null | undefined;
 }
 
 export interface OvsAstLabeledStatement extends LabeledStatement {
     type: "LabeledStatement";
     label: OvsAstIdentifier;
-    body: Statement;
+    body: OvsAstStatement;
 }
 
 export interface OvsAstBreakStatement extends BreakStatement {
@@ -167,7 +167,7 @@ export interface OvsAstContinueStatement extends ContinueStatement {
 export interface OvsAstWithStatement extends WithStatement {
     type: "WithStatement";
     object: OvsAstExpression;
-    body: Statement;
+    body: OvsAstStatement;
 }
 
 export interface OvsAstSwitchStatement extends SwitchStatement {
@@ -196,12 +196,12 @@ export interface OvsAstTryStatement extends TryStatement {
 export interface OvsAstWhileStatement extends WhileStatement {
     type: "WhileStatement";
     test: OvsAstExpression;
-    body: Statement;
+    body: OvsAstStatement;
 }
 
 export interface OvsAstDoWhileStatement extends DoWhileStatement {
     type: "DoWhileStatement";
-    body: Statement;
+    body: OvsAstStatement;
     test: OvsAstExpression;
 }
 
@@ -213,7 +213,7 @@ export interface OvsAstForStatement extends ForStatement {
     body: Statement;
 }
 
-export type Statement =
+export type OvsAstStatement =
     | ExpressionStatement
     | BlockStatement
     | StaticBlock
@@ -444,7 +444,7 @@ export type OvsAstPattern = Pattern & (
 export interface OvsAstSwitchCase extends SwitchCase {
     type: "SwitchCase";
     test?: OvsAstExpression | null | undefined;
-    consequent: Statement[];
+    consequent: OvsAstStatement[];
 }
 
 export interface OvsAstCatchClause extends CatchClause {
