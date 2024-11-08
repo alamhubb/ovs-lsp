@@ -1,15 +1,14 @@
-import {BaseExpression, BaseNode, BasePattern, type Expression, Identifier, type Pattern} from "estree";
-import {OvsToAstUtil} from "../factory/OvsToAstUtil.ts";
+import {OvsAstExpression, OvsAstIdentifier} from "./OvsEs6Ast.ts";
 
 export interface OvsRenderDomViewDeclaration {
     type: "OvsRenderDomViewDeclaration",
-    id: Identifier
+    id: OvsAstIdentifier
     children: OvsRenderDomViewDeclaration[];
-    arguments: Expression [  ];
+    arguments: OvsAstExpression [  ];
 }
 
 export interface OvsLexicalBinding {
     type: "OvsLexicalBinding",
-    id: Identifier
-    init?: Expression | null | undefined;
+    id: OvsAstIdentifier
+    init?: OvsAstExpression | null | undefined;
 }
