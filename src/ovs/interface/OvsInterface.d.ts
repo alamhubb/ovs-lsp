@@ -214,25 +214,25 @@ export interface OvsAstForStatement extends ForStatement {
 }
 
 export type OvsAstStatement =
-    | ExpressionStatement
-    | BlockStatement
-    | StaticBlock
-    | EmptyStatement
-    | DebuggerStatement
-    | WithStatement
-    | ReturnStatement
-    | LabeledStatement
-    | BreakStatement
-    | ContinueStatement
-    | IfStatement
-    | SwitchStatement
-    | ThrowStatement
-    | TryStatement
-    | WhileStatement
-    | DoWhileStatement
-    | ForStatement
-    | ForInStatement
-    | ForOfStatement
+    | OvsAstExpressionStatement
+    | OvsAstBlockStatement
+    | OvsAstStaticBlock
+    | OvsAstEmptyStatement
+    | OvsAstDebuggerStatement
+    | OvsAstWithStatement
+    | OvsAstReturnStatement
+    | OvsAstLabeledStatement
+    | OvsAstBreakStatement
+    | OvsAstContinueStatement
+    | OvsAstIfStatement
+    | OvsAstSwitchStatement
+    | OvsAstThrowStatement
+    | OvsAstTryStatement
+    | OvsAstWhileStatement
+    | OvsAstDoWhileStatement
+    | OvsAstForStatement
+    | OvsAstForInStatement
+    | OvsAstForOfStatement
     | Declaration;
 
 export interface OvsAstBaseForXStatement extends BaseForXStatement {
@@ -259,7 +259,7 @@ export interface OvsAstMaybeNamedFunctionDeclaration extends MaybeNamedFunctionD
     body: OvsAstBlockStatement;
 }
 
-export interface OvsAstFunctionDeclaration extends FunctionDeclaration ,OvsAstMaybeNamedFunctionDeclaration {
+export interface OvsAstFunctionDeclaration extends FunctionDeclaration {
     id: OvsAstIdentifier;
 }
 
