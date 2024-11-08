@@ -20,6 +20,7 @@ import Es6TokenConsumer, {
 import {SubhutiCreateToken} from "subhuti/src/struct/SubhutiCreateToken.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {OvsLexicalBinding, OvsRenderDomViewDeclaration} from "./ovs/interface/OvsInterface";
+import {esTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 
 export default class IntellijTokenUtil {
     tokenHandler(ast: Program) {
@@ -74,7 +75,7 @@ export class TokenProvider {
         node.body.forEach(item => this.visitNode(item))
     }
 
-    private static visitExportDeclaration(node: ExportDeclaration) {
+    private static visitExportDefaultDeclaration(node: ExportDeclaration) {
         this.addToken(this.createSemanticToken(node.export))
         if (node.default) {
             this.addToken(this.createSemanticToken(node.default))
@@ -205,8 +206,8 @@ export class TokenProvider {
             case OvsParser.prototype.Program.name:
                 this.visitProgram(node)
                 break;
-            case OvsParser.prototype.ExportDeclaration.name:
-                this.visitExportDeclaration(node)
+            case esTreeAstType.ExportDefaultDeclaration:
+                this.visitExportDefaultDeclaration(node)
                 break;
             case OvsParser.prototype.ClassDeclaration.name:
                 this.visitClassDeclaration(node)

@@ -17,433 +17,433 @@
 // an end user.
 
 
-export interface SubhutiHighlithBaseNodeWithoutComments {
-    // Every leaf interface SubhutiHighliththat extends SubhutiHighlithBaseNode must specify a type property.
+export interface OvsAstBaseNodeWithoutComments {
+    // Every leaf interface OvsAstthat extends OvsAstBaseNode must specify a type property.
     // The type property should be a string literal. For example, Identifier
-    // has: SubhutiHighlith`type: "Identifier"`
+    // has: OvsAst`type: "Identifier"`
     type: string;
-    loc?: SubhutiHighlithSourceLocation | null | undefined;
+    loc?: OvsAstSourceLocation | null | undefined;
     range?: [number, number] | undefined;
 }
 
-export interface SubhutiHighlithBaseNode extends SubhutiHighlithBaseNodeWithoutComments {
-    leadingComments?: SubhutiHighlithComment[] | undefined;
-    trailingComments?: SubhutiHighlithComment[] | undefined;
+export interface OvsAstBaseNode extends OvsAstBaseNodeWithoutComments {
+    leadingComments?: OvsAstComment[] | undefined;
+    trailingComments?: OvsAstComment[] | undefined;
 }
 
-export interface SubhutiHighlithNodeMap {
-    AssignmentProperty: SubhutiHighlithAssignmentProperty;
-    CatchClause: SubhutiHighlithCatchClause;
-    Class: SubhutiHighlithClass;
-    ClassBody: SubhutiHighlithClassBody;
-    Expression: SubhutiHighlithExpression;
+export interface OvsAstNodeMap {
+    AssignmentProperty: OvsAstAssignmentProperty;
+    CatchClause: OvsAstCatchClause;
+    Class: OvsAstClass;
+    ClassBody: OvsAstClassBody;
+    Expression: OvsAstExpression;
     Function: Function;
-    Identifier: SubhutiHighlithIdentifier;
-    Literal: SubhutiHighlithLiteral;
-    MethodDefinition: SubhutiHighlithMethodDefinition;
-    ModuleDeclaration: SubhutiHighlithModuleDeclaration;
-    ModuleSpecifier: SubhutiHighlithModuleSpecifier;
-    Pattern: SubhutiHighlithPattern;
-    PrivateIdentifier: SubhutiHighlithPrivateIdentifier;
-    Program: SubhutiHighlithProgram;
-    Property: SubhutiHighlithProperty;
-    PropertyDefinition: SubhutiHighlithPropertyDefinition;
-    SpreadElement: SubhutiHighlithSpreadElement;
-    Statement: SubhutiHighlithStatement;
-    Super: SubhutiHighlithSuper;
-    SwitchCase: SubhutiHighlithSwitchCase;
-    TemplateElement: SubhutiHighlithTemplateElement;
-    VariableDeclarator: SubhutiHighlithVariableDeclarator;
+    Identifier: OvsAstIdentifier;
+    Literal: OvsAstLiteral;
+    MethodDefinition: OvsAstMethodDefinition;
+    ModuleDeclaration: OvsAstModuleDeclaration;
+    ModuleSpecifier: OvsAstModuleSpecifier;
+    Pattern: OvsAstPattern;
+    PrivateIdentifier: OvsAstPrivateIdentifier;
+    Program: OvsAstProgram;
+    Property: OvsAstProperty;
+    PropertyDefinition: OvsAstPropertyDefinition;
+    SpreadElement: OvsAstSpreadElement;
+    Statement: OvsAstStatement;
+    Super: OvsAstSuper;
+    SwitchCase: OvsAstSwitchCase;
+    TemplateElement: OvsAstTemplateElement;
+    VariableDeclarator: OvsAstVariableDeclarator;
 }
 
-export type SubhutiHighlithNode = SubhutiHighlithNodeMap[keyof SubhutiHighlithNodeMap];
+export type OvsAstNode = OvsAstNodeMap[keyof OvsAstNodeMap];
 
-export interface SubhutiHighlithComment extends SubhutiHighlithBaseNodeWithoutComments {
+export interface OvsAstComment extends OvsAstBaseNodeWithoutComments {
     type: "Line" | "Block";
     value: string;
 }
 
-export interface SubhutiHighlithSourceLocation {
+export interface OvsAstSourceLocation {
     source?: string | null | undefined;
-    start: SubhutiHighlithPosition;
-    end: SubhutiHighlithPosition;
+    start: OvsAstPosition;
+    end: OvsAstPosition;
 }
 
-export interface SubhutiHighlithPosition {
-    /** >= SubhutiHighlith1 */
+export interface OvsAstPosition {
+    /** >= OvsAst1 */
     line: number;
-    /** >= SubhutiHighlith0 */
+    /** >= OvsAst0 */
     column: number;
 }
 
-export interface SubhutiHighlithProgram extends SubhutiHighlithBaseNode {
+export interface OvsAstProgram extends OvsAstBaseNode {
     type: "Program";
     sourceType: "script" | "module";
-    body: Array<SubhutiHighlithDirective | SubhutiHighlithStatement | SubhutiHighlithModuleDeclaration>;
-    comments?: SubhutiHighlithComment[] | undefined;
+    body: Array<OvsAstDirective | OvsAstStatement | OvsAstModuleDeclaration>;
+    comments?: OvsAstComment[] | undefined;
 }
 
-export interface SubhutiHighlithDirective extends SubhutiHighlithBaseNode {
+export interface OvsAstDirective extends OvsAstBaseNode {
     type: "ExpressionStatement";
-    expression: SubhutiHighlithLiteral;
+    expression: OvsAstLiteral;
     directive: string;
 }
 
-export interface SubhutiHighlithBaseFunction extends SubhutiHighlithBaseNode {
-    params: SubhutiHighlithPattern[];
+export interface OvsAstBaseFunction extends OvsAstBaseNode {
+    params: OvsAstPattern[];
     generator?: boolean | undefined;
     async?: boolean | undefined;
     // The body is either BlockStatement or Expression because arrow functions
     // can have a body that's either. FunctionDeclarations and
     // FunctionExpressions have only BlockStatement bodies.
-    body: SubhutiHighlithBlockStatement | SubhutiHighlithExpression;
+    body: OvsAstBlockStatement | OvsAstExpression;
 }
 
-export type SubhutiHighlithFunction = SubhutiHighlithFunctionDeclaration | SubhutiHighlithFunctionExpression | SubhutiHighlithArrowFunctionExpression;
+export type OvsAstFunction = OvsAstFunctionDeclaration | OvsAstFunctionExpression | OvsAstArrowFunctionExpression;
 
-export type SubhutiHighlithStatement =
-    | SubhutiHighlithExpressionStatement
-    | SubhutiHighlithBlockStatement
-    | SubhutiHighlithStaticBlock
-    | SubhutiHighlithEmptyStatement
-    | SubhutiHighlithDebuggerStatement
-    | SubhutiHighlithWithStatement
-    | SubhutiHighlithReturnStatement
-    | SubhutiHighlithLabeledStatement
-    | SubhutiHighlithBreakStatement
-    | SubhutiHighlithContinueStatement
-    | SubhutiHighlithIfStatement
-    | SubhutiHighlithSwitchStatement
-    | SubhutiHighlithThrowStatement
-    | SubhutiHighlithTryStatement
-    | SubhutiHighlithWhileStatement
-    | SubhutiHighlithDoWhileStatement
-    | SubhutiHighlithForStatement
-    | SubhutiHighlithForInStatement
-    | SubhutiHighlithForOfStatement
-    | SubhutiHighlithDeclaration;
+export type OvsAstStatement =
+    | OvsAstExpressionStatement
+    | OvsAstBlockStatement
+    | OvsAstStaticBlock
+    | OvsAstEmptyStatement
+    | OvsAstDebuggerStatement
+    | OvsAstWithStatement
+    | OvsAstReturnStatement
+    | OvsAstLabeledStatement
+    | OvsAstBreakStatement
+    | OvsAstContinueStatement
+    | OvsAstIfStatement
+    | OvsAstSwitchStatement
+    | OvsAstThrowStatement
+    | OvsAstTryStatement
+    | OvsAstWhileStatement
+    | OvsAstDoWhileStatement
+    | OvsAstForStatement
+    | OvsAstForInStatement
+    | OvsAstForOfStatement
+    | OvsAstDeclaration;
 
-export interface SubhutiHighlithBaseStatement extends SubhutiHighlithBaseNode {
+export interface OvsAstBaseStatement extends OvsAstBaseNode {
 }
 
-export interface SubhutiHighlithEmptyStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstEmptyStatement extends OvsAstBaseStatement {
     type: "EmptyStatement";
 }
 
-export interface SubhutiHighlithBlockStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstBlockStatement extends OvsAstBaseStatement {
     type: "BlockStatement";
-    body: SubhutiHighlithStatement[];
-    innerComments?: SubhutiHighlithComment[] | undefined;
+    body: OvsAstStatement[];
+    innerComments?: OvsAstComment[] | undefined;
 }
 
-export interface SubhutiHighlithStaticBlock extends Omit<SubhutiHighlithBlockStatement, "type"> {
+export interface OvsAstStaticBlock extends Omit<OvsAstBlockStatement, "type"> {
     type: "StaticBlock";
 }
 
-export interface SubhutiHighlithExpressionStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstExpressionStatement extends OvsAstBaseStatement {
     type: "ExpressionStatement";
-    expression: SubhutiHighlithExpression;
+    expression: OvsAstExpression;
 }
 
-export interface SubhutiHighlithIfStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstIfStatement extends OvsAstBaseStatement {
     type: "IfStatement";
-    test: SubhutiHighlithExpression;
-    consequent: SubhutiHighlithStatement;
-    alternate?: SubhutiHighlithStatement | null | undefined;
+    test: OvsAstExpression;
+    consequent: OvsAstStatement;
+    alternate?: OvsAstStatement | null | undefined;
 }
 
-export interface SubhutiHighlithLabeledStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstLabeledStatement extends OvsAstBaseStatement {
     type: "LabeledStatement";
-    label: SubhutiHighlithIdentifier;
-    body: SubhutiHighlithStatement;
+    label: OvsAstIdentifier;
+    body: OvsAstStatement;
 }
 
-export interface SubhutiHighlithBreakStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstBreakStatement extends OvsAstBaseStatement {
     type: "BreakStatement";
-    label?: SubhutiHighlithIdentifier | null | undefined;
+    label?: OvsAstIdentifier | null | undefined;
 }
 
-export interface SubhutiHighlithContinueStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstContinueStatement extends OvsAstBaseStatement {
     type: "ContinueStatement";
-    label?: SubhutiHighlithIdentifier | null | undefined;
+    label?: OvsAstIdentifier | null | undefined;
 }
 
-export interface SubhutiHighlithWithStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstWithStatement extends OvsAstBaseStatement {
     type: "WithStatement";
-    object: SubhutiHighlithExpression;
-    body: SubhutiHighlithStatement;
+    object: OvsAstExpression;
+    body: OvsAstStatement;
 }
 
-export interface SubhutiHighlithSwitchStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstSwitchStatement extends OvsAstBaseStatement {
     type: "SwitchStatement";
-    discriminant: SubhutiHighlithExpression;
-    cases: SubhutiHighlithSwitchCase[];
+    discriminant: OvsAstExpression;
+    cases: OvsAstSwitchCase[];
 }
 
-export interface SubhutiHighlithReturnStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstReturnStatement extends OvsAstBaseStatement {
     type: "ReturnStatement";
-    argument?: SubhutiHighlithExpression | null | undefined;
+    argument?: OvsAstExpression | null | undefined;
 }
 
-export interface SubhutiHighlithThrowStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstThrowStatement extends OvsAstBaseStatement {
     type: "ThrowStatement";
-    argument: SubhutiHighlithExpression;
+    argument: OvsAstExpression;
 }
 
-export interface SubhutiHighlithTryStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstTryStatement extends OvsAstBaseStatement {
     type: "TryStatement";
-    block: SubhutiHighlithBlockStatement;
-    handler?: SubhutiHighlithCatchClause | null | undefined;
-    finalizer?: SubhutiHighlithBlockStatement | null | undefined;
+    block: OvsAstBlockStatement;
+    handler?: OvsAstCatchClause | null | undefined;
+    finalizer?: OvsAstBlockStatement | null | undefined;
 }
 
-export interface SubhutiHighlithWhileStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstWhileStatement extends OvsAstBaseStatement {
     type: "WhileStatement";
-    test: SubhutiHighlithExpression;
-    body: SubhutiHighlithStatement;
+    test: OvsAstExpression;
+    body: OvsAstStatement;
 }
 
-export interface SubhutiHighlithDoWhileStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstDoWhileStatement extends OvsAstBaseStatement {
     type: "DoWhileStatement";
-    body: SubhutiHighlithStatement;
-    test: SubhutiHighlithExpression;
+    body: OvsAstStatement;
+    test: OvsAstExpression;
 }
 
-export interface SubhutiHighlithForStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstForStatement extends OvsAstBaseStatement {
     type: "ForStatement";
-    init?: SubhutiHighlithVariableDeclaration | SubhutiHighlithExpression | null | undefined;
-    test?: SubhutiHighlithExpression | null | undefined;
-    update?: SubhutiHighlithExpression | null | undefined;
-    body: SubhutiHighlithStatement;
+    init?: OvsAstVariableDeclaration | OvsAstExpression | null | undefined;
+    test?: OvsAstExpression | null | undefined;
+    update?: OvsAstExpression | null | undefined;
+    body: OvsAstStatement;
 }
 
-export interface SubhutiHighlithBaseForXStatement extends SubhutiHighlithBaseStatement {
-    left: SubhutiHighlithVariableDeclaration | SubhutiHighlithPattern;
-    right: SubhutiHighlithExpression;
-    body: SubhutiHighlithStatement;
+export interface OvsAstBaseForXStatement extends OvsAstBaseStatement {
+    left: OvsAstVariableDeclaration | OvsAstPattern;
+    right: OvsAstExpression;
+    body: OvsAstStatement;
 }
 
-export interface SubhutiHighlithForInStatement extends SubhutiHighlithBaseForXStatement {
+export interface OvsAstForInStatement extends OvsAstBaseForXStatement {
     type: "ForInStatement";
 }
 
-export interface SubhutiHighlithDebuggerStatement extends SubhutiHighlithBaseStatement {
+export interface OvsAstDebuggerStatement extends OvsAstBaseStatement {
     type: "DebuggerStatement";
 }
 
-export type SubhutiHighlithDeclaration = SubhutiHighlithFunctionDeclaration | SubhutiHighlithVariableDeclaration | SubhutiHighlithClassDeclaration;
+export type OvsAstDeclaration = OvsAstFunctionDeclaration | OvsAstVariableDeclaration | OvsAstClassDeclaration;
 
-export interface SubhutiHighlithBaseDeclaration extends SubhutiHighlithBaseStatement {
+export interface OvsAstBaseDeclaration extends OvsAstBaseStatement {
 }
 
-export interface SubhutiHighlithMaybeNamedFunctionDeclaration extends SubhutiHighlithBaseFunction, SubhutiHighlithBaseDeclaration {
+export interface OvsAstMaybeNamedFunctionDeclaration extends OvsAstBaseFunction, OvsAstBaseDeclaration {
     type: "FunctionDeclaration";
     /** It is null when a function declaration is a part of the `export default function` statement */
-    id: SubhutiHighlithIdentifier | null;
-    body: SubhutiHighlithBlockStatement;
+    id: OvsAstIdentifier | null;
+    body: OvsAstBlockStatement;
 }
 
-export interface SubhutiHighlithFunctionDeclaration extends SubhutiHighlithMaybeNamedFunctionDeclaration {
-    id: SubhutiHighlithIdentifier;
+export interface OvsAstFunctionDeclaration extends OvsAstMaybeNamedFunctionDeclaration {
+    id: OvsAstIdentifier;
 }
 
-export interface SubhutiHighlithVariableDeclaration extends SubhutiHighlithBaseDeclaration {
+export interface OvsAstVariableDeclaration extends OvsAstBaseDeclaration {
     type: "VariableDeclaration";
-    declarations: SubhutiHighlithVariableDeclarator[];
-    kind: SubhutiHighlithSubhutiTokenAst;
+    declarations: OvsAstVariableDeclarator[];
+    kind: OvsAstSubhutiTokenAst;
 }
 
-export interface SubhutiHighlithVariableDeclarator extends SubhutiHighlithBaseNode {
+export interface OvsAstVariableDeclarator extends OvsAstBaseNode {
     type: "VariableDeclarator";
-    id: SubhutiHighlithPattern;
-    init?: SubhutiHighlithExpression | null | undefined;
+    id: OvsAstPattern;
+    init?: OvsAstExpression | null | undefined;
 }
 
-export interface SubhutiHighlithExpressionMap {
-    ArrayExpression: SubhutiHighlithArrayExpression;
-    ArrowFunctionExpression: SubhutiHighlithArrowFunctionExpression;
-    AssignmentExpression: SubhutiHighlithAssignmentExpression;
-    AwaitExpression: SubhutiHighlithAwaitExpression;
-    BinaryExpression: SubhutiHighlithBinaryExpression;
-    CallExpression: SubhutiHighlithCallExpression;
-    ChainExpression: SubhutiHighlithChainExpression;
-    ClassExpression: SubhutiHighlithClassExpression;
-    ConditionalExpression: SubhutiHighlithConditionalExpression;
-    FunctionExpression: SubhutiHighlithFunctionExpression;
-    Identifier: SubhutiHighlithIdentifier;
-    ImportExpression: SubhutiHighlithImportExpression;
-    Literal: SubhutiHighlithLiteral;
-    LogicalExpression: SubhutiHighlithLogicalExpression;
-    MemberExpression: SubhutiHighlithMemberExpression;
-    MetaProperty: SubhutiHighlithMetaProperty;
-    NewExpression: SubhutiHighlithNewExpression;
-    ObjectExpression: SubhutiHighlithObjectExpression;
-    SequenceExpression: SubhutiHighlithSequenceExpression;
-    TaggedTemplateExpression: SubhutiHighlithTaggedTemplateExpression;
-    TemplateLiteral: SubhutiHighlithTemplateLiteral;
-    ThisExpression: SubhutiHighlithThisExpression;
-    UnaryExpression: SubhutiHighlithUnaryExpression;
-    UpdateExpression: SubhutiHighlithUpdateExpression;
-    YieldExpression: SubhutiHighlithYieldExpression;
+export interface OvsAstExpressionMap {
+    ArrayExpression: OvsAstArrayExpression;
+    ArrowFunctionExpression: OvsAstArrowFunctionExpression;
+    AssignmentExpression: OvsAstAssignmentExpression;
+    AwaitExpression: OvsAstAwaitExpression;
+    BinaryExpression: OvsAstBinaryExpression;
+    CallExpression: OvsAstCallExpression;
+    ChainExpression: OvsAstChainExpression;
+    ClassExpression: OvsAstClassExpression;
+    ConditionalExpression: OvsAstConditionalExpression;
+    FunctionExpression: OvsAstFunctionExpression;
+    Identifier: OvsAstIdentifier;
+    ImportExpression: OvsAstImportExpression;
+    Literal: OvsAstLiteral;
+    LogicalExpression: OvsAstLogicalExpression;
+    MemberExpression: OvsAstMemberExpression;
+    MetaProperty: OvsAstMetaProperty;
+    NewExpression: OvsAstNewExpression;
+    ObjectExpression: OvsAstObjectExpression;
+    SequenceExpression: OvsAstSequenceExpression;
+    TaggedTemplateExpression: OvsAstTaggedTemplateExpression;
+    TemplateLiteral: OvsAstTemplateLiteral;
+    ThisExpression: OvsAstThisExpression;
+    UnaryExpression: OvsAstUnaryExpression;
+    UpdateExpression: OvsAstUpdateExpression;
+    YieldExpression: OvsAstYieldExpression;
 }
 
-export type SubhutiHighlithExpression = SubhutiHighlithExpressionMap[keyof SubhutiHighlithExpressionMap];
+export type OvsAstExpression = OvsAstExpressionMap[keyof OvsAstExpressionMap];
 
-export interface SubhutiHighlithBaseExpression extends SubhutiHighlithBaseNode {
+export interface OvsAstBaseExpression extends OvsAstBaseNode {
 }
 
-export type SubhutiHighlithChainElement = SubhutiHighlithSimpleCallExpression | SubhutiHighlithMemberExpression;
+export type OvsAstChainElement = OvsAstSimpleCallExpression | OvsAstMemberExpression;
 
-export interface SubhutiHighlithChainExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstChainExpression extends OvsAstBaseExpression {
     type: "ChainExpression";
-    expression: SubhutiHighlithChainElement;
+    expression: OvsAstChainElement;
 }
 
-export interface SubhutiHighlithThisExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstThisExpression extends OvsAstBaseExpression {
     type: "ThisExpression";
 }
 
-export interface SubhutiHighlithArrayExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstArrayExpression extends OvsAstBaseExpression {
     type: "ArrayExpression";
-    elements: Array<SubhutiHighlithExpression | SubhutiHighlithSpreadElement | null>;
+    elements: Array<OvsAstExpression | OvsAstSpreadElement | null>;
 }
 
-export interface SubhutiHighlithObjectExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstObjectExpression extends OvsAstBaseExpression {
     type: "ObjectExpression";
-    properties: Array<SubhutiHighlithProperty | SubhutiHighlithSpreadElement>;
+    properties: Array<OvsAstProperty | OvsAstSpreadElement>;
 }
 
-export interface SubhutiHighlithPrivateIdentifier extends SubhutiHighlithBaseNode {
+export interface OvsAstPrivateIdentifier extends OvsAstBaseNode {
     type: "PrivateIdentifier";
     name: string;
 }
 
-export interface SubhutiHighlithProperty extends SubhutiHighlithBaseNode {
+export interface OvsAstProperty extends OvsAstBaseNode {
     type: "Property";
-    key: SubhutiHighlithExpression | SubhutiHighlithPrivateIdentifier;
-    value: SubhutiHighlithExpression | SubhutiHighlithPattern; // Could be an AssignmentProperty
+    key: OvsAstExpression | OvsAstPrivateIdentifier;
+    value: OvsAstExpression | OvsAstPattern; // Could be an AssignmentProperty
     kind: "init" | "get" | "set";
     method: boolean;
     shorthand: boolean;
     computed: boolean;
 }
 
-export interface SubhutiHighlithPropertyDefinition extends SubhutiHighlithBaseNode {
+export interface OvsAstPropertyDefinition extends OvsAstBaseNode {
     type: "PropertyDefinition";
-    key: SubhutiHighlithExpression | SubhutiHighlithPrivateIdentifier;
-    value?: SubhutiHighlithExpression | null | undefined;
+    key: OvsAstExpression | OvsAstPrivateIdentifier;
+    value?: OvsAstExpression | null | undefined;
     computed: boolean;
     static: boolean;
 }
 
-export interface SubhutiHighlithFunctionExpression extends SubhutiHighlithBaseFunction, SubhutiHighlithBaseExpression {
-    id?: SubhutiHighlithIdentifier | null | undefined;
+export interface OvsAstFunctionExpression extends OvsAstBaseFunction, OvsAstBaseExpression {
+    id?: OvsAstIdentifier | null | undefined;
     type: "FunctionExpression";
-    body: SubhutiHighlithBlockStatement;
+    body: OvsAstBlockStatement;
 }
 
-export interface SubhutiHighlithSequenceExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstSequenceExpression extends OvsAstBaseExpression {
     type: "SequenceExpression";
-    expressions: SubhutiHighlithExpression[];
+    expressions: OvsAstExpression[];
 }
 
-export interface SubhutiHighlithUnaryExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstUnaryExpression extends OvsAstBaseExpression {
     type: "UnaryExpression";
-    operator: SubhutiHighlithUnaryOperator;
+    operator: OvsAstUnaryOperator;
     prefix: true;
-    argument: SubhutiHighlithExpression;
+    argument: OvsAstExpression;
 }
 
-export interface SubhutiHighlithBinaryExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstBinaryExpression extends OvsAstBaseExpression {
     type: "BinaryExpression";
-    operator: SubhutiHighlithBinaryOperator;
-    left: SubhutiHighlithExpression | SubhutiHighlithPrivateIdentifier;
-    right: SubhutiHighlithExpression;
+    operator: OvsAstBinaryOperator;
+    left: OvsAstExpression | OvsAstPrivateIdentifier;
+    right: OvsAstExpression;
 }
 
-export interface SubhutiHighlithAssignmentExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstAssignmentExpression extends OvsAstBaseExpression {
     type: "AssignmentExpression";
-    operator: SubhutiHighlithAssignmentOperator;
-    left: SubhutiHighlithPattern | SubhutiHighlithMemberExpression;
-    right: SubhutiHighlithExpression;
+    operator: OvsAstAssignmentOperator;
+    left: OvsAstPattern | OvsAstMemberExpression;
+    right: OvsAstExpression;
 }
 
-export interface SubhutiHighlithUpdateExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstUpdateExpression extends OvsAstBaseExpression {
     type: "UpdateExpression";
-    operator: SubhutiHighlithUpdateOperator;
-    argument: SubhutiHighlithExpression;
+    operator: OvsAstUpdateOperator;
+    argument: OvsAstExpression;
     prefix: boolean;
 }
 
-export interface SubhutiHighlithLogicalExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstLogicalExpression extends OvsAstBaseExpression {
     type: "LogicalExpression";
-    operator: SubhutiHighlithLogicalOperator;
-    left: SubhutiHighlithExpression;
-    right: SubhutiHighlithExpression;
+    operator: OvsAstLogicalOperator;
+    left: OvsAstExpression;
+    right: OvsAstExpression;
 }
 
-export interface SubhutiHighlithConditionalExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstConditionalExpression extends OvsAstBaseExpression {
     type: "ConditionalExpression";
-    test: SubhutiHighlithExpression;
-    alternate: SubhutiHighlithExpression;
-    consequent: SubhutiHighlithExpression;
+    test: OvsAstExpression;
+    alternate: OvsAstExpression;
+    consequent: OvsAstExpression;
 }
 
-export interface SubhutiHighlithBaseCallExpression extends SubhutiHighlithBaseExpression {
-    callee: SubhutiHighlithExpression | SubhutiHighlithSuper;
-    arguments: Array<SubhutiHighlithExpression | SubhutiHighlithSpreadElement>;
+export interface OvsAstBaseCallExpression extends OvsAstBaseExpression {
+    callee: OvsAstExpression | OvsAstSuper;
+    arguments: Array<OvsAstExpression | OvsAstSpreadElement>;
 }
 
-export type SubhutiHighlithCallExpression = SubhutiHighlithSimpleCallExpression | SubhutiHighlithNewExpression;
+export type OvsAstCallExpression = OvsAstSimpleCallExpression | OvsAstNewExpression;
 
-export interface SubhutiHighlithSimpleCallExpression extends SubhutiHighlithBaseCallExpression {
+export interface OvsAstSimpleCallExpression extends OvsAstBaseCallExpression {
     type: "CallExpression";
     optional: boolean;
 }
 
-export interface SubhutiHighlithNewExpression extends SubhutiHighlithBaseCallExpression {
+export interface OvsAstNewExpression extends OvsAstBaseCallExpression {
     type: "NewExpression";
 }
 
-export interface SubhutiHighlithMemberExpression extends SubhutiHighlithBaseExpression, SubhutiHighlithBasePattern {
+export interface OvsAstMemberExpression extends OvsAstBaseExpression, OvsAstBasePattern {
     type: "MemberExpression";
-    object: SubhutiHighlithExpression | SubhutiHighlithSuper;
-    property: SubhutiHighlithExpression | SubhutiHighlithPrivateIdentifier;
+    object: OvsAstExpression | OvsAstSuper;
+    property: OvsAstExpression | OvsAstPrivateIdentifier;
     computed: boolean;
     optional: boolean;
 }
 
-export type SubhutiHighlithPattern = SubhutiHighlithIdentifier | SubhutiHighlithObjectPattern | SubhutiHighlithArrayPattern | SubhutiHighlithRestElement | SubhutiHighlithAssignmentPattern | SubhutiHighlithMemberExpression;
+export type OvsAstPattern = OvsAstIdentifier | OvsAstObjectPattern | OvsAstArrayPattern | OvsAstRestElement | OvsAstAssignmentPattern | OvsAstMemberExpression;
 
-export interface SubhutiHighlithBasePattern extends SubhutiHighlithBaseNode {
+export interface OvsAstBasePattern extends OvsAstBaseNode {
 }
 
-export interface SubhutiHighlithSwitchCase extends SubhutiHighlithBaseNode {
+export interface OvsAstSwitchCase extends OvsAstBaseNode {
     type: "SwitchCase";
-    test?: SubhutiHighlithExpression | null | undefined;
-    consequent: SubhutiHighlithStatement[];
+    test?: OvsAstExpression | null | undefined;
+    consequent: OvsAstStatement[];
 }
 
-export interface SubhutiHighlithCatchClause extends SubhutiHighlithBaseNode {
+export interface OvsAstCatchClause extends OvsAstBaseNode {
     type: "CatchClause";
-    param: SubhutiHighlithPattern | null;
-    body: SubhutiHighlithBlockStatement;
+    param: OvsAstPattern | null;
+    body: OvsAstBlockStatement;
 }
 
-export interface SubhutiHighlithIdentifier extends SubhutiHighlithBaseNode, SubhutiHighlithBaseExpression, SubhutiHighlithBasePattern {
+export interface OvsAstIdentifier extends OvsAstBaseNode, OvsAstBaseExpression, OvsAstBasePattern {
     type: "Identifier";
     name: string;
 }
 
-export type SubhutiHighlithLiteral = SubhutiHighlithSimpleLiteral | RegExpLiteral | bigintLiteral;
+export type OvsAstLiteral = OvsAstSimpleLiteral | RegExpLiteral | bigintLiteral;
 
-export interface SubhutiHighlithSimpleLiteral extends SubhutiHighlithBaseNode, SubhutiHighlithBaseExpression {
+export interface OvsAstSimpleLiteral extends OvsAstBaseNode, OvsAstBaseExpression {
     type: "Literal";
     value: string | boolean | number | null;
     raw?: string | undefined;
 }
 
-export interface RegExpLiteral extends SubhutiHighlithBaseNode, SubhutiHighlithBaseExpression {
+export interface RegExpLiteral extends OvsAstBaseNode, OvsAstBaseExpression {
     type: "Literal";
     value?: RegExp | null | undefined;
     regex: {
@@ -453,16 +453,16 @@ export interface RegExpLiteral extends SubhutiHighlithBaseNode, SubhutiHighlithB
     raw?: string | undefined;
 }
 
-export interface bigintLiteral extends SubhutiHighlithBaseNode, SubhutiHighlithBaseExpression {
+export interface bigintLiteral extends OvsAstBaseNode, OvsAstBaseExpression {
     type: "Literal";
     value?: bigint | null | undefined;
     bigint: string;
     raw?: string | undefined;
 }
 
-export type SubhutiHighlithUnaryOperator = "-" | "+" | "!" | "~" | "typeof" | "void" | "delete";
+export type OvsAstUnaryOperator = "-" | "+" | "!" | "~" | "typeof" | "void" | "delete";
 
-export type SubhutiHighlithBinaryOperator =
+export type OvsAstBinaryOperator =
     | "=="
     | "!="
     | "==="
@@ -486,9 +486,9 @@ export type SubhutiHighlithBinaryOperator =
     | "in"
     | "instanceof";
 
-export type SubhutiHighlithLogicalOperator = "||" | "&&" | "??";
+export type OvsAstLogicalOperator = "||" | "&&" | "??";
 
-export type SubhutiHighlithAssignmentOperator =
+export type OvsAstAssignmentOperator =
     | "="
     | "+="
     | "-="
@@ -506,47 +506,47 @@ export type SubhutiHighlithAssignmentOperator =
     | "&&="
     | "??=";
 
-export type SubhutiHighlithUpdateOperator = "++" | "--";
+export type OvsAstUpdateOperator = "++" | "--";
 
-export interface SubhutiHighlithForOfStatement extends SubhutiHighlithBaseForXStatement {
+export interface OvsAstForOfStatement extends OvsAstBaseForXStatement {
     type: "ForOfStatement";
     await: boolean;
 }
 
-export interface SubhutiHighlithSuper extends SubhutiHighlithBaseNode {
+export interface OvsAstSuper extends OvsAstBaseNode {
     type: "Super";
 }
 
-export interface SubhutiHighlithSpreadElement extends SubhutiHighlithBaseNode {
+export interface OvsAstSpreadElement extends OvsAstBaseNode {
     type: "SpreadElement";
-    argument: SubhutiHighlithExpression;
+    argument: OvsAstExpression;
 }
 
-export interface SubhutiHighlithArrowFunctionExpression extends SubhutiHighlithBaseExpression, SubhutiHighlithBaseFunction {
+export interface OvsAstArrowFunctionExpression extends OvsAstBaseExpression, OvsAstBaseFunction {
     type: "ArrowFunctionExpression";
     expression: boolean;
-    body: SubhutiHighlithBlockStatement | SubhutiHighlithExpression;
+    body: OvsAstBlockStatement | OvsAstExpression;
 }
 
-export interface SubhutiHighlithYieldExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstYieldExpression extends OvsAstBaseExpression {
     type: "YieldExpression";
-    argument?: SubhutiHighlithExpression | null | undefined;
+    argument?: OvsAstExpression | null | undefined;
     delegate: boolean;
 }
 
-export interface SubhutiHighlithTemplateLiteral extends SubhutiHighlithBaseExpression {
+export interface OvsAstTemplateLiteral extends OvsAstBaseExpression {
     type: "TemplateLiteral";
-    quasis: SubhutiHighlithTemplateElement[];
-    expressions: SubhutiHighlithExpression[];
+    quasis: OvsAstTemplateElement[];
+    expressions: OvsAstExpression[];
 }
 
-export interface SubhutiHighlithTaggedTemplateExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstTaggedTemplateExpression extends OvsAstBaseExpression {
     type: "TaggedTemplateExpression";
-    tag: SubhutiHighlithExpression;
-    quasi: SubhutiHighlithTemplateLiteral;
+    tag: OvsAstExpression;
+    quasi: OvsAstTemplateLiteral;
 }
 
-export interface SubhutiHighlithTemplateElement extends SubhutiHighlithBaseNode {
+export interface OvsAstTemplateElement extends OvsAstBaseNode {
     type: "TemplateElement";
     tail: boolean;
     value: {
@@ -556,146 +556,146 @@ export interface SubhutiHighlithTemplateElement extends SubhutiHighlithBaseNode 
     };
 }
 
-export interface SubhutiHighlithAssignmentProperty extends SubhutiHighlithProperty {
-    value: SubhutiHighlithPattern;
+export interface OvsAstAssignmentProperty extends OvsAstProperty {
+    value: OvsAstPattern;
     kind: "init";
     method: boolean; // false
 }
 
-export interface SubhutiHighlithObjectPattern extends SubhutiHighlithBasePattern {
+export interface OvsAstObjectPattern extends OvsAstBasePattern {
     type: "ObjectPattern";
-    properties: Array<SubhutiHighlithAssignmentProperty | SubhutiHighlithRestElement>;
+    properties: Array<OvsAstAssignmentProperty | OvsAstRestElement>;
 }
 
-export interface SubhutiHighlithArrayPattern extends SubhutiHighlithBasePattern {
+export interface OvsAstArrayPattern extends OvsAstBasePattern {
     type: "ArrayPattern";
-    elements: Array<SubhutiHighlithPattern | null>;
+    elements: Array<OvsAstPattern | null>;
 }
 
-export interface SubhutiHighlithRestElement extends SubhutiHighlithBasePattern {
+export interface OvsAstRestElement extends OvsAstBasePattern {
     type: "RestElement";
-    argument: SubhutiHighlithPattern;
+    argument: OvsAstPattern;
 }
 
-export interface SubhutiHighlithAssignmentPattern extends SubhutiHighlithBasePattern {
+export interface OvsAstAssignmentPattern extends OvsAstBasePattern {
     type: "AssignmentPattern";
-    left: SubhutiHighlithPattern;
-    right: SubhutiHighlithExpression;
+    left: OvsAstPattern;
+    right: OvsAstExpression;
 }
 
-export type SubhutiHighlithClass = SubhutiHighlithClassDeclaration | SubhutiHighlithClassExpression;
+export type OvsAstClass = OvsAstClassDeclaration | OvsAstClassExpression;
 
-export interface SubhutiHighlithBaseClass extends SubhutiHighlithBaseNode {
-    superClass?: SubhutiHighlithExpression | null | undefined;
-    body: SubhutiHighlithClassBody;
+export interface OvsAstBaseClass extends OvsAstBaseNode {
+    superClass?: OvsAstExpression | null | undefined;
+    body: OvsAstClassBody;
 }
 
-export interface SubhutiHighlithClassBody extends SubhutiHighlithBaseNode {
+export interface OvsAstClassBody extends OvsAstBaseNode {
     type: "ClassBody";
-    body: Array<SubhutiHighlithMethodDefinition | SubhutiHighlithPropertyDefinition | SubhutiHighlithStaticBlock>;
+    body: Array<OvsAstMethodDefinition | OvsAstPropertyDefinition | OvsAstStaticBlock>;
 }
 
-export interface SubhutiHighlithMethodDefinition extends SubhutiHighlithBaseNode {
+export interface OvsAstMethodDefinition extends OvsAstBaseNode {
     type: "MethodDefinition";
-    key: SubhutiHighlithExpression | SubhutiHighlithPrivateIdentifier;
-    value: SubhutiHighlithFunctionExpression;
+    key: OvsAstExpression | OvsAstPrivateIdentifier;
+    value: OvsAstFunctionExpression;
     kind: "constructor" | "method" | "get" | "set";
     computed: boolean;
-    static: SubhutiHighlithSubhutiTokenAst;
+    static: OvsAstSubhutiTokenAst;
 }
 
-export interface SubhutiHighlithMaybeNamedClassDeclaration extends SubhutiHighlithBaseClass, SubhutiHighlithBaseDeclaration {
+export interface OvsAstMaybeNamedClassDeclaration extends OvsAstBaseClass, OvsAstBaseDeclaration {
     type: "ClassDeclaration";
     /** It is null when a class declaration is a part of the `export default class` statement */
-    id: SubhutiHighlithIdentifier | null;
+    id: OvsAstIdentifier | null;
 }
 
-export interface SubhutiHighlithClassDeclaration extends SubhutiHighlithMaybeNamedClassDeclaration {
-    id: SubhutiHighlithIdentifier;
-    class: SubhutiHighlithSubhutiTokenAst
+export interface OvsAstClassDeclaration extends OvsAstMaybeNamedClassDeclaration {
+    id: OvsAstIdentifier;
+    class: OvsAstSubhutiTokenAst
 }
 
-export interface SubhutiHighlithClassExpression extends SubhutiHighlithBaseClass, SubhutiHighlithBaseExpression {
+export interface OvsAstClassExpression extends OvsAstBaseClass, OvsAstBaseExpression {
     type: "ClassExpression";
-    id?: SubhutiHighlithIdentifier | null | undefined;
+    id?: OvsAstIdentifier | null | undefined;
 }
 
-export interface SubhutiHighlithMetaProperty extends SubhutiHighlithBaseExpression {
+export interface OvsAstMetaProperty extends OvsAstBaseExpression {
     type: "MetaProperty";
-    meta: SubhutiHighlithIdentifier;
-    property: SubhutiHighlithIdentifier;
+    meta: OvsAstIdentifier;
+    property: OvsAstIdentifier;
 }
 
-export type SubhutiHighlithModuleDeclaration =
-    | SubhutiHighlithImportDeclaration
-    | SubhutiHighlithExportNamedDeclaration
-    | SubhutiHighlithExportDeclaration
-    | SubhutiHighlithExportAllDeclaration;
+export type OvsAstModuleDeclaration =
+    | OvsAstImportDeclaration
+    | OvsAstExportNamedDeclaration
+    | OvsAstExportDeclaration
+    | OvsAstExportAllDeclaration;
 
-export interface SubhutiHighlithBaseModuleDeclaration extends SubhutiHighlithBaseNode {
+export interface OvsAstBaseModuleDeclaration extends OvsAstBaseNode {
 }
 
-export type SubhutiHighlithModuleSpecifier = SubhutiHighlithImportSpecifier | SubhutiHighlithImportDefaultSpecifier | SubhutiHighlithImportNamespaceSpecifier | SubhutiHighlithExportSpecifier;
+export type OvsAstModuleSpecifier = OvsAstImportSpecifier | OvsAstImportDefaultSpecifier | OvsAstImportNamespaceSpecifier | OvsAstExportSpecifier;
 
-export interface SubhutiHighlithBaseModuleSpecifier extends SubhutiHighlithBaseNode {
-    local: SubhutiHighlithIdentifier;
+export interface OvsAstBaseModuleSpecifier extends OvsAstBaseNode {
+    local: OvsAstIdentifier;
 }
 
-export interface SubhutiHighlithImportDeclaration extends SubhutiHighlithBaseModuleDeclaration {
+export interface OvsAstImportDeclaration extends OvsAstBaseModuleDeclaration {
     type: "ImportDeclaration";
-    specifiers: Array<SubhutiHighlithImportSpecifier | SubhutiHighlithImportDefaultSpecifier | SubhutiHighlithImportNamespaceSpecifier>;
-    source: SubhutiHighlithLiteral;
+    specifiers: Array<OvsAstImportSpecifier | OvsAstImportDefaultSpecifier | OvsAstImportNamespaceSpecifier>;
+    source: OvsAstLiteral;
 }
 
-export interface SubhutiHighlithImportSpecifier extends SubhutiHighlithBaseModuleSpecifier {
+export interface OvsAstImportSpecifier extends OvsAstBaseModuleSpecifier {
     type: "ImportSpecifier";
-    imported: SubhutiHighlithIdentifier | SubhutiHighlithLiteral;
+    imported: OvsAstIdentifier | OvsAstLiteral;
 }
 
-export interface SubhutiHighlithImportExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstImportExpression extends OvsAstBaseExpression {
     type: "ImportExpression";
-    source: SubhutiHighlithExpression;
+    source: OvsAstExpression;
 }
 
-export interface SubhutiHighlithImportDefaultSpecifier extends SubhutiHighlithBaseModuleSpecifier {
+export interface OvsAstImportDefaultSpecifier extends OvsAstBaseModuleSpecifier {
     type: "ImportDefaultSpecifier";
 }
 
-export interface SubhutiHighlithImportNamespaceSpecifier extends SubhutiHighlithBaseModuleSpecifier {
+export interface OvsAstImportNamespaceSpecifier extends OvsAstBaseModuleSpecifier {
     type: "ImportNamespaceSpecifier";
 }
 
-export interface SubhutiHighlithExportNamedDeclaration extends SubhutiHighlithBaseModuleDeclaration {
+export interface OvsAstExportNamedDeclaration extends OvsAstBaseModuleDeclaration {
     type: "ExportNamedDeclaration";
-    declaration?: SubhutiHighlithDeclaration | null | undefined;
-    specifiers: SubhutiHighlithExportSpecifier[];
-    source?: SubhutiHighlithLiteral | null | undefined;
+    declaration?: OvsAstDeclaration | null | undefined;
+    specifiers: OvsAstExportSpecifier[];
+    source?: OvsAstLiteral | null | undefined;
 }
 
-export interface SubhutiHighlithExportSpecifier extends Omit<SubhutiHighlithBaseModuleSpecifier, "local"> {
+export interface OvsAstExportSpecifier extends Omit<OvsAstBaseModuleSpecifier, "local"> {
     type: "ExportSpecifier";
-    local: SubhutiHighlithIdentifier | SubhutiHighlithLiteral;
-    exported: SubhutiHighlithIdentifier | SubhutiHighlithLiteral;
+    local: OvsAstIdentifier | OvsAstLiteral;
+    exported: OvsAstIdentifier | OvsAstLiteral;
 }
 
-export interface SubhutiHighlithSubhutiTokenAst extends SubhutiHighlithBaseNodeWithoutComments {
+export interface OvsAstSubhutiTokenAst extends OvsAstBaseNodeWithoutComments {
 
 }
 
-export interface SubhutiHighlithExportDeclaration extends SubhutiHighlithBaseModuleDeclaration {
+export interface OvsAstExportDeclaration extends OvsAstBaseModuleDeclaration {
     type: "ExportDeclaration";
-    export: SubhutiHighlithSubhutiTokenAst
-    default: SubhutiHighlithSubhutiTokenAst
-    declaration: SubhutiHighlithMaybeNamedFunctionDeclaration | SubhutiHighlithMaybeNamedClassDeclaration | SubhutiHighlithExpression;
+    export: OvsAstSubhutiTokenAst
+    default: OvsAstSubhutiTokenAst
+    declaration: OvsAstMaybeNamedFunctionDeclaration | OvsAstMaybeNamedClassDeclaration | OvsAstExpression;
 }
 
-export interface SubhutiHighlithExportAllDeclaration extends SubhutiHighlithBaseModuleDeclaration {
+export interface OvsAstExportAllDeclaration extends OvsAstBaseModuleDeclaration {
     type: "ExportAllDeclaration";
-    exported: SubhutiHighlithIdentifier | SubhutiHighlithLiteral | null;
-    source: SubhutiHighlithLiteral;
+    exported: OvsAstIdentifier | OvsAstLiteral | null;
+    source: OvsAstLiteral;
 }
 
-export interface SubhutiHighlithAwaitExpression extends SubhutiHighlithBaseExpression {
+export interface OvsAstAwaitExpression extends OvsAstBaseExpression {
     type: "AwaitExpression";
-    argument: SubhutiHighlithExpression;
+    argument: OvsAstExpression;
 }
