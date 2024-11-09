@@ -7,6 +7,7 @@ import {EsTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUti
 import {CompletionItem, CompletionItemKind} from "vscode-languageserver/node";
 import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import JsonUtil from "subhuti/src/utils/JsonUtil.ts";
+import {OvsAstClassDeclaration, OvsAstDeclaration} from "../ovs/interface/OvsInterface";
 
 export class FileUtil {
     // 读取文件内容
@@ -65,31 +66,24 @@ export function initCompletionMap(filePath: string) {
     let completionItemAry: CompletionItem[] = []
     try {
         for (const file of files) {
-            LogUtil.log(file)
             const fileCode = FileUtil.readFileContent(file)
-            LogUtil.log(fileCode)
             const ast = ovsToAstUtil.toAst(fileCode)
+            JsonUtil.log(111)
             JsonUtil.log(ast)
             if (ast.sourceType === 'module') {
                 for (const bodyElement of ast.body) {
-                    LogUtil.log('474444')
-                    LogUtil.log(ast)
-                    LogUtil.log(ast.body)
-                    // LogUtil.log(bodyElement)
-                    // LogUtil.log(bodyElement.type)
-                    LogUtil.log('6666')
                     if (bodyElement.type === EsTreeAstType.ExportDefaultDeclaration) {
-                        if (bodyElement.declaration.type === Es6Parser.prototype.ClassDeclaration) {
+                        if (bodyElement.declaration.type === Es6Parser.prototype.ClassDeclaration.name) {
+                            const declaration: OvsAstClassDeclaration = bodyElement.declaration
                             const item: CompletionItem = {
-                                label: bodyElement.declaration.id.name,
+                                label: declaration.id.name,
                                 kind: CompletionItemKind.Class,
                                 detail: 'detailItem',
                                 labelDetails: {
-                                    detail: 'detail',
                                     description: 'description'
                                 },
                                 data: {
-                                    label: bodyElement.declaration.id.name,
+                                    label: declaration.id.name,
                                     type: CompletionItemKind.Class,
                                     file: file,
                                     default: !!bodyElement.default,

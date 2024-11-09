@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import {fileURLToPath} from 'url'
+import JsonUtil from "subhuti/src/utils/JsonUtil.ts";
 
 export class LogUtil {
     private static logFilePath: string
@@ -18,6 +19,7 @@ export class LogUtil {
     }
 
     static log(data?: any, msg = null) {
+        JsonUtil.log(data)
         try {
             const timestamp = new Date().toISOString()
             let logMessage = `\n[${timestamp}]`
