@@ -102,6 +102,7 @@ export function initCompletionMap(filePath: string) {
             }
         }
     } catch (e) {
+        console.log(e)
         LogUtil.log('jinrulecuowurizhi')
     }
     return completionItemAry
