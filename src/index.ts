@@ -148,7 +148,6 @@ connection.languages.semanticTokens.on(params => {
         LogUtil.log(e.stack)
     }
 
-
     const build = builder.build()
     return build
 })
