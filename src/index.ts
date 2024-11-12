@@ -1,172 +1,84 @@
 import {
     createConnection,
-    TextDocuments,
-    ProposedFeatures,
-    TextDocumentSyncKind,
-    InitializeParams,
-    InitializeResult,
-    SemanticTokensRequest,
-    SemanticTokensBuilder,
-    SemanticTokensLegend, CompletionItem, CompletionItemKind, MarkupKind
-} from 'vscode-languageserver/node'
+    createServer,
+    createTypeScriptProject,
+    Diagnostic,
+    loadTsdkByPath
+} from '@volar/language-server/node';
+import {create as createCssService} from 'volar-service-css';
+import {create as createEmmetService} from 'volar-service-emmet';
+import {create as createHtmlService} from 'volar-service-html';
+import {create as createTypeScriptServices} from 'volar-service-typescript';
+import {URI} from 'vscode-uri';
+import {OvsLanguagePlugin, OvsVirtualCode} from './languagePlugin';
 
-import {fileURLToPath} from 'url'
-import {TextDocument} from 'vscode-languageserver-textdocument'
-import * as fs from 'fs'
-import * as path from 'path'
-import {
-    CompletionParams,
-    Hover,
-    HoverParams,
-    SemanticTokenModifiers,
-    SemanticTokenTypes,
-    TextDocumentIdentifier
-} from 'vscode-languageserver'
-import SubhutiLexer from 'subhuti/src/parser/SubhutiLexer.ts'
-import {es6Tokens, es6TokensObj} from 'subhuti-ts/src/language/es2015/Es6Tokens.ts'
-import JsonUtil from 'subhuti/src/utils/JsonUtil.ts'
-import {TokenProvider, tokenTypesObj} from "./IntellijTokenUtil.ts";
-import OvsParser from "./ovs/parser/OvsParser.ts";
-import {LogUtil} from "./logutil.ts";
-import {FileUtil, initCompletionMap} from "./utils/FileUtils.ts";
-import {ovsToAstUtil} from "./ovs/factory/OvsToAstUtil.ts";
-import {EsTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
+const connection = createConnection();
+const server = createServer(connection);
 
-// 创建连接
-const connection = createConnection(ProposedFeatures.all)
+connection.listen();
 
-// 创建文档管理器
-const documents = new TextDocuments(TextDocument)
-
-
-// 定义日志文件路径
-
-// 定义语义标记类型和修饰符
-// const tokenTypes = tokenTypesObj.
-const tokenTypes = Object.values(tokenTypesObj).map(item => item.toUpperCase())
-const tokenModifiers: string[] = []
-
-// 创建语义标记图例
-const legend: SemanticTokensLegend = {
-    tokenTypes: tokenTypes,
-    tokenModifiers: tokenModifiers
+function getLocalTsdkPath() {
+    let tsdkPath = "C:\\Users\\qinkaiyuan\\AppData\\Roaming\\npm\\node_modules\\typescript\\lib";
+    return tsdkPath.replace(/\\/g, '/');
 }
 
-interface objtype {
-    label: string,
-    type: number,
-    file: string,
-    default: boolean
-}
-
-const completionMap: Map<string, objtype> = new Map()
-let completionAry: objtype[] = []
-let completionItemAry: CompletionItem[] = []
-
-
-// 1. 基本补全请求处理
-connection.onCompletion(
-    (params: CompletionParams): CompletionItem[] => {
-        LogUtil.log(params)
-        // 返回基本的补全列表
-        return completionItemAry
-    }
-);
-
-
-// 修改初始化处理
-connection.onInitialize((params: InitializeParams): InitializeResult => {
-    LogUtil.log({
-        capabilities: params.capabilities
-    });
-
-    // 确保工作区文件夹存在
-    if (params.workspaceFolders && params.workspaceFolders.length > 0) {
-        completionItemAry = initCompletionMap(params.workspaceFolders[0].uri)
-        LogUtil.log(completionItemAry);
-    }
-
-    return {
-        capabilities: {
-            semanticTokensProvider: {
-                legend,
-                full: true,
-                range: true
+connection.onInitialize(params => {
+    const tsPath = getLocalTsdkPath()
+    const tsdk = loadTsdkByPath(tsPath, params.locale);
+    return server.initialize(
+        params,
+        createTypeScriptProject(tsdk.typescript, tsdk.diagnosticMessages, () => ({
+            languagePlugins: [OvsLanguagePlugin],
+        })),
+        [
+            createHtmlService(),
+            createCssService(),
+            createEmmetService(),
+            ...createTypeScriptServices(tsdk.typescript),
+            {
+                capabilities: {
+                    diagnosticProvider: {
+                        interFileDependencies: false,
+                        workspaceDiagnostics: false,
+                    },
+                },
+                create(context) {
+                    return {
+                        provideDiagnostics(document) {
+                            const decoded = context.decodeEmbeddedDocumentUri(URI.parse(document.uri));
+                            if (!decoded) {
+                                // Not a embedded document
+                                return;
+                            }
+                            const virtualCode = context.language.scripts.get(decoded[0])?.generated?.embeddedCodes.get(decoded[1]);
+                            if (!(virtualCode instanceof OvsVirtualCode)) {
+                                return;
+                            }
+                            const styleNodes = virtualCode.htmlDocument.roots.filter(root => root.tag === 'style');
+                            if (styleNodes.length <= 1) {
+                                return;
+                            }
+                            const errors: Diagnostic[] = [];
+                            for (let i = 1; i < styleNodes.length; i++) {
+                                errors.push({
+                                    severity: 2,
+                                    range: {
+                                        start: document.positionAt(styleNodes[i].start),
+                                        end: document.positionAt(styleNodes[i].end),
+                                    },
+                                    source: 'ovs',
+                                    message: 'Only one style tag is allowed.',
+                                });
+                            }
+                            return errors;
+                        },
+                    };
+                },
             },
-            hoverProvider: true,
-            completionProvider: {
-                resolveProvider: true,
-                triggerCharacters: ['.']
-            }
-        }
-    }
-})
+        ],
+    )
+});
 
+connection.onInitialized(server.initialized);
 
-connection.languages.semanticTokens.on(params => {
-    const document = documents.get(params.textDocument.uri)
-
-    if (!document) {
-        LogUtil.log('chufale kong' + params.textDocument.uri + 'fasfd')
-        return {data: []}
-    }
-
-    const builder = new SemanticTokensBuilder()
-    try {
-        const text = document.getText()
-
-        const lexer = new SubhutiLexer(es6Tokens)
-        let tokens = lexer.lexer(text)
-        const parser = new OvsParser(tokens)
-        let curCst = parser.Program()
-        LogUtil.log('curCst')
-        LogUtil.log(curCst)
-        const ast = ovsToAstUtil.createProgramAst(curCst)
-        LogUtil.log('ast')
-        LogUtil.log(ast)
-        TokenProvider.visitNode(ast)
-        JsonUtil.log(TokenProvider.tokens)
-        const tokens1 = TokenProvider.tokens
-        LogUtil.log('Sending tokensRecord', JsonUtil.toJson(tokens))
-
-        if (tokens1.length) {
-            for (const semanticToken of tokens1) {
-                builder.push(
-                    semanticToken.line,
-                    semanticToken.char,
-                    semanticToken.length,
-                    semanticToken.tokenType,
-                    semanticToken.tokenModifiers,
-                )
-            }
-        } else {
-            LogUtil.log('chufale kong' + text + 'fasfd')
-        }
-    } catch (e: Error) {
-        LogUtil.log('error')
-        LogUtil.log(e.message)
-        LogUtil.log(e.stack)
-    }
-
-    const build = builder.build()
-    return build
-})
-
-// 2. 补全项解析处理 - 对应 completionItem/resolve
-connection.onCompletionResolve(
-    (item: CompletionItem): CompletionItem => {
-        // 根据 item.data 加载详细信息
-        if (item.data === 1) {
-            item.detail = 'Function details';
-            item.documentation = {
-                kind: MarkupKind.Markdown,
-                value: '# Documentation\n...'
-            };
-        }
-        return item;
-    }
-);
-
-// 启动服务器
-documents.listen(connection)
-connection.listen()
+connection.onShutdown(server.shutdown);
