@@ -4,11 +4,7 @@ import type * as ts from 'typescript';
 import html from 'vscode-html-languageservice';
 import { URI } from 'vscode-uri';
 
-console.log(html)
-console.log(html.getLanguageService)
-console.log(html.TextDocument)
-
-export const OvsLanguagePlugin: LanguagePlugin<URI> = {
+export const ovsLanguagePlugin: LanguagePlugin<URI> = {
 	getLanguageId(uri) {
 		if (uri.path.endsWith('.ovs')) {
 			return 'ovs';
@@ -75,11 +71,11 @@ export class OvsVirtualCode implements VirtualCode {
 			},
 		}];
 		this.htmlDocument = htmlLs.parseHTMLDocument(html.TextDocument.create('', 'html', 0, snapshot.getText(0, snapshot.getLength())));
-		this.embeddedCodes = [...getovsEmbeddedCodes(snapshot, this.htmlDocument)];
+		this.embeddedCodes = [...getOvsEmbeddedCodes(snapshot, this.htmlDocument)];
 	}
 }
 
-function* getovsEmbeddedCodes(snapshot: ts.IScriptSnapshot, htmlDocument: html.HTMLDocument): Generator<VirtualCode> {
+function* getOvsEmbeddedCodes(snapshot: ts.IScriptSnapshot, htmlDocument: html.HTMLDocument): Generator<VirtualCode> {
 	const styles = htmlDocument.roots.filter(root => root.tag === 'style');
 	const scripts = htmlDocument.roots.filter(root => root.tag === 'script');
 
