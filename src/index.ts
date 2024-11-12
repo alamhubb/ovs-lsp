@@ -15,9 +15,9 @@ function getLocalTsdkPath() {
     let tsdkPath = "C:\\Users\\qinkaiyuan\\AppData\\Roaming\\npm\\node_modules\\typescript\\lib";
     return tsdkPath.replace(/\\/g, '/');
 }
+const tsdkPath = getLocalTsdkPath();
 
 connection.onInitialize(params => {
-    const tsdkPath = getLocalTsdkPath();
     const tsdk = loadTsdkByPath(tsdkPath, params.locale);
     return server.initialize(
         params,
