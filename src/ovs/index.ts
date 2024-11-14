@@ -8,7 +8,7 @@ import OvsParser from "./parser/OvsParser.ts";
 import {ovsToAstUtil} from "./factory/OvsToAstUtil.ts";
 import {TokenProvider} from "../IntellijTokenUtil.ts";
 
-function traverseClearTokens(currentNode: SubhutiCst) {
+export function traverseClearTokens(currentNode: SubhutiCst) {
     if (!currentNode || !currentNode.children || !currentNode.children.length)
         return
     // 将当前节点添加到 Map 中
