@@ -1,8 +1,9 @@
-import { CodeMapping, forEachEmbeddedCode, LanguagePlugin, VirtualCode } from '@volar/language-core';
-import type { TypeScriptExtraServiceScript } from '@volar/typescript';
-import type * as ts from 'typescript';
-import html from 'vscode-html-languageservice';
-import { URI } from 'vscode-uri';
+import {CodeMapping, forEachEmbeddedCode, LanguagePlugin, VirtualCode} from '@volar/language-core';
+import type {TypeScriptExtraServiceScript} from '@volar/typescript';
+import ts from 'typescript';
+import {URI} from 'vscode-uri';
+import * as console from "node:console";
+import {LogUtil} from "./logutil.js";
 
 export const ovsLanguagePlugin: LanguagePlugin<URI> = {
 	getLanguageId(uri) {
@@ -16,27 +17,27 @@ export const ovsLanguagePlugin: LanguagePlugin<URI> = {
 		}
 	},
 	typescript: {
-		extraFileExtensions: [{ extension: 'ovs', isMixedContent: true, scriptKind: 7 satisfies ts.ScriptKind.Deferred }],
+		extraFileExtensions: [{extension: 'ovs', isMixedContent: true, scriptKind: 7 satisfies ts.ScriptKind.Deferred}],
 		getServiceScript() {
 			return undefined;
 		},
 		getExtraServiceScripts(fileName, root) {
 			const scripts: TypeScriptExtraServiceScript[] = [];
-			for (const code of forEachEmbeddedCode(root)) {
-				if (code.languageId === 'javascript') {
-					scripts.push({
-						fileName: fileName + '.' + code.id + '.js',
-						code,
-						extension: '.js',
-						scriptKind: 1 satisfies ts.ScriptKind.JS,
-					});
-				}
-				else if (code.languageId === 'typescript') {
+			//得到所有的虚拟代码片段
+			const ary = [...forEachEmbeddedCode(root)]
+			console.log(ary.length)
+			LogUtil.log(ary.length)
+			LogUtil.log(root.embeddedCodes)
+			for (const code of ary) {
+				LogUtil.log('code')
+				LogUtil.log(code)
+				LogUtil.log(code.languageId)
+				if (code.languageId === 'qqqts') {
 					scripts.push({
 						fileName: fileName + '.' + code.id + '.ts',
 						code,
 						extension: '.ts',
-						scriptKind: 3 satisfies ts.ScriptKind.TS,
+						scriptKind: ts.ScriptKind.TS,
 					});
 				}
 			}
@@ -45,16 +46,11 @@ export const ovsLanguagePlugin: LanguagePlugin<URI> = {
 	},
 };
 
-const htmlLs = html.getLanguageService();
-
 export class OvsVirtualCode implements VirtualCode {
 	id = 'root';
-	languageId = 'html';
+	languageId = 'qqovs';
 	mappings: CodeMapping[];
 	embeddedCodes: VirtualCode[] = [];
-
-	// Reuse in custom language service plugin
-	htmlDocument: html.HTMLDocument;
 
 	constructor(public snapshot: ts.IScriptSnapshot) {
 		this.mappings = [{
@@ -70,74 +66,42 @@ export class OvsVirtualCode implements VirtualCode {
 				verification: true,
 			},
 		}];
-		this.htmlDocument = htmlLs.parseHTMLDocument(html.TextDocument.create('', 'html', 0, snapshot.getText(0, snapshot.getLength())));
-		this.embeddedCodes = [...getOvsEmbeddedCodes(snapshot, this.htmlDocument)];
+		const styleText = snapshot.getText(0, snapshot.getLength());
+		//将ovscode转为js代码，传给ts
+		/*this.embeddedCodes = [{
+            id: 'ts',
+            languageId: 'qqqts',
+            snapshot: {
+                getText: (start, end) => styleText.substring(start, end),
+                getLength: () => styleText.length,
+                getChangeRange: () => undefined,
+            },
+            mappings: []
+        }];*/
+
+		this.embeddedCodes = [{
+			id: 'ts1',
+			languageId: 'qqqts',
+			snapshot: {
+				getText: (start, end) => styleText.substring(start, end),
+				getLength: () => styleText.length,
+				getChangeRange: () => undefined,
+			},
+			mappings: [{
+				sourceOffsets: [0],
+				generatedOffsets: [0],
+				lengths: [styleText.length],
+				data: {
+					completion: true,
+					format: true,
+					navigation: true,
+					semantic: true,
+					structure: true,
+					verification: true
+				},
+			}],
+			embeddedCodes: [],
+		}];
 	}
 }
 
-function* getOvsEmbeddedCodes(snapshot: ts.IScriptSnapshot, htmlDocument: html.HTMLDocument): Generator<VirtualCode> {
-	const styles = htmlDocument.roots.filter(root => root.tag === 'style');
-	const scripts = htmlDocument.roots.filter(root => root.tag === 'script');
-
-	for (let i = 0; i < styles.length; i++) {
-		const style = styles[i];
-		if (style.startTagEnd !== undefined && style.endTagStart !== undefined) {
-			const styleText = snapshot.getText(style.startTagEnd, style.endTagStart);
-			yield {
-				id: 'style_' + i,
-				languageId: 'css',
-				snapshot: {
-					getText: (start, end) => styleText.substring(start, end),
-					getLength: () => styleText.length,
-					getChangeRange: () => undefined,
-				},
-				mappings: [{
-					sourceOffsets: [style.startTagEnd],
-					generatedOffsets: [0],
-					lengths: [styleText.length],
-					data: {
-						completion: true,
-						format: true,
-						navigation: true,
-						semantic: true,
-						structure: true,
-						verification: true,
-					},
-				}],
-				embeddedCodes: [],
-			};
-		}
-	}
-
-	for (let i = 0; i < scripts.length; i++) {
-		const script = scripts[i];
-		if (script.startTagEnd !== undefined && script.endTagStart !== undefined) {
-			const text = snapshot.getText(script.startTagEnd, script.endTagStart);
-			const lang = script.attributes?.lang;
-			const isTs = lang === 'ts' || lang === '"ts"' || lang === "'ts'";
-			yield {
-				id: 'script_' + i,
-				languageId: isTs ? 'typescript' : 'javascript',
-				snapshot: {
-					getText: (start, end) => text.substring(start, end),
-					getLength: () => text.length,
-					getChangeRange: () => undefined,
-				},
-				mappings: [{
-					sourceOffsets: [script.startTagEnd],
-					generatedOffsets: [0],
-					lengths: [text.length],
-					data: {
-						completion: true,
-						format: true,
-						navigation: true,
-						semantic: true,
-						structure: true,
-						verification: true,
-					},
-				}],
-				embeddedCodes: [],
-			};
-		}
-	}
-}
