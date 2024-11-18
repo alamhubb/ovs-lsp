@@ -10,7 +10,7 @@ import {
 } from "../interface/OvsInterface";
 import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
 import SubhutiLexer from "subhuti/src/parser/SubhutiLexer.ts";
-import {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
+import Es6TokenConsumer, {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
 import type {
     CallExpression, ExpressionStatement,
     AssignmentExpression,
@@ -24,6 +24,7 @@ import type {
 } from "@babel/types";
 import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import BabelEstreeAstUtil from "./BabelEstreeAstUtil.ts";
+import JsonUtil from "subhuti/src/utils/JsonUtil.ts";
 
 
 export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
@@ -57,15 +58,19 @@ export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
         const {children} = cst;
         const [exportToken, secondChild, thirdChild] = children;
 
+        JsonUtil.log(cst)
+
         let ast: ExportDefaultDeclaration = super.createExportDeclarationAst(cst) as ExportDefaultDeclaration
+        /*
 
         if (ast.type === EsTreeAstType.ExportDefaultDeclaration) {
+            console.log(ast.type)
             ast = {
                 export: this.createSubhutiTokenAst(exportToken),
                 default: this.createSubhutiTokenAst(secondChild),
                 ...ast
             }
-        }
+        }*/
         return ast
     }
 

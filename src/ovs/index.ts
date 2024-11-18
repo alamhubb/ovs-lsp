@@ -23,12 +23,15 @@ export function traverseClearTokens(currentNode: SubhutiCst) {
 }
 
 export function vitePluginOvsTransform(code) {
+    console.log(code)
     const lexer = new SubhutiLexer(es6Tokens)
     const tokens = lexer.lexer(code)
     const parser = new OvsParser(tokens)
 
+    console.log(tokens)
     let code1 = null
     let curCst = parser.Program()
+    JsonUtil.log(7777)
     curCst = traverseClearTokens(curCst)
     JsonUtil.log(curCst)
     console.log(111231)
@@ -60,7 +63,7 @@ export function vitePluginOvsTransform(code) {
     `
 }
 
-const code = `div { 123 }
+const code = `export const ha = div { 123 }
 `
 // const code = `let a = div{
 //             header = div{123},
