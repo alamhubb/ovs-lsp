@@ -8,6 +8,7 @@ import OvsParser from "./parser/OvsParser.ts";
 import {ovsToAstUtil} from "./factory/Es6CstToOvsAstUtil.ts";
 import {TokenProvider} from "../IntellijTokenUtil.ts";
 import OvsAPI from "./OvsAPI.ts";
+import generate from "@babel/generator";
 
 export function traverseClearTokens(currentNode: SubhutiCst) {
     if (!currentNode || !currentNode.children || !currentNode.children.length)
@@ -35,6 +36,12 @@ export function vitePluginOvsTransform(code) {
     //cst转 estree ast
     const ast = ovsToAstUtil.createProgramAst(curCst)
     JsonUtil.log(ast)
+    console.log(123123)
+    console.log(generate.default)
+    console.log(56465)
+    const code22 = generate.default(ast)
+    console.log(656555)
+    console.log(code22)
     // console.log(456465)
     //ast to client ast
     TokenProvider.visitNode(ast)
