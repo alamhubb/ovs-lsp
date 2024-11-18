@@ -1,15 +1,15 @@
 import * as babeType from "@babel/types";
 import {OvsAstRenderDomViewDeclaration, OvsRenderDomViewDeclarator} from "../interface/OvsInterface";
-import {ExpressionStatement, Statement} from '@babel/types';
+import {CallExpression, ExpressionStatement, Statement} from '@babel/types';
 
 export default class BabelEstreeAstUtil {
-    static createOvsRenderDomViewDeclarationEstreeAst(ast: OvsAstRenderDomViewDeclaration) {
+    static createOvsRenderDomViewDeclarationEstreeAst(ast: OvsAstRenderDomViewDeclaration) : CallExpression{
         const body = BabelEstreeAstUtil.createOvsAPICreateVNode(ast)
         const viewIIFE = BabelEstreeAstUtil.createIIFE(body)
         return viewIIFE
     }
 
-    static createIIFE(body: Array<Statement>) {
+    static createIIFE(body: Array<Statement>): CallExpression {
         const blockStatement = babeType.blockStatement(body)
         const functionExpression = babeType.functionExpression(null, [], blockStatement)
         const callExpression = babeType.callExpression(functionExpression, [])

@@ -12,7 +12,8 @@ import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
 import SubhutiLexer from "subhuti/src/parser/SubhutiLexer.ts";
 import {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
 import type {
-    AssignmentExpression, BaseNode,
+    CallExpression, ExpressionStatement,
+    AssignmentExpression,
     ClassDeclaration,
     Directive,
     ExportDefaultDeclaration,
@@ -20,10 +21,9 @@ import type {
     ModuleDeclaration,
     Program,
     Statement
-} from "estree";
+} from "@babel/types";
 import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import BabelEstreeAstUtil from "./BabelEstreeAstUtil.ts";
-import {ExpressionStatement} from "@babel/types";
 
 
 export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
@@ -42,10 +42,10 @@ export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
 
     createProgramAst(cst: SubhutiCst): Program {
         const ast = super.createProgramAst(cst)
-        return ast as Program
+        return ast
     }
 
-    createSubhutiTokenAst(cst: SubhutiCst): BaseNode {
+    createSubhutiTokenAst(cst: SubhutiCst): any {
         return {
             type: cst.value,
             loc: cst.loc
@@ -93,7 +93,7 @@ export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
     }
 
 
-    createOvsRenderDomViewDeclarationAst(cst: SubhutiCst): ExpressionStatement {
+    createOvsRenderDomViewDeclarationAst(cst: SubhutiCst): CallExpression {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclaration.name);
         const ast: OvsAstRenderDomViewDeclaration = {
             type: astName as any,
