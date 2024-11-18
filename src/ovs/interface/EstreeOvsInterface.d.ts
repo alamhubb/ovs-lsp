@@ -1,35 +1,46 @@
 import {
     ArrayExpression, ArrayPattern, ArrowFunctionExpression,
-    AssignmentExpression, AssignmentPattern,
+    AssignmentExpression, AssignmentOperator, AssignmentPattern, AssignmentProperty,
     AwaitExpression,
+    BaseCallExpression,
+    BaseFunction,
+    BaseModuleDeclaration,
+    BaseModuleSpecifier,
+    PropertyDefinition,
+    BaseNode,
     BigIntLiteral,
-    BinaryExpression,
+    BinaryExpression, BinaryOperator,
     BlockStatement, BreakStatement, CatchClause,
+    ChainExpression,
     ClassBody,
     ClassDeclaration, ClassExpression,
     Comment,
     ConditionalExpression, ContinueStatement, DebuggerStatement,
     Directive, DoWhileStatement, EmptyStatement,
     ExportDefaultDeclaration,
-    Expression, ExpressionStatement, ForInStatement, ForOfStatement, ForStatement, FunctionDeclaration,
+    Expression,
+    ExpressionMap, ExpressionStatement, ForInStatement, ForOfStatement, ForStatement, FunctionDeclaration,
     Identifier, IfStatement, ImportExpression, LabeledStatement,
-    LogicalExpression,
+    LogicalExpression, LogicalOperator,
+    MaybeNamedClassDeclaration,
+    MaybeNamedFunctionDeclaration,
     MemberExpression,
     MetaProperty,
+    MethodDefinition,
     ModuleDeclaration, NewExpression, ObjectExpression, ObjectPattern,
-    Pattern,
+    Pattern, PrivateIdentifier,
     type Program,
     Property, RegExpLiteral, RestElement, ReturnStatement,
-    SequenceExpression,
+    SequenceExpression, SimpleCallExpression, SimpleLiteral,
     SpreadElement,
     Statement, StaticBlock, Super, SwitchCase, SwitchStatement,
     TaggedTemplateExpression, TemplateElement,
     TemplateLiteral,
     ThisExpression, ThrowStatement, TryStatement,
-    UnaryExpression,
-    UpdateExpression, VariableDeclarator, WhileStatement, WithStatement,
+    UnaryExpression, UnaryOperator,
+    UpdateExpression, UpdateOperator, VariableDeclarator, WhileStatement, WithStatement,
     YieldExpression, VariableDeclaration
-} from "@babel/types";
+} from "estree";
 
 // 自定义声明类型
 export interface OvsAstRenderDomViewDeclaration {
@@ -40,7 +51,7 @@ export interface OvsAstRenderDomViewDeclaration {
 }
 
 export type OvsRenderDomViewDeclarator =
-// | OvsAstLexicalBinding
+    // | OvsAstLexicalBinding
     | OvsAstAssignmentExpression
 
 export interface OvsAstLexicalBinding {
@@ -89,7 +100,20 @@ export interface OvsAstPosition {
 }
 
 export interface OvsAstProgram extends Program {
-    body: Array<OvsAstStatement>;
+    body: Array<OvsAstDirective | OvsAstStatement | OvsAstModuleDeclaration>;
+}
+
+export interface OvsAstDirective extends Directive {
+    type: "ExpressionStatement";
+    expression: OvsAstLiteral;
+    directive: string;
+}
+
+export interface OvsAstBaseFunction extends BaseFunction {
+    params: OvsAstPattern[];
+    generator?: boolean | undefined;
+    async?: boolean | undefined;
+    body: OvsAstBlockStatement | OvsAstExpression;
 }
 
 export type OvsAstFunction = OvsAstFunctionDeclaration | OvsAstFunctionExpression | OvsAstArrowFunctionExpression;
