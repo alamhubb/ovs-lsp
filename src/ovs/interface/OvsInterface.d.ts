@@ -28,7 +28,7 @@ import {
     ThisExpression, ThrowStatement, TryStatement,
     UnaryExpression,
     UpdateExpression, VariableDeclarator, WhileStatement, WithStatement,
-    YieldExpression, VariableDeclaration
+    YieldExpression, VariableDeclaration, InterpreterDirective
 } from "@babel/types";
 
 // 自定义声明类型
@@ -90,6 +90,9 @@ export interface OvsAstPosition {
 
 export interface OvsAstProgram extends Program {
     body: Array<OvsAstStatement>;
+    directives: Array<OvsAstDirective>;
+    sourceType: "script" | "module";
+    interpreter?: InterpreterDirective | null;
 }
 
 export type OvsAstFunction = OvsAstFunctionDeclaration | OvsAstFunctionExpression | OvsAstArrowFunctionExpression;
@@ -338,7 +341,6 @@ export interface OvsAstUnaryExpression extends UnaryExpression {
 
 export interface OvsAstBinaryExpression extends BinaryExpression {
     type: "BinaryExpression";
-    operator: BinaryOperator;
     left: OvsAstExpression | OvsAstPrivateIdentifier;
     right: OvsAstExpression;
 }
@@ -346,7 +348,7 @@ export interface OvsAstBinaryExpression extends BinaryExpression {
 // Expression 相关接口继续
 export interface OvsAstAssignmentExpression extends AssignmentExpression {
     type: "AssignmentExpression";
-    operator: AssignmentOperator;
+    operator: string;
     left: OvsAstPattern | OvsAstMemberExpression;
     right: OvsAstExpression;
 }

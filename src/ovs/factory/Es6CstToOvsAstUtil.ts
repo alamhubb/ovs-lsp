@@ -25,6 +25,8 @@ import type {
 } from "estree";
 import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import {BaseNode} from "estree";
+import BabelEstreeAstUtil from "./BabelEstreeAstUtil.ts";
+import {ExpressionStatement} from "@babel/types";
 
 
 export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
@@ -93,31 +95,8 @@ export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
         return left
     }
 
-    ovsRenderDomViewDeclarationAstToEstreeAst(ast: OvsAstRenderDomViewDeclaration): OvsAstExpressionStatement {
-        //children的类型，可以是多种
-        //创建children ast需要慢慢来，一步步的，child类型
 
-        const viewName = babeType.stringLiteral(ast.id.name)
-
-        const children = []
-        for (const child1 of ast.children) {
-
-        }
-
-        //创建一个body
-
-
-        const child = babeType.stringLiteral(ast.id.name)
-
-    }
-
-    ovsRenderDomViewDeclaratorToEstreeAst(ast: OvsRenderDomViewDeclarator) {
-        //每一个都是 OvsAstAssignmentExpression ， 现在的目标就是生成
-        return ast
-    }
-
-
-    createOvsRenderDomViewDeclarationAst(cst: SubhutiCst): OvsAstRenderDomViewDeclaration {
+    createOvsRenderDomViewDeclarationAst(cst: SubhutiCst): ExpressionStatement {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclaration.name);
         const ast: OvsAstRenderDomViewDeclaration = {
             type: astName as any,
@@ -126,9 +105,9 @@ export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
             // children: this.createAssignmentExpressionAst(cst.children[2])
         } as any
 
-
+        const res = BabelEstreeAstUtil.createOvsRenderDomViewDeclarationEstreeAst(ast)
         // left = this.ovsRenderDomViewDeclarationAstToEstreeAst(left)
-        return ast
+        return res
     }
 
     createOvsRenderDomViewDeclaratorAst(cst: SubhutiCst): OvsAstLexicalBinding | Expression {

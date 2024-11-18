@@ -1,3 +1,4 @@
+/*
 import {
     ArrayExpression, ArrayPattern, ArrowFunctionExpression,
     AssignmentExpression, AssignmentOperator, AssignmentPattern, AssignmentProperty,
@@ -667,3 +668,4 @@ export interface OvsAstAwaitExpression extends AwaitExpression {
     type: "AwaitExpression";
     argument: OvsAstExpression;
 }
+*/
