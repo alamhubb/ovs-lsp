@@ -19,6 +19,7 @@
     "@types/node": "^22.8.6"
   },
   "dependencies": {
+    "@babel/types": "^7.26.0",
     "@volar/language-core": "~2.4.0",
     "@volar/language-server": "~2.4.0",
     "@volar/typescript": "~2.4.0",

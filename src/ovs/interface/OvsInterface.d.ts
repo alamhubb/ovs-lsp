@@ -40,15 +40,19 @@ import {
     UnaryExpression, UnaryOperator,
     UpdateExpression, UpdateOperator, VariableDeclarator, WhileStatement, WithStatement,
     YieldExpression, VariableDeclaration
-} from "estree";
+} from "@babel/types";
 
 // 自定义声明类型
 export interface OvsAstRenderDomViewDeclaration {
     type: "OvsRenderDomViewDeclaration";
     id: OvsAstIdentifier;
-    children: OvsAstRenderDomViewDeclaration[];
+    children: OvsRenderDomViewDeclarator[];
     arguments: OvsAstExpression[];
 }
+
+export type OvsRenderDomViewDeclarator =
+    // | OvsAstLexicalBinding
+    | OvsAstAssignmentExpression
 
 export interface OvsAstLexicalBinding {
     type: "OvsLexicalBinding";

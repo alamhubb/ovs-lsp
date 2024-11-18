@@ -1,3 +1,4 @@
+import * as babeType from "@babel/types";
 import OvsParser from "../parser/OvsParser.ts";
 import Es6CstToEstreeAstUtil, {
     checkCstName,
@@ -5,14 +6,15 @@ import Es6CstToEstreeAstUtil, {
 } from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {
     OvsAstClassDeclaration,
-    OvsAstExportDefaultDeclaration,
+    OvsAstExportDefaultDeclaration, OvsAstExpressionStatement,
     OvsAstLexicalBinding, OvsAstProgram,
-    OvsAstRenderDomViewDeclaration
+    OvsAstRenderDomViewDeclaration, OvsRenderDomViewDeclarator
 } from "../interface/OvsInterface";
 import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
 import SubhutiLexer from "subhuti/src/parser/SubhutiLexer.ts";
 import {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
 import type {
+    AssignmentExpression,
     ClassDeclaration,
     Directive,
     ExportDefaultDeclaration,
@@ -91,6 +93,30 @@ export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
         return left
     }
 
+    ovsRenderDomViewDeclarationAstToEstreeAst(ast: OvsAstRenderDomViewDeclaration): OvsAstExpressionStatement {
+        //children的类型，可以是多种
+        //创建children ast需要慢慢来，一步步的，child类型
+
+        const viewName = babeType.stringLiteral(ast.id.name)
+
+        const children = []
+        for (const child1 of ast.children) {
+
+        }
+
+        //创建一个body
+
+
+        const child = babeType.stringLiteral(ast.id.name)
+
+    }
+
+    ovsRenderDomViewDeclaratorToEstreeAst(ast: OvsRenderDomViewDeclarator) {
+        //每一个都是 OvsAstAssignmentExpression ， 现在的目标就是生成
+        return ast
+    }
+
+
     createOvsRenderDomViewDeclarationAst(cst: SubhutiCst): OvsAstRenderDomViewDeclaration {
         const astName = checkCstName(cst, OvsParser.prototype.OvsRenderDomViewDeclaration.name);
         const ast: OvsAstRenderDomViewDeclaration = {
@@ -99,6 +125,9 @@ export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
             children: cst.children[2].children.filter(item => item.name === OvsParser.prototype.OvsRenderDomViewDeclarator.name).map(item => this.createOvsRenderDomViewDeclaratorAst(item)) as any[],
             // children: this.createAssignmentExpressionAst(cst.children[2])
         } as any
+
+
+        // left = this.ovsRenderDomViewDeclarationAstToEstreeAst(left)
         return ast
     }
 
