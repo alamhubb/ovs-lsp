@@ -13,7 +13,8 @@
       "DOM"
     ],
     "types": [
-      "node"
+      "node",
+      "babel"
     ],
     "plugins": [
       {
@@ -26,7 +27,10 @@
             "warn": "1p"
           }
         },
-        "additionalKeywords": ["FIX", "TODO_OR_DIE"]
+        "additionalKeywords": [
+          "FIX",
+          "TODO_OR_DIE"
+        ]
       }
     ]
   }

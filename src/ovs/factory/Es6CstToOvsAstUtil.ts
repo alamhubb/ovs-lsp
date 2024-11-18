@@ -5,16 +5,14 @@ import Es6CstToEstreeAstUtil, {
     EsTreeAstType, throwNewError
 } from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {
-    OvsAstClassDeclaration,
-    OvsAstExportDefaultDeclaration, OvsAstExpressionStatement,
-    OvsAstLexicalBinding, OvsAstProgram,
+    OvsAstLexicalBinding,
     OvsAstRenderDomViewDeclaration, OvsRenderDomViewDeclarator
 } from "../interface/OvsInterface";
 import SubhutiCst from "subhuti/src/struct/SubhutiCst.ts";
 import SubhutiLexer from "subhuti/src/parser/SubhutiLexer.ts";
 import {es6Tokens} from "subhuti-ts/src/language/es2015/Es6Tokens.ts";
 import type {
-    AssignmentExpression,
+    AssignmentExpression, BaseNode,
     ClassDeclaration,
     Directive,
     ExportDefaultDeclaration,
@@ -24,7 +22,6 @@ import type {
     Statement
 } from "estree";
 import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
-import {BaseNode} from "estree";
 import BabelEstreeAstUtil from "./BabelEstreeAstUtil.ts";
 import {ExpressionStatement} from "@babel/types";
 
@@ -43,9 +40,9 @@ export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
         return ast
     }
 
-    createProgramAst(cst: SubhutiCst): OvsAstProgram {
+    createProgramAst(cst: SubhutiCst): Program {
         const ast = super.createProgramAst(cst)
-        return ast as OvsAstProgram
+        return ast as Program
     }
 
     createSubhutiTokenAst(cst: SubhutiCst): BaseNode {
@@ -55,12 +52,12 @@ export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
         }
     }
 
-    createExportDeclarationAst(cst: SubhutiCst): OvsAstExportDefaultDeclaration {
+    createExportDeclarationAst(cst: SubhutiCst): ExportDefaultDeclaration {
         let astName = checkCstName(cst, Es6Parser.prototype.ExportDeclaration.name);
         const {children} = cst;
         const [exportToken, secondChild, thirdChild] = children;
 
-        let ast: OvsAstExportDefaultDeclaration = super.createExportDeclarationAst(cst) as OvsAstExportDefaultDeclaration
+        let ast: ExportDefaultDeclaration = super.createExportDeclarationAst(cst) as ExportDefaultDeclaration
 
         if (ast.type === EsTreeAstType.ExportDefaultDeclaration) {
             ast = {
@@ -72,12 +69,12 @@ export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
         return ast
     }
 
-    createClassDeclarationAst(cst: SubhutiCst): OvsAstClassDeclaration {
+    createClassDeclarationAst(cst: SubhutiCst): ClassDeclaration {
         const astName = checkCstName(cst, Es6Parser.prototype.ClassDeclaration.name);
         const baseAst = super.createClassDeclarationAst(cst);
 
         // 创建新对象，包含所有需要的属性
-        const ast: OvsAstClassDeclaration = {
+        const ast: ClassDeclaration = {
             ...baseAst,
             class: this.createSubhutiTokenAst(cst.children[0])
         };
