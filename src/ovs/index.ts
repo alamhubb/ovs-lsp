@@ -22,6 +22,20 @@ export function traverseClearTokens(currentNode: SubhutiCst) {
     return currentNode
 }
 
+export function traverseClearLoc(currentNode: SubhutiCst) {
+    currentNode.loc = undefined
+    if (!currentNode || !currentNode.children || !currentNode.children.length)
+        return
+    // 将当前节点添加到 Map 中
+    // 递归遍历子节点
+    if (currentNode.children && currentNode.children.length > 0) {
+        currentNode.children.forEach(child => traverseClearLoc(child))
+    }
+    currentNode.loc = undefined
+    return currentNode
+}
+
+
 export function vitePluginOvsTransform(code) {
     console.log(code)
     const lexer = new SubhutiLexer(es6Tokens)
@@ -31,9 +45,10 @@ export function vitePluginOvsTransform(code) {
     console.log(tokens)
     let code1 = null
     let curCst = parser.Program()
-    JsonUtil.log(7777)
+    // JsonUtil.log(7777)
     curCst = traverseClearTokens(curCst)
-    JsonUtil.log(curCst)
+    curCst = traverseClearLoc(curCst)
+    // JsonUtil.log(curCst)
     console.log(111231)
     // JsonUtil.log(curCst)
     //cst转 estree ast
@@ -42,14 +57,13 @@ export function vitePluginOvsTransform(code) {
     console.log(123123)
     console.log(generate.default)
     console.log(56465)
-    const code22 = generate.default(ast)
+    code1 = generate.default(ast)
     console.log(656555)
-    console.log(code22)
-    // console.log(456465)
+    console.log(code1.code)
     //ast to client ast
-    TokenProvider.visitNode(ast)
-    JsonUtil.log(TokenProvider.tokens)
-    OvsAPI.createVNode('div', 123)
+    // TokenProvider.visitNode(ast)
+    // JsonUtil.log(TokenProvider.tokens)
+    // OvsAPI.createVNode('div', 123)
 
     // code1 = parser.exec()
     // console.log(code1)
@@ -59,11 +73,15 @@ export function vitePluginOvsTransform(code) {
     // console.log(code1)
     return `
     import OvsAPI from "@/ovs/OvsAPI.ts";\n
-    ${code1}
+    ${code1.code}
     `
 }
 
-const code = `export const ha = div { 123 }
+const code = `export default class TestA{
+    static log(){
+        console.log(123)
+    }
+}
 `
 // const code = `let a = div{
 //             header = div{123},

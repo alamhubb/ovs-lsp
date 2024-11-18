@@ -7,14 +7,14 @@ import Es6TokenConsumer, {
 import {SubhutiCreateToken} from "subhuti/src/struct/SubhutiCreateToken.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {
-    OvsAstClassDeclaration, OvsAstExportDefaultDeclaration,
-    OvsAstLexicalBinding, OvsAstMethodDefinition,
+    OvsAstLexicalBinding,
     OvsAstRenderDomViewDeclaration
 } from "./ovs/interface/OvsInterface";
 import {EsTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {SourceLocation} from "subhuti/src/struct/SubhutiCst.ts";
 import {Program} from "estree";
 import {LogUtil} from "./logutil.ts";
+import {ExportDefaultDeclaration} from "@babel/types";
 
 class SemanticToken {
     line: number;    // token 类型
@@ -64,7 +64,7 @@ export class TokenProvider {
         node.body.forEach(item => this.visitNode(item))
     }
 
-    private static visitExportDefaultDeclaration(node: OvsAstExportDefaultDeclaration) {
+    private static visitExportDefaultDeclaration(node: ExportDefaultDeclaration) {
         this.addToken(this.createSemanticToken(node.export))
         if (node.default) {
             this.addToken(this.createSemanticToken(node.default))
