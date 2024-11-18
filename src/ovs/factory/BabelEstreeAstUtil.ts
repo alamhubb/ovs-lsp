@@ -1,9 +1,12 @@
 import * as babeType from "@babel/types";
 import {OvsAstRenderDomViewDeclaration, OvsRenderDomViewDeclarator} from "../interface/OvsInterface";
 import {CallExpression, ExpressionStatement, Statement} from '@babel/types';
+import JsonUtil from "subhuti/src/utils/JsonUtil.ts";
 
 export default class BabelEstreeAstUtil {
-    static createOvsRenderDomViewDeclarationEstreeAst(ast: OvsAstRenderDomViewDeclaration) : CallExpression{
+    static createOvsRenderDomViewDeclarationEstreeAst(ast: OvsAstRenderDomViewDeclaration): CallExpression {
+        JsonUtil.log('666')
+        JsonUtil.log(ast)
         const body = BabelEstreeAstUtil.createOvsAPICreateVNode(ast)
         const viewIIFE = BabelEstreeAstUtil.createIIFE(body)
         return viewIIFE
@@ -21,7 +24,8 @@ export default class BabelEstreeAstUtil {
         const memberExpressionProperty = babeType.identifier('createVNode')
         const memberExpression = babeType.memberExpression(memberExpressionObject, memberExpressionProperty)
         const OvsAPICreateVNodeFirstParamsViewName = babeType.stringLiteral(ast.id.name)
-        const callExpression = babeType.callExpression(memberExpression, [OvsAPICreateVNodeFirstParamsViewName])
+        const OvsAPICreateVNodeSecondParamsChildren = babeType.arrayExpression(ast.children)
+        const callExpression = babeType.callExpression(memberExpression, [OvsAPICreateVNodeFirstParamsViewName, OvsAPICreateVNodeSecondParamsChildren])
         const ReturnStatement = babeType.returnStatement(callExpression)
 
         return [ReturnStatement]

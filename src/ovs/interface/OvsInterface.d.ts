@@ -1,10 +1,64 @@
-import {AssignmentExpression, Expression, Identifier} from '@babel/types';
+import {
+    ArrayExpression,
+    ArrowFunctionExpression,
+    AssignmentExpression,
+    AwaitExpression,
+    BigIntLiteral,
+    BinaryExpression,
+    BindExpression,
+    BooleanLiteral,
+    CallExpression,
+    ClassExpression,
+    ConditionalExpression,
+    DecimalLiteral,
+    DoExpression,
+    Expression,
+    FunctionExpression,
+    Identifier,
+    Import,
+    ImportExpression,
+    JSXElement,
+    JSXFragment,
+    LogicalExpression,
+    MemberExpression,
+    MetaProperty,
+    ModuleExpression,
+    NewExpression,
+    NullLiteral,
+    NumericLiteral,
+    ObjectExpression,
+    OptionalCallExpression,
+    OptionalMemberExpression,
+    ParenthesizedExpression,
+    PipelineBareFunction,
+    PipelinePrimaryTopicReference,
+    PipelineTopicExpression,
+    RecordExpression,
+    RegExpLiteral,
+    SequenceExpression,
+    StringLiteral,
+    Super,
+    TaggedTemplateExpression,
+    TemplateLiteral,
+    ThisExpression,
+    TopicReference,
+    TSAsExpression,
+    TSInstantiationExpression,
+    TSNonNullExpression,
+    TSSatisfiesExpression,
+    TSTypeAssertion,
+    TupleExpression,
+    TypeCastExpression,
+    UnaryExpression,
+    UpdateExpression,
+    YieldExpression,
+} from '@babel/types';
 
 // 自定义声明类型
 export interface OvsAstRenderDomViewDeclaration {
     type: "OvsRenderDomViewDeclaration";
     id: Identifier;
-    children: OvsAstAssignmentExpression[];
+    children: AssignmentExpression[];
     arguments: Expression[];
 }
 
@@ -25,3 +79,4 @@ export interface OvsAstAssignmentExpression extends AssignmentExpression {
     right: Expression;
 }
 
+type OvsAstExpression = OvsAstRenderDomViewDeclaration | Expression
