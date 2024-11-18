@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/esprima": "^4.0.6",
     "@types/estree": "^1.0.6",
     "@types/node": "^22.8.6"
   },
@@ -26,6 +27,7 @@
     "@volar/typescript": "~2.4.0",
     "ast-types": "^0.16.1",
     "cac": "^6.7.14",
+    "esprima": "^4.0.1",
     "flexsearch": "^0.7.43",
     "recast": "^0.23.9",
     "subhuti": "../subhuti",
@@ -43,6 +45,7 @@
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.12",
     "vscode-uri": "^3.0.8",
-    "vue": "^3.5.12"
+    "vue": "^3.5.12",
+    "estree-create": "../estree-create"
   }
 }
