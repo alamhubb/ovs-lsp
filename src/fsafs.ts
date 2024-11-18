@@ -1,32 +1,49 @@
-import fs from "fs";
+import * as t from '@babel/types';
+import generate from '@babel/generator';
 
-function getLocalTsdkPath() {
-  let tsdkPath = "C:\\Users\\qinkaiyuan\\AppData\\Roaming\\npm\\node_modules\\typescript\\lib";
-  return tsdkPath.replace(/\\/g, '/');
+// 1. 创建 AST
+function createAST() {
+  // 创建一个简单的程序 AST
+  const ast = t.program([
+    // const x = 42
+    t.variableDeclaration('const', [
+      t.variableDeclarator(
+          t.identifier('x'),
+          t.numericLiteral(42)
+      )
+    ]),
+
+    // function add(a, b) { return a + b }
+    t.functionDeclaration(
+        t.identifier('add'),
+        [t.identifier('a'), t.identifier('b')],
+        t.blockStatement([
+          t.returnStatement(
+              t.binaryExpression('+',
+                  t.identifier('a'),
+                  t.identifier('b')
+              )
+          )
+        ])
+    )
+  ]);
+
+  return ast;
 }
 
-async function resolveWorkspaceTsdk(tsdk) {
-  try {
-    // 使用 fs.promises.stat 代替 fs.stat
-    const stat = await fs.promises.stat(tsdk + '/typescript.js');
-    console.log(stat);
-    console.log(stat);
-    console.log(stat.isFile());
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-// ts的地址  node_modules/typescript/lib'
-// initializationOptions: {
-//   typescript: {
-//     tsdk: (await getTsdk(context))!.tsdk,
-//   },
-// },
-resolveWorkspaceTsdk(getLocalTsdkPath());
+// 2. 生成代码
+function generateCode(ast: babel.types.Node) {
+  const output = generate.default(ast, {
+    retainLines: true,
+    comments: true,
+    compact: false,
+    semicolons: false,  // 禁用分号
+  }, {});
 
-/*
-tsdk ? {
-  tsdk: tsdk.path,
-  version: tsdk.version,
-  isWorkspacePath: false,
-} : undefined;*/
+  return output.code;
+}
+
+// 3. 使用示例
+const ast = createAST();
+const code = generateCode(ast);
+console.log(code);

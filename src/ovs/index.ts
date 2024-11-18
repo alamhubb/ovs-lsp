@@ -35,11 +35,11 @@ export function traverseClearLoc(currentNode: SubhutiCst) {
     return currentNode
 }
 
-
 export function vitePluginOvsTransform(code) {
     console.log(code)
     const lexer = new SubhutiLexer(es6Tokens)
     const tokens = lexer.lexer(code)
+    if (!tokens.length) return code
     const parser = new OvsParser(tokens)
 
     console.log(tokens)
@@ -57,9 +57,19 @@ export function vitePluginOvsTransform(code) {
     console.log(123123)
     console.log(generate.default)
     console.log(56465)
-    code1 = generate.default(ast)
+    code1 = generate.default(ast).code
+    if (code1) {
+        code1 = removeSemicolons(code1)
+    }
+
+    function removeSemicolons(code) {
+        console.log(code)
+        // 按行分割，处理每行，然后重新组合
+        return code.replace(/;$/gm, '')
+    }
+
     console.log(656555)
-    console.log(code1.code)
+    console.log(code1)
     //ast to client ast
     // TokenProvider.visitNode(ast)
     // JsonUtil.log(TokenProvider.tokens)
@@ -71,17 +81,26 @@ export function vitePluginOvsTransform(code) {
     // mapping.openMappingMode(curCst)
     // code1 = mapping.exec(curCst)
     // console.log(code1)
-    return `
-    import OvsAPI from "@/ovs/OvsAPI.ts";\n
-    ${code1.code}
-    `
+    return `${code1}`
+    /*    return `
+        // import OvsAPI from "@/ovs/OvsAPI.ts";\n
+        ${code1.code}
+        `*/
 }
 
-const code = `export default class TestA{
-    static log(){
-        console.log(123)
-    }
-}
+const code = `let c1 = 123
+let c2 = c1
+let c3 = c2
+let c4 = c3
+let c5 = c4
+let c6 = c5
+let c7 = c6
+let c8 = c7
+let c9 = c8
+let c10 = c9
+let c11 = c10
+
+Tes
 `
 // const code = `let a = div{
 //             header = div{123},

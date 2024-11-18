@@ -68,7 +68,16 @@ export class OvsVirtualCode implements VirtualCode {
             },
         }];
         const styleText = snapshot.getText(0, snapshot.getLength());
-        const newCode = vitePluginOvsTransform(styleText)
+        let newCode = styleText
+        LogUtil.log('styleTextstyleTextstyleTextstyleText')
+        try {
+            newCode = vitePluginOvsTransform(styleText)
+
+        } catch (e) {
+            LogUtil.log('styleErrrrrrrr')
+        }
+        LogUtil.log(styleText)
+        LogUtil.log(newCode)
         //将ovscode转为js代码，传给ts
         /*this.embeddedCodes = [{
             id: 'ts',
