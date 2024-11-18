@@ -29,7 +29,7 @@ import {TokenProvider, tokenTypesObj} from "./IntellijTokenUtil.ts";
 import OvsParser from "./ovs/parser/OvsParser.ts";
 import {LogUtil} from "./logutil.ts";
 import {FileUtil, initCompletionMap} from "./utils/FileUtils.ts";
-import {ovsToAstUtil} from "./ovs/factory/OvsToAstUtil.ts";
+import {ovsToAstUtil} from "./ovs/factory/Es6CstToOvsAstUtil.ts";
 import {EsTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 
 // 创建连接

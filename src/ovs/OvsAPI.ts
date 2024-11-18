@@ -39,7 +39,7 @@ const vNodeExtend = {
 }
 
 export default class OvsAPI {
-    static createVNode(tagName: string, children, props) {
+    static createVNode(tagName: string, children, props?) {
         let vueChildren = null
         if (Array.isArray(children)) {
             vueChildren = children

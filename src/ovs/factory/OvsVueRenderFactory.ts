@@ -158,7 +158,7 @@ export default class OvsVueRenderFactory {
 
   static createIdentifierCst(IdentifierName: string) {
     const cst = new SubhutiCst()
-    cst.name = Es6Parser.prototype.Identifier.name
+    cst.name = Es6Parser.prototype.tokenConsumer.Identifier.name
     cst.children = [this.createIdentifierNameCst(IdentifierName)]
     return cst
   }

@@ -5,8 +5,9 @@ import {es6Tokens} from 'subhuti-ts/src/language/es2015/Es6Tokens.ts'
 import SubhutiCst from "../../../subhuti/src/struct/SubhutiCst.ts";
 import JsonUtil from "../../../subhuti/src/utils/JsonUtil.ts";
 import OvsParser from "./parser/OvsParser.ts";
-import {ovsToAstUtil} from "./factory/OvsToAstUtil.ts";
+import {ovsToAstUtil} from "./factory/Es6CstToOvsAstUtil.ts";
 import {TokenProvider} from "../IntellijTokenUtil.ts";
+import OvsAPI from "./OvsAPI.ts";
 
 export function traverseClearTokens(currentNode: SubhutiCst) {
     if (!currentNode || !currentNode.children || !currentNode.children.length)
@@ -38,7 +39,7 @@ export function vitePluginOvsTransform(code) {
     //ast to client ast
     TokenProvider.visitNode(ast)
     JsonUtil.log(TokenProvider.tokens)
-
+    OvsAPI.createVNode('div', 123)
 
     // code1 = parser.exec()
     // console.log(code1)
@@ -51,13 +52,8 @@ export function vitePluginOvsTransform(code) {
     ${code1}
     `
 }
-const code = `export default class Testa {
-    static print11(abc) {
-        console.log(true)
-    }
-}
 
-
+const code = `div { 123 }
 `
 // const code = `let a = div{
 //             header = div{123},

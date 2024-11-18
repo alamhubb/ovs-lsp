@@ -25,7 +25,7 @@ import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
 import {BaseNode} from "estree";
 
 
-export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
+export default class Es6CstToOvsAstUtil extends Es6CstToEstreeAstUtil {
     toAst(code: string) {
         const lexer = new SubhutiLexer(es6Tokens)
         const tokens = lexer.lexer(code)
@@ -119,4 +119,4 @@ export default class OvsToAstUtil extends Es6CstToEstreeAstUtil {
 
 }
 
-export const ovsToAstUtil = new OvsToAstUtil()
+export const ovsToAstUtil = new Es6CstToOvsAstUtil()

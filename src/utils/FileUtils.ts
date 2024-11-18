@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import {fileURLToPath} from "url";
 import {LogUtil} from "../logutil.ts";
-import {ovsToAstUtil} from "../ovs/factory/OvsToAstUtil.ts";
+import {ovsToAstUtil} from "../ovs/factory/Es6CstToOvsAstUtil.ts";
 import {EsTreeAstType} from "subhuti-ts/src/language/es2015/Es6CstToEstreeAstUtil.ts";
 import {CompletionItem, CompletionItemKind} from "vscode-languageserver/node";
 import Es6Parser from "subhuti-ts/src/language/es2015/Es6Parser.ts";
