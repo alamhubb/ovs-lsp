@@ -98,6 +98,12 @@ export class OvsVirtualCode implements VirtualCode {
                 getLength: () => newCode.length,
                 getChangeRange: () => undefined,
             },
+
+            // sourceOffsets: number[];
+            // generatedOffsets: number[];
+            // lengths: number[];
+            // generatedLengths?: number[];
+            // data: Data;
             mappings: [{
                 sourceOffsets: [0],
                 generatedOffsets: [0],
