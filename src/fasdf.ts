@@ -1,5 +1,3 @@
-import html from 'vscode-html-languageservice';
+import {createTypeScriptServices} from "./typescript";
 
-
-console.log(html.TextDocument)
-
+console.log(createTypeScriptServices)
